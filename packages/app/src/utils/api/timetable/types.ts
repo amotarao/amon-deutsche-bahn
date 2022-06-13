@@ -28,6 +28,8 @@ export type JourneyInformation = {
   replaced: boolean;
   changedPlatform: boolean;
   changedRoute: boolean;
+  changedOrigin: boolean;
+  changedDestination: boolean;
   specialTrain: boolean;
   replacementTrain: boolean;
   others: string[];

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
-import { parseJourneys, parseJourneyMessageText } from '../../utils/api/timetable/journey';
+import { parseJourneys } from '../../utils/api/timetable/journey';
 import { parseMeta } from '../../utils/api/timetable/meta';
 import { JourneyResponse } from '../../utils/api/timetable/types';
 
@@ -20,20 +20,7 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
   const html = await resp.text();
 
   const meta = parseMeta(html);
-  const journeys = await Promise.all(
-    parseJourneys(html).map(async (journey) => {
-      if (!journey.message) {
-        return journey;
-      }
-
-      const ajaxUrl = journey.message.ajaxUrl;
-      const resp = await fetch(ajaxUrl);
-      const html = await resp.text();
-
-      journey.message.text = parseJourneyMessageText(html);
-      return journey;
-    })
-  );
+  const journeys = parseJourneys(html);
 
   const json: JourneyResponse = {
     data: {

@@ -1,3 +1,4 @@
+import { query } from 'firebase/firestore';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -25,12 +26,11 @@ export const getStaticProps: GetStaticProps<Props> = (context) => {
 
 const Page: NextPage<Props> = ({ name }) => {
   const router = useRouter();
+
   const [tmpName, setTmpName] = useState(name);
   const type = router.query.type || ('dep' as 'dep' | 'arr');
   const date = router.query.date || (new Date().toISOString().slice(0, 10) as string);
   const time = router.query.time || (new Date().toISOString().slice(11, 16) as string);
-
-  console.log(router);
 
   const [data, setData] = useState<JourneyResponse | null>(null);
   useEffect(() => {
@@ -50,7 +50,7 @@ const Page: NextPage<Props> = ({ name }) => {
         <title>Timetable at {data?.meta.station ?? ''}</title>
       </Head>
 
-      <div className="mb-4 flex flex-col border-b border-gray-300 text-sm">
+      <div className="sticky top-0 mb-4 flex flex-col border-b border-gray-300 bg-white text-sm">
         <p className="border-b border-dashed border-gray-300">
           <input
             className="w-full p-2"
@@ -61,13 +61,19 @@ const Page: NextPage<Props> = ({ name }) => {
               setTmpName(e.target.value);
             }}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                router.push(`/timetable/stations/${tmpName}`);
+              if (e.key === 'Enter' && name !== tmpName) {
+                router.push({
+                  pathname: '/timetable/stations/[name]',
+                  query: { ...router.query, name: tmpName },
+                });
               }
             }}
             onBlur={() => {
               if (name !== tmpName) {
-                router.push(`/timetable/stations/${tmpName}`);
+                router.push({
+                  pathname: '/timetable/stations/[name]',
+                  query: { ...router.query, name: tmpName },
+                });
               }
             }}
           />
@@ -150,10 +156,10 @@ const Page: NextPage<Props> = ({ name }) => {
         <div className="flex flex-col">
           {data.data.journeys.map((journey, i) => {
             const infomation = [
-              journey.information.canceled ? 'Canceled' : '',
               journey.information.replaced ? 'Replaced' : '',
-              journey.information.changedPlatform ? 'Changed Platform' : '',
               journey.information.changedRoute ? 'Changed Route' : '',
+              journey.information.changedOrigin ? 'Changed Origin' : '',
+              journey.information.changedDestination ? 'Changed Destination' : '',
               journey.information.specialTrain ? 'Special Train' : '',
               journey.information.replacementTrain ? 'Replacement Train' : '',
               ...journey.information.others,
@@ -164,10 +170,12 @@ const Page: NextPage<Props> = ({ name }) => {
             return (
               <div className="flex flex-wrap gap-2 border-b border-dashed border-gray-300 p-2 text-xs" key={i}>
                 <p className="w-16">
-                  <span>{journey.time}</span>
+                  <span className={journey.information.canceled ? 'font-bold text-red-500 line-through' : ''}>
+                    {journey.time}
+                  </span>
                   <br />
                   {journey.actualTime && journey.time !== journey.actualTime && (
-                    <span className={journey.delayed ? 'font-bold text-red-500' : ''}>&gt;{journey.actualTime}</span>
+                    <span className={journey.delayed ? 'text-red-500' : ''}>&gt;{journey.actualTime}</span>
                   )}
                 </p>
                 <p className="w-56">
@@ -180,15 +188,15 @@ const Page: NextPage<Props> = ({ name }) => {
                 <p className={['w-8', journey.information.changedPlatform ? 'font-bold text-red-500' : ''].join(' ')}>
                   {journey.platform}
                 </p>
+                {infomation && (
+                  <div className="w-full text-red-500">
+                    <p>{infomation}</p>
+                  </div>
+                )}
                 {journey.message && (
                   <div className="w-full">
                     <p lang="de-DE">{journey.message.title}</p>
                     <p lang="de-DE">{journey.message.text}</p>
-                  </div>
-                )}
-                {infomation && (
-                  <div className="w-full text-red-500">
-                    <p>{infomation}</p>
                   </div>
                 )}
               </div>
