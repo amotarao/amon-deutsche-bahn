@@ -26,6 +26,7 @@ export const getStaticProps: GetStaticProps<Props> = (context) => {
 const Page: NextPage<Props> = ({ name }) => {
   const router = useRouter();
 
+  const [isFetching, setIsFetching] = useState(false);
   const [tmpName, setTmpName] = useState(name);
   const type = router.query.type || 'dep';
   const date = router.query.date || new Date().toISOString().slice(0, 10);
@@ -34,12 +35,14 @@ const Page: NextPage<Props> = ({ name }) => {
   const [data, setData] = useState<JourneyResponse | null>(null);
   useEffect(() => {
     (async () => {
+      setIsFetching(true);
       const queryDate = [date.slice(8, 10), date.slice(5, 7), date.slice(0, 4)].join('.');
       const res = await fetch(
         `/api/timetable?station=${encodeURIComponent(name)}&type=${type}&date=${queryDate}&time=${time}`
       );
       const json = (await res.json()) as JourneyResponse;
       setData(json);
+      setIsFetching(false);
     })();
   }, [name, type, date, time]);
 
@@ -151,7 +154,9 @@ const Page: NextPage<Props> = ({ name }) => {
         </p>
       </div>
 
-      {data ? (
+      {isFetching && <p>Fetching</p>}
+
+      {data && (
         <div className="flex flex-col">
           {data.data.journeys.map((journey, i) => {
             const infomation = [
@@ -206,8 +211,6 @@ const Page: NextPage<Props> = ({ name }) => {
             );
           })}
         </div>
-      ) : (
-        <p>Loading</p>
       )}
     </div>
   );
