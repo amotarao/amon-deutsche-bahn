@@ -210,14 +210,14 @@ const Page: NextPage<Props> = ({ name }) => {
                     <span className={journey.delayed ? 'text-red-500' : ''}>&gt;{journey.actualTime}</span>
                   )}
                 </p>
-                <p className="w-56">
+                <p className="flex-grow">
                   <a className="underline" href={journey.trainDetailUrl} target="_blank" rel="noopener noreferrer">
                     {journey.train}
                   </a>
                   <br />
                   <span>{journey.destination}</span>
                 </p>
-                <p className={['w-8', journey.information.changedPlatform ? 'font-bold text-red-500' : ''].join(' ')}>
+                <p className={['w-12', journey.information.changedPlatform ? 'font-bold text-red-500' : ''].join(' ')}>
                   {journey.platform}
                 </p>
                 {infomation && (
