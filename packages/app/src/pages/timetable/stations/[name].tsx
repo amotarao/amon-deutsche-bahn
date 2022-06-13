@@ -1,8 +1,7 @@
-import { query } from 'firebase/firestore';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { JourneyResponse } from '../../../utils/api/timetable/types';
 
 type Props = {
@@ -28,9 +27,9 @@ const Page: NextPage<Props> = ({ name }) => {
   const router = useRouter();
 
   const [tmpName, setTmpName] = useState(name);
-  const type = router.query.type || ('dep' as 'dep' | 'arr');
-  const date = router.query.date || (new Date().toISOString().slice(0, 10) as string);
-  const time = router.query.time || (new Date().toISOString().slice(11, 16) as string);
+  const type = router.query.type || 'dep';
+  const date = router.query.date || new Date().toISOString().slice(0, 10);
+  const time = router.query.time || new Date().toISOString().slice(11, 16);
 
   const [data, setData] = useState<JourneyResponse | null>(null);
   useEffect(() => {
@@ -156,12 +155,16 @@ const Page: NextPage<Props> = ({ name }) => {
         <div className="flex flex-col">
           {data.data.journeys.map((journey, i) => {
             const infomation = [
-              journey.information.replaced ? 'Replaced' : '',
+              journey.information.replaced ? `Replaced: ${journey.information.replacedTo}` : '',
               journey.information.changedRoute ? 'Changed Route' : '',
-              journey.information.changedOrigin ? 'Changed Origin' : '',
-              journey.information.changedDestination ? 'Changed Destination' : '',
+              journey.information.changedOrigin ? `Changed Origin: ${journey.information.changedOriginTo}` : '',
+              journey.information.changedDestination
+                ? `Changed Destination: ${journey.information.changedDestinationTo}`
+                : '',
               journey.information.specialTrain ? 'Special Train' : '',
-              journey.information.replacementTrain ? 'Replacement Train' : '',
+              journey.information.replacementTrain
+                ? `Replacement Train: ${journey.information.replacementTrainFrom}`
+                : '',
               ...journey.information.others,
             ]
               .filter((info) => info)

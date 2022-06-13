@@ -93,12 +93,18 @@ const extractinformation = (info: string[]): JourneyInformation => {
   return {
     canceled: info.includes('Fahrt fällt aus'),
     replaced: info.some((i) => i.match(/^Es verkehrt Ersatzfahrt\s/)),
+    replacedTo:
+      info.find((i) => i.match(/^Es verkehrt Ersatzfahrt\s/))?.replace(/^Es verkehrt Ersatzfahrt\s/, '') ?? null,
     changedPlatform: info.includes('Gleiswechsel'),
     changedRoute: info.includes('Änderung im Fahrtverlauf!'),
     changedOrigin: info.some((i) => i.match(/^Fährt heute erst ab\s/)),
+    changedOriginTo: info.find((i) => i.match(/^Fährt heute erst ab\s/))?.replace(/^Fährt heute erst ab\s/, '') ?? null,
     changedDestination: info.some((i) => i.match(/^Fährt heute nur bis\s/)),
+    changedDestinationTo:
+      info.find((i) => i.match(/^Fährt heute nur bis\s/))?.replace(/^Fährt heute nur bis\s/, '') ?? null,
     specialTrain: info.includes('Sonderfahrt'),
     replacementTrain: info.some((i) => i.match(/^Ersatzfahrt für\s/)),
+    replacementTrainFrom: info.find((i) => i.match(/^Ersatzfahrt für\s/))?.replace(/^Ersatzfahrt für\s/, '') ?? null,
     others: info.filter((i) => {
       if (['Fahrt fällt aus', 'Gleiswechsel', 'Änderung im Fahrtverlauf!', 'Sonderfahrt'].includes(i)) {
         return false;
