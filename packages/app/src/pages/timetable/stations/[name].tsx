@@ -26,26 +26,28 @@ export const getStaticProps: GetStaticProps<Props> = (context) => {
 const Page: NextPage<Props> = ({ name }) => {
   const router = useRouter();
   const [tmpName, setTmpName] = useState(name);
-  const [type, setType] = useState<'dep' | 'arr'>('dep');
-  const [date, setDate] = useState<string>(new Date().toISOString().slice(0, 10));
-  const [time, setTime] = useState<string>(new Date().toISOString().slice(11, 16));
-  const [data, setData] = useState<JourneyResponse | null>(null);
-  const queryDate = useMemo(() => [date.slice(8, 10), date.slice(5, 7), date.slice(0, 4)].join('.'), [date]);
+  const type = router.query.type || ('dep' as 'dep' | 'arr');
+  const date = router.query.date || (new Date().toISOString().slice(0, 10) as string);
+  const time = router.query.time || (new Date().toISOString().slice(11, 16) as string);
 
+  console.log(router);
+
+  const [data, setData] = useState<JourneyResponse | null>(null);
   useEffect(() => {
     (async () => {
+      const queryDate = [date.slice(8, 10), date.slice(5, 7), date.slice(0, 4)].join('.');
       const res = await fetch(
         `/api/timetable?station=${encodeURIComponent(name)}&type=${type}&date=${queryDate}&time=${time}`
       );
       const json = (await res.json()) as JourneyResponse;
       setData(json);
     })();
-  }, [name, type, queryDate, time]);
+  }, [name, type, date, time]);
 
   return (
     <div>
       <Head>
-        <title>Stations</title>
+        <title>Timetable at {data?.meta.station ?? ''}</title>
       </Head>
 
       <div className="mb-4 flex flex-col border-b border-gray-300 text-sm">
@@ -77,7 +79,13 @@ const Page: NextPage<Props> = ({ name }) => {
             name="date"
             value={date}
             onChange={(e) => {
-              setDate(e.target.value);
+              router.push({
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  date: e.target.value,
+                },
+              });
             }}
           />
           <input
@@ -86,7 +94,13 @@ const Page: NextPage<Props> = ({ name }) => {
             name="time"
             value={time}
             onChange={(e) => {
-              setTime(e.target.value);
+              router.push({
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  time: e.target.value,
+                },
+              });
             }}
           />
         </p>
@@ -99,7 +113,13 @@ const Page: NextPage<Props> = ({ name }) => {
               value="dep"
               checked={type === 'dep'}
               onChange={(e) => {
-                setType(e.target.value as 'dep' | 'arr');
+                router.push({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    type: e.target.value,
+                  },
+                });
               }}
             />
             Departure
@@ -112,7 +132,13 @@ const Page: NextPage<Props> = ({ name }) => {
               value="arr"
               checked={type === 'arr'}
               onChange={(e) => {
-                setType(e.target.value as 'dep' | 'arr');
+                router.push({
+                  pathname: router.pathname,
+                  query: {
+                    ...router.query,
+                    type: e.target.value,
+                  },
+                });
               }}
             />
             Arrival
