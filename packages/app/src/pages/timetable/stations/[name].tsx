@@ -35,6 +35,9 @@ const Page: NextPage<Props> = ({ name }) => {
   const [data, setData] = useState<JourneyResponse | null>(null);
   useEffect(() => {
     (async () => {
+      if (!router.isReady) {
+        return;
+      }
       setIsFetching(true);
       const queryDate = [date.slice(8, 10), date.slice(5, 7), date.slice(0, 4)].join('.');
       const res = await fetch(
@@ -44,7 +47,7 @@ const Page: NextPage<Props> = ({ name }) => {
       setData(json);
       setIsFetching(false);
     })();
-  }, [name, type, date, time]);
+  }, [router, name, type, date, time]);
 
   return (
     <div>
