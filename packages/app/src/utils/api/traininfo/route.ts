@@ -11,8 +11,8 @@ export const parseRoute = (html: string): Route => {
       $elm.find('.tqContentHL, .risHL').each((i, elm) => {
         $(elm).remove();
       });
-      const name = $elm.find('.station').text().trim();
-      const detailHref = parseDetailHref($elm.find('.station a').attr('href') || '');
+      const name = $elm.find('.station, .stationSmall').text().trim();
+      const detailHref = parseDetailHref($elm.find('.station a, .stationSmall a').attr('href') || '');
       const arrivalTime =
         $elm
           .find('.arrival')
@@ -69,6 +69,7 @@ const extractInformation = (information: string[]): StationInformation => {
 };
 
 const parseDetailHref = (href: string): string => {
+  console.log(href);
   const url = new URL(href);
   const [name, id] = url.searchParams.get('input')?.split('#') ?? ['', ''];
   const [d, m, y] = url.searchParams.get('date')?.split('.') ?? ['', '', ''];
