@@ -32,7 +32,7 @@ const Page: NextPage = () => {
       bounds.getSouthWest().lat(),
       bounds.getSouthWest().lng()
     );
-    const distanceFromCenter = Math.min((distance * 1000) / 2, 20000);
+    const distanceFromCenter = Math.min((distance * 1000) / 2);
     setDistance(distanceFromCenter);
   }, [map]);
 
@@ -48,6 +48,8 @@ const Page: NextPage = () => {
   const [stations, setStations] = useState<Station[]>([]);
   const stationsQueries = useMemo(() => {
     let q = query(collection(firestore, 'stations'));
+    const maxDistance = 20000;
+
     if (filters.state) {
       q = query(q, where('address.state', '==', filters.state));
     }
@@ -58,7 +60,7 @@ const Page: NextPage = () => {
       q = query(q, where('stationCategory', 'in', filters.categories));
     }
 
-    const bounds = geofire.geohashQueryBounds([center.lat, center.lng], distance);
+    const bounds = geofire.geohashQueryBounds([center.lat, center.lng], Math.min(distance, maxDistance));
     return bounds.map(([start, end]) => {
       return query(q, orderBy('position.geohash'), startAt(start), endAt(end));
     });
