@@ -18,8 +18,8 @@ export const getStaticProps: GetStaticProps = () => {
 const Page: NextPage = () => {
   // map
   const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [center, setCenter] = useState<{ lat: number; lng: number } | null>(null);
-  const [distance, setDistance] = useState(1000);
+  const [center, setCenter] = useState<{ lat: number; lng: number }>({ lat: 50.107145, lng: 8.663789 });
+  const [distance, setDistance] = useState(10000);
   const onChangeMap = useCallback(() => {
     const bounds = map?.getBounds();
     if (!bounds) {
@@ -101,7 +101,7 @@ const Page: NextPage = () => {
       </div>
 
       <section className="mx-4 h-64 md:mx-auto md:w-[800px]">
-        <div className="mb-4 flex gap-2">
+        <div className="mb-4 flex flex-wrap gap-2">
           <div>
             <select
               className="rounded border p-2"
