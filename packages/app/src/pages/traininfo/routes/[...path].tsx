@@ -17,7 +17,6 @@ export const getStaticPaths: GetStaticPaths = () => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = (context) => {
-  console.log(context);
   return {
     props: {
       path: ((context.params?.path as string[]) ?? []).join('/'),
