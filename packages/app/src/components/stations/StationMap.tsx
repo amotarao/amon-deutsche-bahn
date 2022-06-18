@@ -51,7 +51,7 @@ export const StationMap: React.FC<StationMapProps> = ({
 
   return (
     <GoogleMap
-      mapContainerStyle={{ width: '100vw', height: '100vh' }}
+      mapContainerStyle={{ width: '100%', height: '100%' }}
       center={center}
       zoom={10}
       onBoundsChanged={onChange}
@@ -59,6 +59,9 @@ export const StationMap: React.FC<StationMapProps> = ({
       onZoomChanged={onChange}
       onLoad={onLoad}
       onUnmount={onUnmount}
+      options={{
+        mapTypeControl: false,
+      }}
     >
       {stations.map((station) => {
         const categoryNumber = parseInt(station.stationCategory?.replace(/^CATEGORY_/, '') ?? '7', 10);

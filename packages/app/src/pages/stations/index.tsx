@@ -89,15 +89,17 @@ const Page: NextPage = () => {
         <title>Stations</title>
       </Head>
 
-      <StationMap
-        stations={stations}
-        onLoad={setMap}
-        onChange={onChangeMap}
-        onClickMarker={(stationId) => {
-          const station = stations.find((station) => station.stationID === stationId);
-          station && setStation(station);
-        }}
-      />
+      <div className="h-[480px] w-full">
+        <StationMap
+          stations={stations}
+          onLoad={setMap}
+          onChange={onChangeMap}
+          onClickMarker={(stationId) => {
+            const station = stations.find((station) => station.stationID === stationId);
+            station && setStation(station);
+          }}
+        />
+      </div>
 
       <section className="mx-4 h-64 overflow-y-auto md:mx-auto md:w-[800px]">
         <div>
