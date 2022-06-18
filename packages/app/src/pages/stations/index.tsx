@@ -2,8 +2,8 @@ import { collection, endAt, getDocs, limit, orderBy, query, startAt, where } fro
 import * as geofire from 'geofire-common';
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useCallback, useMemo, useState, useEffect } from 'react';
+import { StationCard } from '../../components/stations/StationCard';
 import { StationMap } from '../../components/stations/StationMap';
 import { firestore } from '../../modules/firebase';
 import { Station } from '../../types/station';
@@ -89,7 +89,7 @@ const Page: NextPage = () => {
         <title>Stations</title>
       </Head>
 
-      <div className="h-[480px] w-full">
+      <div className="mb-4 h-[480px] w-full">
         <StationMap
           stations={stations}
           onLoad={setMap}
@@ -101,10 +101,11 @@ const Page: NextPage = () => {
         />
       </div>
 
-      <section className="mx-4 h-64 overflow-y-auto md:mx-auto md:w-[800px]">
-        <div>
+      <section className="mx-4 h-64 md:mx-auto md:w-[800px]">
+        <div className="mb-4 flex gap-2">
           <div>
             <select
+              className="rounded border p-2"
               defaultValue={''}
               onChange={(e) => {
                 setFilters((filters) => ({ ...filters, state: e.target.value }));
@@ -140,6 +141,7 @@ const Page: NextPage = () => {
           </div>
           <div>
             <select
+              className="rounded border p-2"
               defaultValue={-1}
               onChange={(e) => {
                 setFilters((filters) => ({ ...filters, ownerId: parseInt(e.target.value, 10) }));
@@ -157,6 +159,7 @@ const Page: NextPage = () => {
           </div>
           <div>
             <select
+              className="rounded border p-2"
               defaultValue={''}
               onChange={(e) => {
                 setFilters((filters) => ({ ...filters, category: e.target.value }));
@@ -176,52 +179,27 @@ const Page: NextPage = () => {
           </div>
         </div>
 
-        {station && (
-          <div className="border border-red-300">
-            <p>ID: {station.stationID}</p>
-            <p>Name: {station.name}</p>
-            <p>
-              LatLng: {station.position.lat} / {station.position.lng}
-            </p>
-            <div className="flex gap-2">
-              <button
-                className="rounded-sm border border-slate-300 px-2 py-0.5"
-                onClick={() => {
+        <ul className="flex flex-col gap-2">
+          {station && (
+            <li>
+              <StationCard
+                className="border-red-300"
+                station={station}
+                onClickCenter={() => {
                   map?.setCenter({ lat: station.position.lat, lng: station.position.lng });
                 }}
-              >
-                Center
-              </button>
-              <Link href={`/timetable/stations/${station.name}`}>
-                <a className="block rounded-sm border border-slate-300 px-2 py-0.5">Timetable</a>
-              </Link>
-            </div>
-          </div>
-        )}
-
-        <ul className="flex flex-col gap-2">
+              />
+            </li>
+          )}
           {stations.map((station) => (
             <li key={station.stationID}>
-              <div>
-                <p>ID: {station.stationID}</p>
-                <p>Name: {station.name}</p>
-                <p>
-                  LatLng: {station.position.lat} / {station.position.lng}
-                </p>
-                <div className="flex gap-2">
-                  <button
-                    className="rounded-sm border border-slate-300 px-2 py-0.5"
-                    onClick={() => {
-                      map?.setCenter({ lat: station.position.lat, lng: station.position.lng });
-                    }}
-                  >
-                    Center
-                  </button>
-                  <Link href={`/timetable/stations/${station.name}`}>
-                    <a className="block rounded-sm border border-slate-300 px-2 py-0.5">Timetable</a>
-                  </Link>
-                </div>
-              </div>
+              <StationCard
+                className=""
+                station={station}
+                onClickCenter={() => {
+                  map?.setCenter({ lat: station.position.lat, lng: station.position.lng });
+                }}
+              />
             </li>
           ))}
         </ul>
