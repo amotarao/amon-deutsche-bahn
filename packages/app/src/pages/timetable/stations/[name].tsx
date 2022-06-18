@@ -1,6 +1,7 @@
 import debounce from 'lodash.debounce';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { TimetableResponse } from '../../../utils/api/timetable/types';
@@ -215,6 +216,11 @@ const Page: NextPage<Props> = ({ name }) => {
               .filter((info) => info)
               .join(', ');
 
+            const detailPath = journey.trainDetailUrl.replace(
+              /^https:\/\/reiseauskunft\.bahn\.de\/bin\/traininfo\.exe\/dn\/(\d+\/\d+\/\d+\/\d+\/\d+)\?.+$/,
+              '$1'
+            );
+
             return (
               <div className="flex flex-wrap gap-2 border-b border-dashed border-gray-300 p-2 text-xs" key={i}>
                 <p className="w-16">
@@ -227,9 +233,9 @@ const Page: NextPage<Props> = ({ name }) => {
                   )}
                 </p>
                 <p className="flex-grow">
-                  <a className="underline" href={journey.trainDetailUrl} target="_blank" rel="noopener noreferrer">
-                    {journey.train}
-                  </a>
+                  <Link href={`/traininfo/routes/${detailPath}?date=${query.date}`}>
+                    <a className="underline">{journey.train}</a>
+                  </Link>
                   <br />
                   <span>{journey.destination}</span>
                 </p>
@@ -238,7 +244,7 @@ const Page: NextPage<Props> = ({ name }) => {
                 </p>
                 {information && (
                   <div className="w-full text-red-500">
-                    <p>{information}</p>
+                    <p>* {information}</p>
                   </div>
                 )}
                 {journey.message && (

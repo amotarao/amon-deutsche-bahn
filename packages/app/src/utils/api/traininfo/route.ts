@@ -12,7 +12,7 @@ export const parseRoute = (html: string): Route => {
         $(elm).remove();
       });
       const name = $elm.find('.station').text().trim();
-      const arrival =
+      const arrivalTime =
         $elm
           .find('.arrival')
           .text()
@@ -22,7 +22,7 @@ export const parseRoute = (html: string): Route => {
       const arrivalActualTime =
         $elm.find('.arrival .delay, .arrival .delayOnTime').text().trim().replace(/^an /, '') || null;
       const arrivalDelayed = $elm.find('.arrival .delay').text().trim() !== '';
-      const departure =
+      const departureTime =
         $elm
           .find('.departure')
           .text()
@@ -42,10 +42,10 @@ export const parseRoute = (html: string): Route => {
 
       return {
         name,
-        arrival,
+        arrivalTime,
         arrivalActualTime,
         arrivalDelayed,
-        departure,
+        departureTime,
         departureActualTime,
         departureDelayed,
         platform,
