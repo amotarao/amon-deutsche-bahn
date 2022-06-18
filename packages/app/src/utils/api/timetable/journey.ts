@@ -5,25 +5,27 @@ const baseUrl = 'https://reiseauskunft.bahn.de';
 
 export const parseJourneys = (html: string): Journey[] => {
   const $ = cheerio.load(html);
-  const journeyRows = $('.result [id^="journeyRow_"]');
+  const $journeyRows = $('.result [id^="journeyRow_"]');
 
-  const journey = journeyRows
+  const journey = $journeyRows
     .map((index, elm) => {
-      const time = $(elm).find('.time').text().trim();
-      const train = $(elm).find('.train:nth-child(3)').text().trim().replace(/\s+/, ' ');
-      const trainDetailUrl = baseUrl + $(elm).find('.train:nth-child(3) a').attr('href') || '';
-      const destination = $(elm).find('.route > .bold:first-child').text().trim();
-      const stops = parseStops($(elm));
-      const message = parseMessage($(elm));
+      const $elm = $(elm);
+      const time = $elm.find('.time').text().trim();
+      const train = $elm.find('.train:nth-child(3)').text().trim().replace(/\s+/, ' ');
+      const trainDetailUrl = baseUrl + $elm.find('.train:nth-child(3) a').attr('href') || '';
+      const destination = $elm.find('.route > .bold:first-child').text().trim();
+      const stops = parseStops($elm);
+      const message = parseMessage($elm);
 
-      const platform = $(elm).find('.platform > strong').text().trim() || null;
-      const actualTime = $(elm).find('.ris > .delay, .ris > .delayOnTime').text().trim() || null;
-      const delayed = $(elm).find('.ris > .delay').text().trim() !== '';
+      const platform = $elm.find('.platform > strong').text().trim() || null;
+      const actualTime = $elm.find('.ris > .delay, .ris > .delayOnTime').text().trim() || null;
+      const delayed = $elm.find('.ris > .delay').text().trim() !== '';
 
-      const information = $(elm)
+      const information = $elm
         .find('.ris > .red')
         .map((index, elm) => {
-          return $(elm).text().trim().replace(/\n+/g, ' ');
+          const $elm = $(elm);
+          return $elm.text().trim().replace(/\n+/g, ' ');
         })
         .get();
 
@@ -37,7 +39,7 @@ export const parseJourneys = (html: string): Journey[] => {
         stops,
         platform,
         message,
-        information: extractinformation(information),
+        information: extractInformation(information),
       };
       return journey;
     })
@@ -89,7 +91,7 @@ const parseMessage = ($row: cheerio.Cheerio<cheerio.Element>): JourneyMessage | 
   };
 };
 
-const extractinformation = (info: string[]): JourneyInformation => {
+const extractInformation = (info: string[]): JourneyInformation => {
   return {
     canceled: info.includes('Fahrt fällt aus'),
     replaced: info.some((i) => i.match(/^Es verkehrt Ersatzfahrt\s/)),

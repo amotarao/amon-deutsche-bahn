@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
-import { JourneyMeta } from './types';
+import { TimetableData } from './types';
 
-export const parseMeta = (html: string): JourneyMeta => {
+export const parseData = (html: string): Omit<TimetableData, 'journeys'> => {
   const $ = cheerio.load(html);
   const $form = $('#sqQueryForm');
 

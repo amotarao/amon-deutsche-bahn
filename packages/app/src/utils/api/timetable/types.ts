@@ -39,7 +39,8 @@ export type JourneyInformation = {
   others: string[];
 };
 
-export type JourneyMeta = {
+export type TimetableData = {
+  journeys: Journey[];
   station: string;
   stationId: string;
   date: string;
@@ -47,9 +48,6 @@ export type JourneyMeta = {
   type: string;
 };
 
-export type JourneyResponse = {
-  data: {
-    journeys: Journey[];
-  };
-  meta: JourneyMeta;
+export type TimetableResponse = {
+  data: TimetableData;
 };

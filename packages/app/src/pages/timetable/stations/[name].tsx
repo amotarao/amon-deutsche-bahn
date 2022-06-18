@@ -3,7 +3,7 @@ import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { JourneyResponse } from '../../../utils/api/timetable/types';
+import { TimetableResponse } from '../../../utils/api/timetable/types';
 
 type Props = {
   name: string;
@@ -36,7 +36,7 @@ const Page: NextPage<Props> = ({ name }) => {
 
   // request ready
   const [isFetching, setIsFetching] = useState(false);
-  const [data, setData] = useState<JourneyResponse | null>(null);
+  const [data, setData] = useState<TimetableResponse | null>(null);
   const fetchTimetable = useMemo(
     () =>
       debounce(async (query: RequestQuery) => {
@@ -50,7 +50,7 @@ const Page: NextPage<Props> = ({ name }) => {
         url.searchParams.set('time', query.time);
 
         const res = await fetch(url);
-        const json = (await res.json()) as JourneyResponse;
+        const json = (await res.json()) as TimetableResponse;
 
         setData(json);
         setIsFetching(false);
@@ -120,7 +120,7 @@ const Page: NextPage<Props> = ({ name }) => {
   return (
     <div>
       <Head>
-        <title>Timetable at {data?.meta.station ?? ''}</title>
+        <title>Timetable at {data?.data.station ?? ''}</title>
       </Head>
 
       <div className="sticky top-0 mb-4 flex flex-col border-b border-gray-300 bg-white text-sm">
@@ -199,7 +199,7 @@ const Page: NextPage<Props> = ({ name }) => {
       {data && (
         <div className="flex flex-col">
           {data.data.journeys.map((journey, i) => {
-            const infomation = [
+            const information = [
               journey.information.replaced ? `Replaced: ${journey.information.replacedTo}` : '',
               journey.information.changedRoute ? 'Changed Route' : '',
               journey.information.changedOrigin ? `Changed Origin: ${journey.information.changedOriginTo}` : '',
@@ -236,9 +236,9 @@ const Page: NextPage<Props> = ({ name }) => {
                 <p className={['w-12', journey.information.changedPlatform ? 'font-bold text-red-500' : ''].join(' ')}>
                   {journey.platform}
                 </p>
-                {infomation && (
+                {information && (
                   <div className="w-full text-red-500">
-                    <p>{infomation}</p>
+                    <p>{information}</p>
                   </div>
                 )}
                 {journey.message && (

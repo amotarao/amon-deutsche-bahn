@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
+import { parseData } from '../../utils/api/timetable/data';
 import { parseJourneys } from '../../utils/api/timetable/journey';
-import { parseMeta } from '../../utils/api/timetable/meta';
-import { JourneyResponse } from '../../utils/api/timetable/types';
+import { TimetableData } from '../../utils/api/timetable/types';
 
 const baseUrl = 'https://reiseauskunft.bahn.de';
 
@@ -19,17 +19,15 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
   const resp = await fetch(url.href);
   const html = await resp.text();
 
-  const meta = parseMeta(html);
+  const data = parseData(html);
   const journeys = parseJourneys(html);
 
-  const json: JourneyResponse = {
-    data: {
-      journeys,
-    },
-    meta,
+  const json: TimetableData = {
+    journeys,
+    ...data,
   };
 
-  res.status(200).json(json);
+  res.status(200).json({ data: json });
 };
 
 export default api;
