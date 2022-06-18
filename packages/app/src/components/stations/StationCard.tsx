@@ -20,10 +20,10 @@ export const StationCard: React.FC<StationCardProps> = ({ className, station, on
         >
           Center
         </button>
-        <Link href={`/timetable/stations/${station.name}?type=dep`}>
+        <Link href={`/timetable/stations/${encodeURIComponent(station.name)}?type=dep`}>
           <a className="block rounded border border-slate-300 px-2 py-0.5">Departure</a>
         </Link>
-        <Link href={`/timetable/stations/${station.name}?type=arr`}>
+        <Link href={`/timetable/stations/${encodeURIComponent(station.name)}?type=arr`}>
           <a className="block rounded border border-slate-300 px-2 py-0.5">Arrival</a>
         </Link>
       </div>
