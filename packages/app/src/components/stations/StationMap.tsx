@@ -1,7 +1,7 @@
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import debounce from 'lodash.debounce';
 import React, { useCallback, useState, useMemo } from 'react';
-import { Station } from '../../pages/types/station';
+import { Station } from '../../types/station';
 
 export type StationMapProps = {
   stations: Station[];
