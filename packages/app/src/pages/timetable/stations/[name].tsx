@@ -117,8 +117,8 @@ const Page: NextPage<Props> = ({ name }) => {
       name: router.query.name as string,
       id: (router.query.id as string) || '',
       type: (router.query.type as string) || 'dep',
-      date: (router.query.date as string) || new Date().toISOString().slice(0, 10),
-      time: (router.query.time as string) || new Date().toISOString().slice(11, 16),
+      date: (router.query.date as string) || getDefaultDate(),
+      time: (router.query.time as string) || getDefaultTime(),
     };
     fetchTimetable(query);
   }, [router.isReady, router.query, fetchTimetable]);
@@ -155,7 +155,7 @@ const Page: NextPage<Props> = ({ name }) => {
             className="w-1/2 p-2"
             type="date"
             name="date"
-            value={query.date || new Date().toISOString().slice(0, 10)}
+            value={query.date || getDefaultDate()}
             onChange={(e) => {
               updateQuery({ date: e.target.value });
             }}
@@ -164,7 +164,7 @@ const Page: NextPage<Props> = ({ name }) => {
             className="w-1/2 p-2"
             type="time"
             name="time"
-            value={query.time || new Date().toISOString().slice(11, 16)}
+            value={query.time || getDefaultTime()}
             onChange={(e) => {
               updateQuery({ time: e.target.value });
             }}
@@ -286,3 +286,15 @@ const Page: NextPage<Props> = ({ name }) => {
 };
 
 export default Page;
+
+const getDefaultDate = (): string => {
+  const date = new Date();
+  date.setHours(date.getHours() + 2);
+  return date.toISOString().slice(0, 10);
+};
+
+const getDefaultTime = (): string => {
+  const date = new Date();
+  date.setHours(date.getHours() + 2);
+  return date.toISOString().slice(11, 16);
+};
