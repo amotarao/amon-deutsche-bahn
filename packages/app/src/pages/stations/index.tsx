@@ -78,7 +78,6 @@ const Page: NextPage = () => {
           stations.push(...data);
         })
       );
-      console.log(stations.length);
       setStations(stations);
     })();
   }, [stationsQueries]);
@@ -179,30 +178,15 @@ const Page: NextPage = () => {
           </div>
         </div>
 
-        <ul className="flex flex-col gap-2">
-          {station && (
-            <li>
-              <StationCard
-                className="border-red-300"
-                station={station}
-                onClickCenter={() => {
-                  map?.setCenter({ lat: station.position.lat, lng: station.position.lng });
-                }}
-              />
-            </li>
-          )}
-          {stations.map((station) => (
-            <li key={station.stationID}>
-              <StationCard
-                className=""
-                station={station}
-                onClickCenter={() => {
-                  map?.setCenter({ lat: station.position.lat, lng: station.position.lng });
-                }}
-              />
-            </li>
-          ))}
-        </ul>
+        {station && (
+          <StationCard
+            className="border-red-300"
+            station={station}
+            onClickCenter={() => {
+              map?.setCenter({ lat: station.position.lat, lng: station.position.lng });
+            }}
+          />
+        )}
       </section>
     </div>
   );

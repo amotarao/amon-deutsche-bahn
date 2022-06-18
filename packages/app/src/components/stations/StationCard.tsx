@@ -8,6 +8,7 @@ export type StationCardProps = {
 };
 
 export const StationCard: React.FC<StationCardProps> = ({ className, station, onClickCenter }) => {
+  console.log(`/timetable/stations/${station.name}`);
   return (
     <div className={`${className} flex flex-col gap-2 rounded border p-2`}>
       <p>{station.name}</p>
@@ -20,8 +21,11 @@ export const StationCard: React.FC<StationCardProps> = ({ className, station, on
         >
           Center
         </button>
-        <Link href={`/timetable/stations/${station.name}`}>
-          <a className="block rounded border border-slate-300 px-2 py-0.5">Timetable</a>
+        <Link href={`/timetable/stations/${station.name}?type=dep`}>
+          <a className="block rounded border border-slate-300 px-2 py-0.5">Departure</a>
+        </Link>
+        <Link href={`/timetable/stations/${station.name}?type=arr`}>
+          <a className="block rounded border border-slate-300 px-2 py-0.5">Arrival</a>
         </Link>
       </div>
     </div>

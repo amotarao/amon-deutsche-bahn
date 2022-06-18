@@ -1,8 +1,8 @@
-import { useDebounce } from '@react-hook/debounce';
+import debounce from 'lodash.debounce';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { JourneyResponse } from '../../../utils/api/timetable/types';
 
 type Props = {
@@ -34,59 +34,88 @@ type RequestQuery = {
 const Page: NextPage<Props> = ({ name }) => {
   const router = useRouter();
 
-  const [tmpQuery, setTmpQuery] = useState<RequestQuery>({
-    name,
-    type: (router.query.type as string) || 'dep',
-    date: (router.query.date as string) || new Date().toISOString().slice(0, 10),
-    time: (router.query.time as string) || new Date().toISOString().slice(11, 16),
-  });
-  const [queryForRequest, setQueryForRequest] = useDebounce(tmpQuery, 1500);
+  // request ready
+  const [isFetching, setIsFetching] = useState(false);
+  const [data, setData] = useState<JourneyResponse | null>(null);
+  const fetchTimetable = useMemo(
+    () =>
+      debounce(async (query: RequestQuery) => {
+        setIsFetching(true);
+        const queryDate = [query.date.slice(8, 10), query.date.slice(5, 7), query.date.slice(0, 4)].join('.');
 
+        const url = new URL(`${location.origin}/api/timetable`);
+        url.searchParams.set('station', query.name);
+        url.searchParams.set('type', query.type);
+        url.searchParams.set('date', queryDate);
+        url.searchParams.set('time', query.time);
+
+        const res = await fetch(url);
+        const json = (await res.json()) as JourneyResponse;
+
+        setData(json);
+        setIsFetching(false);
+      }, 1000),
+    []
+  );
+
+  // initialize query
+  const [isReady, setIsReady] = useState(false);
+  const [query, setQuery] = useState<RequestQuery>({
+    name: '',
+    type: '',
+    date: '',
+    time: '',
+  });
   useEffect(() => {
-    setQueryForRequest(tmpQuery);
-  }, [tmpQuery, setQueryForRequest]);
+    if (!router.isReady || isReady) {
+      return;
+    }
+    setQuery(() => ({
+      name: router.query.name as string,
+      type: (router.query.type as string) || 'dep',
+      date: (router.query.date as string) || '',
+      time: (router.query.time as string) || '',
+    }));
+    setIsReady(true);
+  }, [router.isReady, router.query, isReady]);
+
+  // fetch
+  const updateQuery = useCallback(
+    (newQuery: Partial<RequestQuery>) => {
+      setQuery((query) => ({
+        ...query,
+        ...newQuery,
+      }));
+    },
+    [setQuery]
+  );
   useEffect(() => {
     if (!router.isReady) {
       return;
     }
-    if (JSON.stringify(router.query) === JSON.stringify(queryForRequest)) {
+    if (query.name === '') {
       return;
     }
-    router.push({
+    if (JSON.stringify(router.query) === JSON.stringify(query)) {
+      return;
+    }
+    router.replace({
       pathname: router.pathname,
-      query: queryForRequest,
+      query,
     });
-  }, [router, queryForRequest]);
-
-  const [isFetching, setIsFetching] = useState(false);
-  const [data, setData] = useState<JourneyResponse | null>(null);
+  }, [router, query]);
   useEffect(() => {
-    (async () => {
-      if (!router.isReady) {
-        return;
-      }
-      setIsFetching(true);
-
-      const query: RequestQuery = {
-        name,
-        type: (router.query.type as string) || 'dep',
-        date: (router.query.date as string) || new Date().toISOString().slice(0, 10),
-        time: (router.query.time as string) || new Date().toISOString().slice(11, 16),
-      };
-      const queryDate = [query.date.slice(8, 10), query.date.slice(5, 7), query.date.slice(0, 4)].join('.');
-
-      const url = new URL(`${location.origin}/api/timetable`);
-      url.searchParams.set('station', query.name);
-      url.searchParams.set('type', query.type);
-      url.searchParams.set('date', queryDate);
-      url.searchParams.set('time', query.time);
-
-      const res = await fetch(url);
-      const json = (await res.json()) as JourneyResponse;
-      setData(json);
-      setIsFetching(false);
-    })();
-  }, [router, name]);
+    if (!router.isReady) {
+      return;
+    }
+    const query: RequestQuery = {
+      name: router.query.name as string,
+      type: (router.query.type as string) || 'dep',
+      date: (router.query.date as string) || new Date().toISOString().slice(0, 10),
+      time: (router.query.time as string) || new Date().toISOString().slice(11, 16),
+    };
+    fetchTimetable(query);
+  }, [router.isReady, router.query, fetchTimetable]);
 
   return (
     <div>
@@ -100,19 +129,18 @@ const Page: NextPage<Props> = ({ name }) => {
             className="w-full p-2"
             type="text"
             name="station"
-            value={tmpQuery.name}
+            value={query.name}
             onChange={(e) => {
-              setTmpQuery((query) => ({ ...query, name: e.target.value }));
+              updateQuery({ name: e.target.value });
             }}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && name !== tmpQuery.name) {
-                setTmpQuery((query) => ({ ...query, name: tmpQuery.name }));
+              if (e.key !== 'Enter') {
+                return;
               }
+              query.name !== name && updateQuery({ name: query.name });
             }}
             onBlur={() => {
-              if (name !== tmpQuery.name) {
-                setTmpQuery((query) => ({ ...query, name: tmpQuery.name }));
-              }
+              query.name !== name && updateQuery({ name: query.name });
             }}
           />
         </p>
@@ -121,24 +149,18 @@ const Page: NextPage<Props> = ({ name }) => {
             className="w-1/2 p-2"
             type="date"
             name="date"
-            value={tmpQuery.date}
+            value={query.date || new Date().toISOString().slice(0, 10)}
             onChange={(e) => {
-              setTmpQuery((query) => ({
-                ...query,
-                date: e.target.value,
-              }));
+              updateQuery({ date: e.target.value });
             }}
           />
           <input
             className="w-1/2 p-2"
             type="time"
             name="time"
-            value={tmpQuery.time}
+            value={query.time || new Date().toISOString().slice(11, 16)}
             onChange={(e) => {
-              setTmpQuery((query) => ({
-                ...query,
-                time: e.target.value,
-              }));
+              updateQuery({ time: e.target.value });
             }}
           />
         </p>
@@ -149,12 +171,9 @@ const Page: NextPage<Props> = ({ name }) => {
               type="radio"
               name="type"
               value="dep"
-              checked={tmpQuery.type === 'dep'}
+              checked={(query.type || 'dep') === 'dep'}
               onChange={(e) => {
-                setTmpQuery((query) => ({
-                  ...query,
-                  type: e.target.value,
-                }));
+                updateQuery({ type: e.target.value });
               }}
             />
             Departure
@@ -165,12 +184,9 @@ const Page: NextPage<Props> = ({ name }) => {
               type="radio"
               name="type"
               value="arr"
-              checked={tmpQuery.type === 'arr'}
+              checked={(query.type || 'dep') === 'arr'}
               onChange={(e) => {
-                setTmpQuery((query) => ({
-                  ...query,
-                  type: e.target.value,
-                }));
+                updateQuery({ type: e.target.value });
               }}
             />
             Arrival
