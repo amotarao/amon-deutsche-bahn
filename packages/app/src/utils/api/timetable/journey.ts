@@ -12,6 +12,7 @@ export const parseJourneys = (html: string): Journey[] => {
       const $elm = $(elm);
       const time = $elm.find('.time').text().trim();
       const train = $elm.find('.train:nth-child(3)').text().trim().replace(/\s+/, ' ');
+      const detailHref = parseDetailHref($elm.find('.train:nth-child(3) a').attr('href') || '');
       const trainDetailUrl = baseUrl + $elm.find('.train:nth-child(3) a').attr('href') || '';
       const destination = $elm.find('.route > .bold:first-child').text().trim();
       const stops = parseStops($elm);
@@ -31,6 +32,7 @@ export const parseJourneys = (html: string): Journey[] => {
 
       const journey: Journey = {
         time,
+        detailHref,
         actualTime,
         delayed,
         train,
@@ -121,6 +123,17 @@ const extractInformation = (info: string[]): JourneyInformation => {
       return true;
     }),
   };
+};
+
+const parseDetailHref = (href: string): string => {
+  const url = new URL('https://example.com' + href);
+
+  const pathname = url.pathname.replace(/^\/bin\/traininfo.exe\/dn\//, '');
+  const [d, m, y] = url.searchParams.get('date')?.split('.') ?? ['', '', ''];
+
+  const newUrl = new URL(`https://example.com/traininfo/routes/${pathname}`);
+  newUrl.searchParams.set('date', `20${y}-${m}-${d}`);
+  return newUrl.pathname + newUrl.search;
 };
 
 export const parseJourneyMessageText = (html: string): string => {

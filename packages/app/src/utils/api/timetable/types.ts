@@ -1,5 +1,6 @@
 export type Journey = {
   time: string;
+  detailHref: string;
   actualTime: string | null;
   delayed: boolean;
   train: string;
@@ -41,11 +42,12 @@ export type JourneyInformation = {
 
 export type TimetableData = {
   journeys: Journey[];
-  station: string;
-  stationId: string;
+  name: string;
+  id: string;
   date: string;
   time: string;
   type: string;
+  ids: string[];
 };
 
 export type TimetableResponse = {

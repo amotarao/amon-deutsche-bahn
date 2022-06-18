@@ -27,6 +27,7 @@ export const getStaticProps: GetStaticProps<Props> = (context) => {
 
 type RequestQuery = {
   name: string;
+  id: string;
   type: string;
   date: string;
   time: string;
@@ -46,6 +47,7 @@ const Page: NextPage<Props> = ({ name }) => {
 
         const url = new URL(`${location.origin}/api/timetable`);
         url.searchParams.set('station', query.name);
+        url.searchParams.set('id', query.id);
         url.searchParams.set('type', query.type);
         url.searchParams.set('date', queryDate);
         url.searchParams.set('time', query.time);
@@ -63,6 +65,7 @@ const Page: NextPage<Props> = ({ name }) => {
   const [isReady, setIsReady] = useState(false);
   const [query, setQuery] = useState<RequestQuery>({
     name: '',
+    id: '',
     type: '',
     date: '',
     time: '',
@@ -73,6 +76,7 @@ const Page: NextPage<Props> = ({ name }) => {
     }
     setQuery(() => ({
       name: router.query.name as string,
+      id: (router.query.id as string) || '',
       type: (router.query.type as string) || 'dep',
       date: (router.query.date as string) || '',
       time: (router.query.time as string) || '',
@@ -111,6 +115,7 @@ const Page: NextPage<Props> = ({ name }) => {
     }
     const query: RequestQuery = {
       name: router.query.name as string,
+      id: (router.query.id as string) || '',
       type: (router.query.type as string) || 'dep',
       date: (router.query.date as string) || new Date().toISOString().slice(0, 10),
       time: (router.query.time as string) || new Date().toISOString().slice(11, 16),
@@ -121,7 +126,7 @@ const Page: NextPage<Props> = ({ name }) => {
   return (
     <div>
       <Head>
-        <title>Timetable at {data?.data.station ?? ''}</title>
+        <title>Timetable at {data?.data.name ?? ''}</title>
       </Head>
 
       <div className="sticky top-0 mb-4 flex flex-col border-b border-gray-300 bg-white text-sm">
@@ -132,16 +137,16 @@ const Page: NextPage<Props> = ({ name }) => {
             name="station"
             value={query.name}
             onChange={(e) => {
-              updateQuery({ name: e.target.value });
+              updateQuery({ name: e.target.value, id: '' });
             }}
             onKeyDown={(e) => {
               if (e.key !== 'Enter') {
                 return;
               }
-              query.name !== name && updateQuery({ name: query.name });
+              query.name !== name && updateQuery({ name: query.name, id: '' });
             }}
             onBlur={() => {
-              query.name !== name && updateQuery({ name: query.name });
+              query.name !== name && updateQuery({ name: query.name, id: '' });
             }}
           />
         </p>
@@ -197,65 +202,83 @@ const Page: NextPage<Props> = ({ name }) => {
 
       {isFetching && <p>Fetching</p>}
 
-      {data && (
-        <div className="flex flex-col">
-          {data.data.journeys.map((journey, i) => {
-            const information = [
-              journey.information.replaced ? `Replaced: ${journey.information.replacedTo}` : '',
-              journey.information.changedRoute ? 'Changed Route' : '',
-              journey.information.changedOrigin ? `Changed Origin: ${journey.information.changedOriginTo}` : '',
-              journey.information.changedDestination
-                ? `Changed Destination: ${journey.information.changedDestinationTo}`
-                : '',
-              journey.information.specialTrain ? 'Special Train' : '',
-              journey.information.replacementTrain
-                ? `Replacement Train: ${journey.information.replacementTrainFrom}`
-                : '',
-              ...journey.information.others,
-            ]
-              .filter((info) => info)
-              .join(', ');
+      {!data ? null : data.data.ids.length > 0 ? (
+        <ul className="flex flex-col gap-1">
+          {data.data.ids.map((id) => (
+            <li key={id}>
+              <button
+                className="p-2 text-xs underline"
+                onClick={() => {
+                  updateQuery({ id });
+                }}
+              >
+                {id}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-bold">{data.data.name}</p>
+          <div className="flex flex-col">
+            {data.data.journeys.map((journey, i) => {
+              const information = [
+                journey.information.replaced ? `Replaced: ${journey.information.replacedTo}` : '',
+                journey.information.changedRoute ? 'Changed Route' : '',
+                journey.information.changedOrigin ? `Changed Origin: ${journey.information.changedOriginTo}` : '',
+                journey.information.changedDestination
+                  ? `Changed Destination: ${journey.information.changedDestinationTo}`
+                  : '',
+                journey.information.specialTrain ? 'Special Train' : '',
+                journey.information.replacementTrain
+                  ? `Replacement Train: ${journey.information.replacementTrainFrom}`
+                  : '',
+                ...journey.information.others,
+              ]
+                .filter((info) => info)
+                .join(', ');
 
-            const detailPath = journey.trainDetailUrl.replace(
-              /^https:\/\/reiseauskunft\.bahn\.de\/bin\/traininfo\.exe\/dn\/(\d+\/\d+\/\d+\/\d+\/\d+)\?.+$/,
-              '$1'
-            );
-
-            return (
-              <div className="flex flex-wrap gap-2 border-b border-dashed border-gray-300 p-2 text-xs" key={i}>
-                <p className="w-16">
-                  <span className={journey.information.canceled ? 'font-bold text-red-500 line-through' : ''}>
-                    {journey.time}
-                  </span>
-                  <br />
-                  {journey.actualTime && journey.time !== journey.actualTime && (
-                    <span className={journey.delayed ? 'text-red-500' : ''}>&gt;{journey.actualTime}</span>
+              return (
+                <div className="flex flex-wrap gap-2 border-b border-dashed border-gray-300 p-2 text-xs" key={i}>
+                  <p className="w-16">
+                    <span className={journey.information.canceled ? 'font-bold text-red-500 line-through' : ''}>
+                      {journey.time}
+                    </span>
+                    <br />
+                    {journey.actualTime && journey.time !== journey.actualTime && (
+                      <span className={journey.delayed ? 'text-red-500' : ''}>&gt;{journey.actualTime}</span>
+                    )}
+                  </p>
+                  <p className="flex-grow">
+                    <Link href={journey.detailHref}>
+                      <a className="underline">{journey.train}</a>
+                    </Link>
+                    <br />
+                    <span>{journey.destination}</span>
+                  </p>
+                  <p
+                    className={[
+                      'w-12',
+                      journey.information.changedPlatform ? 'text-right font-bold text-red-500' : ' text-right',
+                    ].join(' ')}
+                  >
+                    {journey.platform}
+                  </p>
+                  {information && (
+                    <div className="w-full text-red-500">
+                      <p>* {information}</p>
+                    </div>
                   )}
-                </p>
-                <p className="flex-grow">
-                  <Link href={`/traininfo/routes/${detailPath}?date=${query.date}`}>
-                    <a className="underline">{journey.train}</a>
-                  </Link>
-                  <br />
-                  <span>{journey.destination}</span>
-                </p>
-                <p className={['w-12', journey.information.changedPlatform ? 'font-bold text-red-500' : ''].join(' ')}>
-                  {journey.platform}
-                </p>
-                {information && (
-                  <div className="w-full text-red-500">
-                    <p>* {information}</p>
-                  </div>
-                )}
-                {journey.message && (
-                  <div className="w-full">
-                    <p lang="de-DE">{journey.message.title}</p>
-                    <p lang="de-DE">{journey.message.text}</p>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                  {journey.message && (
+                    <div className="w-full">
+                      <p lang="de-DE">{journey.message.title}</p>
+                      <p lang="de-DE">{journey.message.text}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>

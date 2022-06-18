@@ -2,6 +2,7 @@ export type Route = Station[];
 
 export type Station = {
   name: string;
+  detailHref: string;
   arrivalTime: string | null;
   arrivalActualTime: string | null;
   arrivalDelayed: boolean;

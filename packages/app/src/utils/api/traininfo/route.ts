@@ -12,6 +12,7 @@ export const parseRoute = (html: string): Route => {
         $(elm).remove();
       });
       const name = $elm.find('.station').text().trim();
+      const detailHref = parseDetailHref($elm.find('.station a').attr('href') || '');
       const arrivalTime =
         $elm
           .find('.arrival')
@@ -42,6 +43,7 @@ export const parseRoute = (html: string): Route => {
 
       return {
         name,
+        detailHref,
         arrivalTime,
         arrivalActualTime,
         arrivalDelayed,
@@ -64,4 +66,17 @@ const extractInformation = (information: string[]): StationInformation => {
     extraStop: information.includes('"(zusätzlicher Halt)"'),
     message: information.filter((i) => !['Gleiswechsel', 'Halt entfällt', '(zusätzlicher Halt)'].includes(i)),
   };
+};
+
+const parseDetailHref = (href: string): string => {
+  const url = new URL(href);
+  const [name, id] = url.searchParams.get('input')?.split('#') ?? ['', ''];
+  const [d, m, y] = url.searchParams.get('date')?.split('.') ?? ['', '', ''];
+  const time = url.searchParams.get('time') || '';
+
+  const newUrl = new URL(`https://example.com/timetable/stations/${name}`);
+  newUrl.searchParams.set('id', `${name}#${id}`);
+  newUrl.searchParams.set('date', `20${y}-${m}-${d}`);
+  newUrl.searchParams.set('time', time);
+  return newUrl.pathname + newUrl.search;
 };

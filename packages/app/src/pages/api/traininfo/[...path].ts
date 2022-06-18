@@ -18,8 +18,8 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
   const resp = await fetch(url.href);
   const html = await resp.text();
 
-  const data = parseData(html);
   const route = parseRoute(html);
+  const data = parseData(html);
 
   const json: TraininfoData = {
     route,

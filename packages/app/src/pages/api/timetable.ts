@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
 import { parseData } from '../../utils/api/timetable/data';
+import { parseIdSelect } from '../../utils/api/timetable/id-select';
 import { parseJourneys } from '../../utils/api/timetable/journey';
 import { TimetableData } from '../../utils/api/timetable/types';
 
@@ -8,7 +9,7 @@ const baseUrl = 'https://reiseauskunft.bahn.de';
 
 const api = async (req: NextApiRequest, res: NextApiResponse) => {
   const url = new URL(`${baseUrl}/bin/bhftafel.exe/dn`);
-  url.searchParams.set('input', req.query.station as string);
+  url.searchParams.set('input', (req.query.id as string) || (req.query.station as string));
   url.searchParams.set('boardType', req.query.type as string);
   url.searchParams.set('date', req.query.date as string);
   url.searchParams.set('time', req.query.time as string);
@@ -19,11 +20,13 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
   const resp = await fetch(url.href);
   const html = await resp.text();
 
-  const data = parseData(html);
   const journeys = parseJourneys(html);
+  const ids = parseIdSelect(html);
+  const data = parseData(html);
 
   const json: TimetableData = {
     journeys,
+    ids,
     ...data,
   };
 

@@ -94,7 +94,7 @@ const Page: NextPage<Props> = ({ path }) => {
       {data && (
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-2 p-2">
-            <p className="text-xs font-bold">{data.data.train}</p>
+            <p className="text-sm font-bold">{data.data.train}</p>
             <p className="text-xs">{data.data.validFrom}</p>
           </div>
           <div className="flex flex-col">
@@ -102,15 +102,7 @@ const Page: NextPage<Props> = ({ path }) => {
               return (
                 <div className="flex flex-wrap gap-2 border-b border-dashed border-gray-300 p-2 text-xs" key={i}>
                   <p className="grow-1 w-48">
-                    <Link
-                      href={`/timetable/stations/${station.name}?type=dep&date=${query.date}&time=${encodeURIComponent(
-                        station.arrivalActualTime ||
-                          station.arrivalTime ||
-                          station.departureActualTime ||
-                          station.departureTime ||
-                          ''
-                      )}`}
-                    >
+                    <Link href={station.detailHref}>
                       <a
                         className={
                           station.information.noStop || station.information.extraStop
