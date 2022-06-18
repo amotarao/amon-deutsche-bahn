@@ -69,7 +69,6 @@ const extractInformation = (information: string[]): StationInformation => {
 };
 
 const parseDetailHref = (href: string): string => {
-  console.log(href);
   const url = new URL(href);
   const [name, id] = url.searchParams.get('input')?.split('#') ?? ['', ''];
   const [d, m, y] = url.searchParams.get('date')?.split('.') ?? ['', '', ''];
