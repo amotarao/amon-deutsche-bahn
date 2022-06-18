@@ -1,4 +1,4 @@
-import { collection, endAt, getDocs, limit, orderBy, query, startAt, where } from 'firebase/firestore';
+import { collection, endAt, getDocs, orderBy, query, startAt, where } from 'firebase/firestore';
 import * as geofire from 'geofire-common';
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
@@ -19,7 +19,7 @@ const Page: NextPage = () => {
   // map
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [center, setCenter] = useState<{ lat: number; lng: number }>({ lat: 50.107145, lng: 8.663789 });
-  const [distance, setDistance] = useState(10000);
+  const [distance, setDistance] = useState(1000);
   const onChangeMap = useCallback(() => {
     const bounds = map?.getBounds();
     if (!bounds) {
@@ -40,7 +40,7 @@ const Page: NextPage = () => {
   const [filters, setFilters] = useState({
     state: '',
     ownerId: -1,
-    category: '',
+    categories: [] as string[],
   });
 
   // stations
@@ -54,13 +54,8 @@ const Page: NextPage = () => {
     if (filters.ownerId > -1) {
       q = query(q, where('owner.organisationalUnit.id', '==', filters.ownerId));
     }
-    if (filters.category) {
-      q = query(q, where('stationCategory', '==', filters.state));
-    }
-
-    if (!center) {
-      q = query(q, limit(100));
-      return [q];
+    if (filters.categories.length) {
+      q = query(q, where('stationCategory', 'in', filters.categories));
     }
 
     const bounds = geofire.geohashQueryBounds([center.lat, center.lng], distance);
@@ -88,7 +83,7 @@ const Page: NextPage = () => {
         <title>Stations</title>
       </Head>
 
-      <div className="mb-4 h-[480px] w-full">
+      <div className="h-[480px] w-full">
         <StationMap
           stations={stations}
           onLoad={setMap}
@@ -100,19 +95,17 @@ const Page: NextPage = () => {
         />
       </div>
 
-      <section className="mx-4 h-64 md:mx-auto md:w-[800px]">
+      <section className="h-64 p-4 md:mx-auto md:w-[800px]">
         <div className="mb-4 flex flex-wrap gap-2">
           <div>
             <select
               className="rounded border p-2"
-              defaultValue={''}
+              value={filters.state || ''}
               onChange={(e) => {
                 setFilters((filters) => ({ ...filters, state: e.target.value }));
               }}
             >
-              <option value={''} selected={filters.state === null}>
-                -
-              </option>
+              <option value={''}>-</option>
               {[
                 'Nordrhein-Westfalen',
                 'Baden-Württemberg',
@@ -132,7 +125,7 @@ const Page: NextPage = () => {
                 'Schweiz CH',
                 'Bremen',
               ].map((state) => (
-                <option value={state} selected={filters.state === state} key={state}>
+                <option value={state} key={state}>
                   {state}
                 </option>
               ))}
@@ -141,16 +134,14 @@ const Page: NextPage = () => {
           <div>
             <select
               className="rounded border p-2"
-              defaultValue={-1}
+              value={filters.ownerId}
               onChange={(e) => {
                 setFilters((filters) => ({ ...filters, ownerId: parseInt(e.target.value, 10) }));
               }}
             >
-              <option value={-1} selected={filters.ownerId === null}>
-                -
-              </option>
+              <option value={-1}>-</option>
               {[1, 2, 3, 4, 5, 6, 7].map((ownerId) => (
-                <option value={ownerId} selected={filters.ownerId === ownerId} key={ownerId}>
+                <option value={ownerId} key={ownerId}>
                   {ownerId}
                 </option>
               ))}
@@ -159,21 +150,20 @@ const Page: NextPage = () => {
           <div>
             <select
               className="rounded border p-2"
-              defaultValue={''}
+              value={filters.categories}
+              multiple
               onChange={(e) => {
-                setFilters((filters) => ({ ...filters, category: e.target.value }));
+                setFilters((filters) => ({
+                  ...filters,
+                  categories: Array.from(e.target.selectedOptions).map((option) => option.value),
+                }));
               }}
             >
-              <option value={''} selected={filters.category === null}>
-                -
-              </option>
-              {['CATEGORY_1', 'CATEGORY_2', 'CATEGORY_3', 'CATEGORY_4', 'CATEGORY_5', 'CATEGORY_6', 'CATEGORY_7'].map(
-                (category) => (
-                  <option value={category} selected={filters.category === category} key={category}>
-                    {category}
-                  </option>
-                )
-              )}
+              {['1', '2', '3', '4', '5', '6', '7'].map((category) => (
+                <option value={`CATEGORY_${category}`} key={category}>
+                  {category}
+                </option>
+              ))}
             </select>
           </div>
         </div>

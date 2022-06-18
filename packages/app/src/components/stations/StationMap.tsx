@@ -53,7 +53,7 @@ export const StationMap: React.FC<StationMapProps> = ({
     <GoogleMap
       mapContainerStyle={{ width: '100%', height: '100%' }}
       center={center}
-      zoom={10}
+      zoom={12}
       onBoundsChanged={onChange}
       onCenterChanged={onChange}
       onZoomChanged={onChange}

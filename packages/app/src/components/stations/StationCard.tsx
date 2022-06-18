@@ -8,7 +8,6 @@ export type StationCardProps = {
 };
 
 export const StationCard: React.FC<StationCardProps> = ({ className, station, onClickCenter }) => {
-  console.log(`/timetable/stations/${station.name}`);
   return (
     <div className={`${className} flex flex-col gap-2 rounded border p-2`}>
       <p>{station.name}</p>
