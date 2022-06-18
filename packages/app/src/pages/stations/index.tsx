@@ -4,10 +4,10 @@ import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useCallback, useMemo, useState, useEffect } from 'react';
-import { StationMap } from '../components/stations/StationMap';
-import { firestore } from '../pages/modules/firebase';
-import { Station } from '../types/station';
-import { calcDistance } from '../utils/distance';
+import { StationMap } from '../../components/stations/StationMap';
+import { firestore } from '../../modules/firebase';
+import { Station } from '../../types/station';
+import { calcDistance } from '../../utils/distance';
 
 export const getStaticProps: GetStaticProps = () => {
   return {
