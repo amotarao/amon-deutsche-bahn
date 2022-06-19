@@ -1,9 +1,9 @@
 import debounce from 'lodash.debounce';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useCallback, useMemo } from 'react';
+import { JourneyCard } from '../../../components/timetable/JourneyCard';
 import { StationIdList } from '../../../components/timetable/StationIdList';
 import { TimetableResponse } from '../../../utils/api/timetable/types';
 
@@ -214,66 +214,9 @@ const Page: NextPage<Props> = ({ name }) => {
         <div className="flex flex-col gap-2">
           <p className="text-sm font-bold">{data.data.name}</p>
           <div className="flex flex-col">
-            {data.data.journeys.map((journey, i) => {
-              const information = [
-                journey.information.replaced ? `Replaced: ${journey.information.replacedTo}` : '',
-                journey.information.changedRoute ? 'Changed Route' : '',
-                journey.information.changedOrigin ? `Changed Origin: ${journey.information.changedOriginTo}` : '',
-                journey.information.changedDestination
-                  ? `Changed Destination: ${journey.information.changedDestinationTo}`
-                  : '',
-                journey.information.specialTrain ? 'Special Train' : '',
-                journey.information.replacementTrain
-                  ? `Replacement Train: ${journey.information.replacementTrainFrom}`
-                  : '',
-                ...journey.information.others,
-              ]
-                .filter((info) => info)
-                .join(', ');
-
-              return (
-                <div className="flex flex-wrap gap-2 border-b border-dashed border-gray-300 p-2 text-xs" key={i}>
-                  <p className="w-16">
-                    <span className={journey.information.canceled ? 'font-bold text-red-500 line-through' : ''}>
-                      {journey.departureTime || journey.arrivalTime}
-                    </span>
-                    <br />
-                    {journey.departureActualTime && journey.departureTime !== journey.departureActualTime ? (
-                      <span className={journey.delayed ? 'text-red-500' : ''}>&gt;{journey.departureActualTime}</span>
-                    ) : journey.arrivalActualTime && journey.arrivalTime !== journey.arrivalActualTime ? (
-                      <span className={journey.delayed ? 'text-red-500' : ''}>&gt;{journey.arrivalActualTime}</span>
-                    ) : null}
-                  </p>
-                  <p className="flex-grow">
-                    <Link href={journey.detailHref}>
-                      <a className="underline">{journey.train}</a>
-                    </Link>
-                    <br />
-                    {journey.origin && <span>{journey.origin}</span>}
-                    {journey.destination && <span>{journey.destination}</span>}
-                  </p>
-                  <p
-                    className={[
-                      'w-12',
-                      journey.information.changedPlatform ? 'text-right font-bold text-red-500' : ' text-right',
-                    ].join(' ')}
-                  >
-                    {journey.platform}
-                  </p>
-                  {information && (
-                    <div className="w-full text-red-500">
-                      <p>* {information}</p>
-                    </div>
-                  )}
-                  {journey.message && (
-                    <div className="w-full">
-                      <p lang="de-DE">{journey.message.title}</p>
-                      <p lang="de-DE">{journey.message.text}</p>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            {data.data.journeys.map((journey) => (
+              <JourneyCard journey={journey} key={journey.detailHref} />
+            ))}
           </div>
         </div>
       )}
