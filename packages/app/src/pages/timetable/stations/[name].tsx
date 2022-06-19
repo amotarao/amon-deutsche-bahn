@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { JourneyCard } from '../../../components/timetable/JourneyCard';
 import { StationIdList } from '../../../components/timetable/StationIdList';
-import { TimetableResponse } from '../../../utils/api/timetable/types';
+import { TimetableResponse, TimetableWithArrivalDepartureResponse } from '../../../utils/api/timetable/types';
 
 type Props = {
   name: string;
@@ -39,13 +39,15 @@ const Page: NextPage<Props> = ({ name }) => {
 
   // request ready
   const [isFetching, setIsFetching] = useState(false);
-  const [data, setData] = useState<TimetableResponse | null>(null);
+  const [data, setData] = useState<TimetableResponse | TimetableWithArrivalDepartureResponse | null>(null);
   const fetchTimetable = useMemo(
     () =>
       debounce(async (query: RequestQuery) => {
         setIsFetching(true);
 
-        const url = new URL(`${location.origin}/api/timetable`);
+        const url = new URL(
+          query.type === 'both' ? `${location.origin}/api/timetable/depArr` : `${location.origin}/api/timetable`
+        );
         url.searchParams.set('station', query.name);
         url.searchParams.set('id', query.id);
         url.searchParams.set('type', query.type);
@@ -53,7 +55,7 @@ const Page: NextPage<Props> = ({ name }) => {
         url.searchParams.set('time', query.time);
 
         const res = await fetch(url);
-        const json = (await res.json()) as TimetableResponse;
+        const json = (await res.json()) as TimetableResponse | TimetableWithArrivalDepartureResponse;
 
         setData(json);
         setIsFetching(false);
@@ -171,7 +173,7 @@ const Page: NextPage<Props> = ({ name }) => {
           />
         </p>
         <p className="flex">
-          <label className="w-1/2 p-2">
+          <label className="w-1/3 p-2">
             <input
               className="mr-2"
               type="radio"
@@ -184,7 +186,7 @@ const Page: NextPage<Props> = ({ name }) => {
             />
             Departure
           </label>
-          <label className="w-1/2 p-2">
+          <label className="w-1/3 p-2">
             <input
               className="mr-2"
               type="radio"
@@ -196,6 +198,19 @@ const Page: NextPage<Props> = ({ name }) => {
               }}
             />
             Arrival
+          </label>
+          <label className="w-1/3 p-2">
+            <input
+              className="mr-2"
+              type="radio"
+              name="type"
+              value="both"
+              checked={(query.type || 'dep') === 'both'}
+              onChange={(e) => {
+                updateQuery({ type: e.target.value });
+              }}
+            />
+            Both (Beta)
           </label>
         </p>
       </div>
@@ -214,7 +229,11 @@ const Page: NextPage<Props> = ({ name }) => {
           <p className="text-sm font-bold">{data.data.name}</p>
           <div className="flex flex-col">
             {data.data.journeys.map((journey) => (
-              <JourneyCard journey={journey} key={journey.detailHref} />
+              <JourneyCard
+                className="border-b border-dashed border-gray-300"
+                journey={journey}
+                key={journey.detailHref}
+              />
             ))}
           </div>
         </div>

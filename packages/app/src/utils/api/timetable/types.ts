@@ -14,6 +14,11 @@ export type Journey = {
   information: JourneyInformation;
 };
 
+export type JourneyWithArrivalDepartureInformation = Omit<Journey, 'information'> & {
+  arrivalInformation: JourneyInformation | null;
+  departureInformation: JourneyInformation | null;
+};
+
 export type JourneyStop = {
   station: string;
   time: string;
@@ -54,4 +59,18 @@ export type TimetableData = {
 
 export type TimetableResponse = {
   data: TimetableData;
+};
+
+export type TimetableWithArrivalDepartureData = {
+  journeys: JourneyWithArrivalDepartureInformation[];
+  name: string;
+  id: string;
+  date: string;
+  time: string;
+  type: string;
+  ids: string[];
+};
+
+export type TimetableWithArrivalDepartureResponse = {
+  data: TimetableWithArrivalDepartureData;
 };
