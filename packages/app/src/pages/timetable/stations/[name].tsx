@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useCallback, useMemo } from 'react';
+import { StationIdList } from '../../../components/timetable/StationIdList';
 import { TimetableResponse } from '../../../utils/api/timetable/types';
 
 type Props = {
@@ -203,20 +204,12 @@ const Page: NextPage<Props> = ({ name }) => {
       {isFetching && <p>Fetching</p>}
 
       {!data ? null : data.data.ids.length > 0 ? (
-        <ul className="flex flex-col gap-1">
-          {data.data.ids.map((id) => (
-            <li key={id}>
-              <button
-                className="p-2 text-xs underline"
-                onClick={() => {
-                  updateQuery({ id });
-                }}
-              >
-                {id}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <StationIdList
+          ids={data.data.ids}
+          onClick={(id) => {
+            updateQuery({ id });
+          }}
+        />
       ) : (
         <div className="flex flex-col gap-2">
           <p className="text-sm font-bold">{data.data.name}</p>
