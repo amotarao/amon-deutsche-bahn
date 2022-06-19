@@ -11,7 +11,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, journey }) 
     'information' in journey ? journey.information : journey.departureInformation || journey.arrivalInformation;
 
   return (
-    <div className={`flex flex-wrap gap-2 p-2 text-xs ${className}`}>
+    <div className={`flex flex-wrap gap-2 px-4 py-2 text-xs ${className}`}>
       <div className="flex w-full gap-2">
         {(('information' in journey && journey.arrivalTime) || !('information' in journey)) && (
           <TimeField
@@ -39,9 +39,10 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, journey }) 
           {journey.destination && <span>{journey.destination}</span>}
         </p>
         <p
-          className={['w-10', information?.changedPlatform ? 'text-right font-bold text-red-500' : ' text-right'].join(
-            ' '
-          )}
+          className={[
+            'w-10 flex-shrink-0',
+            information?.changedPlatform ? 'text-right font-bold text-red-500' : 'text-right',
+          ].join(' ')}
         >
           {journey.platform}
         </p>
@@ -68,7 +69,7 @@ type TimeFieldProps = {
 
 const TimeField: React.FC<TimeFieldProps> = ({ information, time, actualTime, delayed }) => {
   return (
-    <div className="w-10">
+    <div className="w-10 flex-shrink-0 text-right">
       <p>
         <span className={information?.canceled ? 'font-bold text-red-500 line-through' : ''}>{time}</span>
         <br />

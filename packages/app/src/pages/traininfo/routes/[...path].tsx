@@ -1,8 +1,8 @@
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useCallback } from 'react';
+import { RouteStationCard } from '../../../components/traininfo/RouteStationCard';
 import { TraininfoResponse } from '../../../utils/api/traininfo/types';
 
 type Props = {
@@ -88,7 +88,7 @@ const Page: NextPage<Props> = ({ path }) => {
         <title>Train Info at {data?.data.train ?? ''}</title>
       </Head>
 
-      {isFetching && <p>Fetching</p>}
+      {isFetching && <p className="px-2 py-1 text-sm">Fetching</p>}
 
       {data && (
         <div className="flex flex-col gap-2">
@@ -97,62 +97,13 @@ const Page: NextPage<Props> = ({ path }) => {
             <p className="text-xs">{data.data.validFrom}</p>
           </div>
           <div className="flex flex-col">
-            {data.data.route.map((station, i) => {
-              return (
-                <div className="flex flex-wrap gap-2 border-b border-dashed border-gray-300 p-2 text-xs" key={i}>
-                  <p className="grow-1 w-48">
-                    <Link href={station.detailHref}>
-                      <a
-                        className={
-                          station.information.noStop || station.information.extraStop
-                            ? 'font-bold text-red-500 underline'
-                            : 'underline'
-                        }
-                      >
-                        {station.name}
-                      </a>
-                    </Link>
-                    <br />
-                    {station.information.noStop && <span className="font-bold text-red-500">No Stop</span>}
-                    {station.information.extraStop && <span className="font-bold text-red-500">Extra Stop</span>}
-                  </p>
-                  <p className="w-12 text-right">
-                    <span className={station.information.noStop ? 'font-bold text-red-500 line-through' : ''}>
-                      {station.arrivalTime}
-                    </span>
-                    <br />
-                    {station.arrivalActualTime && station.arrivalTime !== station.arrivalActualTime && (
-                      <span className={station.arrivalDelayed ? 'text-red-500' : ''}>
-                        &gt;{station.arrivalActualTime}
-                      </span>
-                    )}
-                  </p>
-                  <p className="w-12 text-right">
-                    <span className={station.information.noStop ? 'font-bold text-red-500 line-through' : ''}>
-                      {station.departureTime}
-                    </span>
-                    <br />
-                    {station.departureActualTime && station.departureTime !== station.departureActualTime && (
-                      <span className={station.departureDelayed ? 'text-red-500' : ''}>
-                        &gt;{station.departureActualTime}
-                      </span>
-                    )}
-                  </p>
-                  <p className="w-10 text-right">
-                    <span className={station.information.changedPlatform ? 'font-bold text-red-500' : ''}>
-                      {station.platform}
-                    </span>
-                  </p>
-                  {station.information.message.length > 0 && (
-                    <div className="w-full">
-                      {station.information.message.map((message, i) => {
-                        return <p key={i}>* {message}</p>;
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            {data.data.route.map((station) => (
+              <RouteStationCard
+                className="border-b border-dashed border-gray-300"
+                station={station}
+                key={station.detailHref}
+              />
+            ))}
           </div>
           <div className="flex flex-col gap-2 p-2">
             <div>
