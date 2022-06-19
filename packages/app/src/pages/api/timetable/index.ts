@@ -11,7 +11,7 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
   const url = new URL(`${baseUrl}/bin/bhftafel.exe/dn`);
   url.searchParams.set('input', (req.query.id as string) || (req.query.station as string));
   url.searchParams.set('boardType', req.query.type as string);
-  url.searchParams.set('date', req.query.date as string);
+  url.searchParams.set('date', formatDate(req.query.date as string));
   url.searchParams.set('time', req.query.time as string);
   url.searchParams.set('productsFilter', '11111');
   url.searchParams.set('rt', '1');
@@ -34,3 +34,7 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default api;
+
+const formatDate = (date: string): string => {
+  return [date.slice(8, 10), date.slice(5, 7), date.slice(0, 4)].join('.');
+};

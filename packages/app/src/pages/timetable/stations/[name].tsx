@@ -44,13 +44,12 @@ const Page: NextPage<Props> = ({ name }) => {
     () =>
       debounce(async (query: RequestQuery) => {
         setIsFetching(true);
-        const queryDate = [query.date.slice(8, 10), query.date.slice(5, 7), query.date.slice(0, 4)].join('.');
 
         const url = new URL(`${location.origin}/api/timetable`);
         url.searchParams.set('station', query.name);
         url.searchParams.set('id', query.id);
         url.searchParams.set('type', query.type);
-        url.searchParams.set('date', queryDate);
+        url.searchParams.set('date', query.date);
         url.searchParams.set('time', query.time);
 
         const res = await fetch(url);

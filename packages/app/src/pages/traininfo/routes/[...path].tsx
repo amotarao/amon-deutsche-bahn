@@ -39,10 +39,9 @@ const Page: NextPage<Props> = ({ path }) => {
     (query: RequestQuery) => {
       (async () => {
         setIsFetching(true);
-        const queryDate = [query.date.slice(8, 10), query.date.slice(5, 7), query.date.slice(0, 4)].join('.');
 
         const url = new URL(`${location.origin}/api/traininfo/${path}`);
-        url.searchParams.set('date', queryDate);
+        url.searchParams.set('date', query.date);
 
         const res = await fetch(url);
         const json = (await res.json()) as TraininfoResponse;
