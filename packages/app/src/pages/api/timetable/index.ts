@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
-import { parseData } from '../../utils/api/timetable/data';
-import { parseIdSelect } from '../../utils/api/timetable/id-select';
-import { parseJourneys } from '../../utils/api/timetable/journey';
-import { TimetableData } from '../../utils/api/timetable/types';
+import { parseData } from '../../../utils/api/timetable/data';
+import { parseIdSelect } from '../../../utils/api/timetable/id-select';
+import { parseJourneys } from '../../../utils/api/timetable/journey';
+import { TimetableData } from '../../../utils/api/timetable/types';
 
 const baseUrl = 'https://reiseauskunft.bahn.de';
 
@@ -20,7 +20,7 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
   const resp = await fetch(url.href);
   const html = await resp.text();
 
-  const journeys = parseJourneys(html);
+  const journeys = parseJourneys(html, req.query.type as 'dep' | 'arr');
   const ids = parseIdSelect(html);
   const data = parseData(html);
 

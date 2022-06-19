@@ -3,7 +3,7 @@ import { Journey, JourneyInformation, JourneyMessage, JourneyStop } from './type
 
 const baseUrl = 'https://reiseauskunft.bahn.de';
 
-export const parseJourneys = (html: string): Journey[] => {
+export const parseJourneys = (html: string, type: 'dep' | 'arr'): Journey[] => {
   const $ = cheerio.load(html);
   const $journeyRows = $('.result [id^="journeyRow_"]');
 
@@ -13,8 +13,7 @@ export const parseJourneys = (html: string): Journey[] => {
       const time = $elm.find('.time').text().trim();
       const train = $elm.find('.train:nth-child(3)').text().trim().replace(/\s+/, ' ');
       const detailHref = parseDetailHref($elm.find('.train:nth-child(3) a').attr('href') || '');
-      const trainDetailUrl = baseUrl + $elm.find('.train:nth-child(3) a').attr('href') || '';
-      const destination = $elm.find('.route > .bold:first-child').text().trim();
+      const originOrDestination = $elm.find('.route > .bold:first-child').text().trim();
       const stops = parseStops($elm);
       const message = parseMessage($elm);
 
@@ -31,13 +30,15 @@ export const parseJourneys = (html: string): Journey[] => {
         .get();
 
       const journey: Journey = {
-        time,
+        arrivalTime: type === 'arr' ? time : null,
+        arrivalActualTime: type === 'arr' ? actualTime : null,
+        departureTime: type === 'dep' ? time : null,
+        departureActualTime: type === 'dep' ? actualTime : null,
         detailHref,
-        actualTime,
         delayed,
         train,
-        trainDetailUrl,
-        destination,
+        origin: type === 'arr' ? originOrDestination : null,
+        destination: type === 'dep' ? originOrDestination : null,
         stops,
         platform,
         message,

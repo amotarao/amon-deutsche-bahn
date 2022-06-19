@@ -235,19 +235,22 @@ const Page: NextPage<Props> = ({ name }) => {
                 <div className="flex flex-wrap gap-2 border-b border-dashed border-gray-300 p-2 text-xs" key={i}>
                   <p className="w-16">
                     <span className={journey.information.canceled ? 'font-bold text-red-500 line-through' : ''}>
-                      {journey.time}
+                      {journey.departureTime || journey.arrivalTime}
                     </span>
                     <br />
-                    {journey.actualTime && journey.time !== journey.actualTime && (
-                      <span className={journey.delayed ? 'text-red-500' : ''}>&gt;{journey.actualTime}</span>
-                    )}
+                    {journey.departureActualTime && journey.departureTime !== journey.departureActualTime ? (
+                      <span className={journey.delayed ? 'text-red-500' : ''}>&gt;{journey.departureActualTime}</span>
+                    ) : journey.arrivalActualTime && journey.arrivalTime !== journey.arrivalActualTime ? (
+                      <span className={journey.delayed ? 'text-red-500' : ''}>&gt;{journey.arrivalActualTime}</span>
+                    ) : null}
                   </p>
                   <p className="flex-grow">
                     <Link href={journey.detailHref}>
                       <a className="underline">{journey.train}</a>
                     </Link>
                     <br />
-                    <span>{journey.destination}</span>
+                    {journey.origin && <span>{journey.origin}</span>}
+                    {journey.destination && <span>{journey.destination}</span>}
                   </p>
                   <p
                     className={[

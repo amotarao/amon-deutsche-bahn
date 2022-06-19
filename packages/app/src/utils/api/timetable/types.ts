@@ -1,11 +1,13 @@
 export type Journey = {
-  time: string;
+  arrivalTime: string | null;
+  arrivalActualTime: string | null;
+  departureTime: string | null;
+  departureActualTime: string | null;
   detailHref: string;
-  actualTime: string | null;
   delayed: boolean;
   train: string;
-  trainDetailUrl: string;
-  destination: string;
+  origin: string | null;
+  destination: string | null;
   stops: JourneyStop[];
   platform: string | null;
   message: JourneyMessage | null;
