@@ -62,7 +62,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
         />
       </div>
       <div className="flex border-b border-dashed border-gray-300">
-        <label className="flex w-1/3 items-center p-2">
+        <label className="flex w-1/4 items-center p-2">
           <input
             className="mr-2"
             type="radio"
@@ -75,7 +75,20 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           />
           All
         </label>
-        <label className="flex w-1/3 items-center p-2">
+        <label className="flex w-1/4 items-center p-2">
+          <input
+            className="mr-2"
+            type="radio"
+            name="filter"
+            value="express"
+            checked={filter === 'express'}
+            onChange={(e) => {
+              onChange({ filter: e.target.value });
+            }}
+          />
+          Express
+        </label>
+        <label className="flex w-1/4 items-center p-2">
           <input
             className="mr-2"
             type="radio"
@@ -88,7 +101,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           />
           Train
         </label>
-        <label className="flex w-1/3 items-center p-2">
+        <label className="flex w-1/4 items-center p-2">
           <input
             className="mr-2"
             type="radio"
