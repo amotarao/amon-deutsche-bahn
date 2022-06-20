@@ -144,7 +144,7 @@ const Page: NextPage = () => {
           />
         )}
         {position && (
-          <div className="flex flex-col gap-2 gap-2 rounded border p-2">
+          <div className="flex flex-col gap-2 rounded border p-2">
             <p className="text-sm">Place ID: {position.placeId}</p>
             <p className="text-sm">
               LatLng: {position.lat}, {position.lng}
