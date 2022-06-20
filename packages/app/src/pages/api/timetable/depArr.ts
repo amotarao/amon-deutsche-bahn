@@ -12,6 +12,7 @@ const fetchJourneys = async (query: NextApiRequest['query'], type: 'dep' | 'arr'
   url.searchParams.set('id', stringifyQuery(query, 'id') || stringifyQuery(query, 'station', true));
   url.searchParams.set('date', stringifyQuery(query, 'date', true));
   url.searchParams.set('time', stringifyQuery(query, 'time', true));
+  'filter' in query && url.searchParams.set('filter', stringifyQuery(query, 'filter'));
   url.searchParams.set('type', type);
 
   const resp = await fetch(url.href);

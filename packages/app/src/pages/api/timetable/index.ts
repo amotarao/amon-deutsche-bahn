@@ -6,13 +6,20 @@ import { parseIdSelect } from '../../../utils/api/timetable/id-select';
 import { parseJourneys } from '../../../utils/api/timetable/journey';
 import { TimetableData } from '../../../utils/api/timetable/types';
 
+const parseFilter = (filter: string): string => {
+  if (filter === 'all') return '11111';
+  if (filter === 'train') return '11110';
+  if (filter === 's') return '00001';
+  return '11111';
+};
+
 const generateUrl = (query: NextApiRequest['query']): string => {
   const url = new URL('https://reiseauskunft.bahn.de/bin/bhftafel.exe/dn');
   url.searchParams.set('input', stringifyQuery(query, 'id') || stringifyQuery(query, 'station', true));
   url.searchParams.set('boardType', stringifyQuery(query, 'type', true));
   url.searchParams.set('date', formatDate(stringifyQuery(query, 'date', true)));
   url.searchParams.set('time', stringifyQuery(query, 'time', true));
-  url.searchParams.set('productsFilter', '11111');
+  url.searchParams.set('productsFilter', parseFilter(stringifyQuery(query, 'filter')));
   url.searchParams.set('rt', '1');
   url.searchParams.set('start', 'yes');
   return url.href;

@@ -30,9 +30,10 @@ export const getStaticProps: GetStaticProps<Props> = (context) => {
 export type TimetableRequestQuery = {
   name: string;
   id: string;
-  type: string;
   date: string;
   time: string;
+  type: string;
+  filter: string;
 };
 
 const Page: NextPage<Props> = ({ name }) => {
@@ -51,9 +52,10 @@ const Page: NextPage<Props> = ({ name }) => {
         );
         url.searchParams.set('station', query.name);
         url.searchParams.set('id', query.id);
-        url.searchParams.set('type', query.type);
         url.searchParams.set('date', query.date);
         url.searchParams.set('time', query.time);
+        url.searchParams.set('filter', query.filter);
+        url.searchParams.set('type', query.type);
 
         const res = await fetch(url);
         const json = (await res.json()) as TimetableResponse | TimetableWithArrivalDepartureResponse;
@@ -69,9 +71,10 @@ const Page: NextPage<Props> = ({ name }) => {
   const [query, setQuery] = useState<TimetableRequestQuery>({
     name: '',
     id: '',
-    type: '',
     date: '',
     time: '',
+    filter: '',
+    type: '',
   });
   useEffect(() => {
     if (!router.isReady || isReady) {
@@ -80,9 +83,10 @@ const Page: NextPage<Props> = ({ name }) => {
     setQuery(() => ({
       name: router.query.name as string,
       id: (router.query.id as string) || '',
-      type: (router.query.type as string) || 'dep',
       date: (router.query.date as string) || '',
       time: (router.query.time as string) || '',
+      filter: (router.query.filter as string) || 'all',
+      type: (router.query.type as string) || 'dep',
     }));
     setIsReady(true);
   }, [router.isReady, router.query, isReady]);
@@ -119,9 +123,10 @@ const Page: NextPage<Props> = ({ name }) => {
     const query: TimetableRequestQuery = {
       name: router.query.name as string,
       id: (router.query.id as string) || '',
-      type: (router.query.type as string) || 'dep',
       date: (router.query.date as string) || getDefaultDate(),
       time: (router.query.time as string) || getDefaultTime(),
+      filter: (router.query.filter as string) || 'all',
+      type: (router.query.type as string) || 'dep',
     };
     fetchTimetable(query);
   }, [router.isReady, router.query, fetchTimetable]);
@@ -137,6 +142,7 @@ const Page: NextPage<Props> = ({ name }) => {
         name={query.name}
         date={query.date || getDefaultDate()}
         time={query.time || getDefaultTime()}
+        filter={query.filter || 'all'}
         type={query.type || 'dep'}
         onChange={(arg) => {
           updateQuery(arg);
