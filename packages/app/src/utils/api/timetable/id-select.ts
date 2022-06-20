@@ -13,5 +13,5 @@ export const parseIdSelect = (html: string): string[] => {
       return $(el).attr('value');
     })
     .get();
-  return ids;
+  return Array.from(new Set(ids));
 };
