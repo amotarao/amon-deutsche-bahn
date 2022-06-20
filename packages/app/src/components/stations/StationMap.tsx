@@ -7,11 +7,13 @@ export type StationMapProps = {
   stations: Station[];
   onLoad?: (map: google.maps.Map) => void;
   onChange?: () => void;
+  onClick?: (e: google.maps.MapMouseEvent) => void;
   onClickMarker?: (stationId: string) => void;
 };
 
 export const StationMap: React.FC<StationMapProps> = ({
   stations,
+  onClick,
   onLoad: onLoadToParent,
   onChange: onChangeToParent,
   onClickMarker,
@@ -54,14 +56,16 @@ export const StationMap: React.FC<StationMapProps> = ({
       mapContainerStyle={{ width: '100%', height: '100%' }}
       center={center}
       zoom={12}
+      options={{
+        mapTypeControl: false,
+        streetViewControl: false,
+      }}
+      onClick={onClick}
       onBoundsChanged={onChange}
       onCenterChanged={onChange}
       onZoomChanged={onChange}
       onLoad={onLoad}
       onUnmount={onUnmount}
-      options={{
-        mapTypeControl: false,
-      }}
     >
       {stations.map((station) => {
         const categoryNumber = parseInt(station.stationCategory?.replace(/^CATEGORY_/, '') ?? '7', 10);

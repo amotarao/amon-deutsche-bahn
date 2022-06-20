@@ -1,4 +1,4 @@
-import { collection, endAt, getDocs, orderBy, query, startAt, where } from 'firebase/firestore';
+import { collection, doc, endAt, getDocs, orderBy, query, startAt, updateDoc, where } from 'firebase/firestore';
 import * as geofire from 'geofire-common';
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
@@ -71,6 +71,21 @@ const Page: NextPage = () => {
     })();
   }, [stationsQueries]);
 
+  type Position = {
+    lat: number;
+    lng: number;
+    placeId: string;
+  };
+  const [position, setPosition] = useState<Position | null>();
+  const onClickMap = (e: google.maps.MapMouseEvent) => {
+    const lat = e.latLng?.lat();
+    const lng = e.latLng?.lng();
+    const placeId = (e as any).placeId as string | undefined;
+    if (lat !== undefined && lng !== undefined && placeId) {
+      setPosition({ lat, lng, placeId });
+    }
+  };
+
   return (
     <div>
       <Head>
@@ -82,6 +97,7 @@ const Page: NextPage = () => {
           stations={stations}
           onLoad={setMap}
           onChange={onChangeMap}
+          onClick={onClickMap}
           onClickMarker={(stationId) => {
             const station = stations.find((station) => station.stationID === stationId);
             station && setStation(station);
@@ -121,6 +137,33 @@ const Page: NextPage = () => {
               map?.setCenter({ lat: station.position.lat, lng: station.position.lng });
             }}
           />
+        )}
+        {position && (
+          <div className="flex flex-col gap-2 gap-2 rounded border p-2">
+            <p className="text-sm">Place ID: {position.placeId}</p>
+            <p className="text-sm">
+              LatLng: {position.lat}, {position.lng}
+            </p>
+            <div className="flex gap-2">
+              {station && !station.googleMapsPlaceId && (
+                <button
+                  className="block rounded border border-slate-300 px-2 py-0.5"
+                  onClick={() => {
+                    const docRef = doc(collection(firestore, 'stations'), station.stationID);
+                    const { lat, lng, placeId } = position;
+                    const geohash = geofire.geohashForLocation([lat, lng]);
+                    const data = { position: { geohash, lat, lng }, googleMapsPlaceId: placeId };
+                    updateDoc(docRef, data);
+                    const s = stations.find((s) => s.stationID === station.stationID);
+                    s?.position && (s.position = data.position);
+                    s?.googleMapsPlaceId && (s.googleMapsPlaceId = data.googleMapsPlaceId);
+                  }}
+                >
+                  Set Data
+                </button>
+              )}
+            </div>
+          </div>
         )}
       </section>
     </div>

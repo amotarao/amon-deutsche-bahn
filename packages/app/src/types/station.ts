@@ -28,4 +28,5 @@ export type Station = {
   };
   availableTransports: [];
   availableLocalServices: [];
+  googleMapsPlaceId?: string;
 };
