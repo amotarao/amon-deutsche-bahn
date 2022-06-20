@@ -1,32 +1,46 @@
 export type Station = {
-  countryCode: string;
-  stationID: string;
-  validFrom: string;
   name: string;
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    country: string;
-    postalCode: string;
-    houseNumber: string;
-  };
-  stationCategory?: string;
-  timeZone: string;
+  googleMapsPlaceId: string;
+  dbRisStationId: string;
+  dbRisStationCateogry: string;
   position: {
     geohash: string;
     lat: number;
     lng: number;
   };
+};
+
+export type DBRisStation = {
+  stationID: string;
+  names: {
+    DE: {
+      name: string;
+    };
+  };
+  address: {
+    street: string;
+    houseNumber: string;
+    postalCode: string;
+    city: string;
+    state: string;
+    country: string;
+  };
+  stationCategory?: string;
+  availableTransports: [];
+  availableLocalServices: [];
   owner: {
     name: string;
     organisationalUnit: {
-      id: 4;
+      id: number;
       name: string;
       nameShort: string;
     };
   };
-  availableTransports: [];
-  availableLocalServices: [];
-  googleMapsPlaceId?: string;
+  countryCode: string;
+  timeZone: string;
+  position: {
+    longitude: number;
+    latitude: number;
+  };
+  validFrom: string;
 };

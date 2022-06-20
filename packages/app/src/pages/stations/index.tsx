@@ -50,7 +50,7 @@ const Page: NextPage = () => {
     const maxDistance = 20000;
 
     if (filters.categories.length) {
-      q = query(q, where('stationCategory', 'in', filters.categories));
+      q = query(q, where('dbRisStationCateogry', 'in', filters.categories));
     }
 
     const bounds = geofire.geohashQueryBounds([center.lat, center.lng], Math.min(distance, maxDistance));
@@ -105,7 +105,7 @@ const Page: NextPage = () => {
           onChange={onChangeMap}
           onClick={onClickMap}
           onClickMarker={(stationId) => {
-            const station = stations.find((station) => station.stationID === stationId);
+            const station = stations.find((station) => station.dbRisStationId === stationId);
             station && setStation(station);
           }}
         />
@@ -154,7 +154,7 @@ const Page: NextPage = () => {
                 <button
                   className="block rounded border border-slate-300 px-2 py-0.5"
                   onClick={() => {
-                    const docRef = doc(collection(firestore, 'stations'), station.stationID);
+                    const docRef = doc(collection(firestore, 'stations'), station.dbRisStationId);
                     const { lat, lng, placeId } = position;
                     const geohash = geofire.geohashForLocation([lat, lng]);
                     const data = { position: { geohash, lat, lng }, googleMapsPlaceId: placeId };

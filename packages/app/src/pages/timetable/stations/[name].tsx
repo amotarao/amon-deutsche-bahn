@@ -36,7 +36,7 @@ export type TimetableRequestQuery = {
   filter: string;
 };
 
-const Page: NextPage<Props> = ({ name }) => {
+const Page: NextPage<Props> = () => {
   const router = useRouter();
 
   // request ready

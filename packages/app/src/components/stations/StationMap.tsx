@@ -68,20 +68,20 @@ export const StationMap: React.FC<StationMapProps> = ({
       onUnmount={onUnmount}
     >
       {stations.map((station) => {
-        const categoryNumber = parseInt(station.stationCategory?.replace(/^CATEGORY_/, '') ?? '7', 10);
+        const categoryNumber = parseInt(station.dbRisStationCateogry.replace(/^CATEGORY_/, '') ?? '7', 10);
         const label = { 1: '1', 2: '2', 3: '3', 4: '4', 5: '', 6: '', 7: '' }[categoryNumber];
         const opacity = { 1: 1, 2: 0.9, 3: 0.8, 4: 0.6, 5: 0.4, 6: 0.4, 7: 0.4 }[categoryNumber];
 
         return (
           <Marker
-            key={station.stationID}
+            key={station.dbRisStationId}
             title={station.name}
             label={label}
             opacity={opacity}
             zIndex={opacity}
             position={{ lat: station.position.lat, lng: station.position.lng }}
             onClick={() => {
-              onClickMarker && onClickMarker(station.stationID);
+              onClickMarker && onClickMarker(station.dbRisStationId);
             }}
           />
         );
