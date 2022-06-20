@@ -38,8 +38,6 @@ const Page: NextPage = () => {
 
   // filters
   const [filters, setFilters] = useState({
-    state: '',
-    ownerId: -1,
     categories: [] as string[],
   });
 
@@ -50,12 +48,6 @@ const Page: NextPage = () => {
     let q = query(collection(firestore, 'stations'));
     const maxDistance = 20000;
 
-    if (filters.state) {
-      q = query(q, where('address.state', '==', filters.state));
-    }
-    if (filters.ownerId > -1) {
-      q = query(q, where('owner.organisationalUnit.id', '==', filters.ownerId));
-    }
     if (filters.categories.length) {
       q = query(q, where('stationCategory', 'in', filters.categories));
     }
@@ -99,57 +91,8 @@ const Page: NextPage = () => {
 
       <section className="h-64 p-4 md:mx-auto md:w-[800px]">
         <div className="mb-4 flex flex-wrap gap-2">
-          <div>
-            <select
-              className="rounded border p-2"
-              value={filters.state || ''}
-              onChange={(e) => {
-                setFilters((filters) => ({ ...filters, state: e.target.value }));
-              }}
-            >
-              <option value={''}>-</option>
-              {[
-                'Nordrhein-Westfalen',
-                'Baden-Württemberg',
-                'Bayern',
-                'Niedersachsen',
-                'Sachsen',
-                'Schleswig-Holstein',
-                'Berlin',
-                'Brandenburg',
-                'Rheinland-Pfalz',
-                'Hessen',
-                'Hamburg',
-                'Mecklenburg-Vorpommern',
-                'Thüringen',
-                'Sachsen-Anhalt',
-                'Saarland',
-                'Schweiz CH',
-                'Bremen',
-              ].map((state) => (
-                <option value={state} key={state}>
-                  {state}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <select
-              className="rounded border p-2"
-              value={filters.ownerId}
-              onChange={(e) => {
-                setFilters((filters) => ({ ...filters, ownerId: parseInt(e.target.value, 10) }));
-              }}
-            >
-              <option value={-1}>-</option>
-              {[1, 2, 3, 4, 5, 6, 7].map((ownerId) => (
-                <option value={ownerId} key={ownerId}>
-                  {ownerId}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
+          <div className="flex flex-col gap-2">
+            <p>Station Categories</p>
             <select
               className="rounded border p-2"
               value={filters.categories}
@@ -163,7 +106,7 @@ const Page: NextPage = () => {
             >
               {['1', '2', '3', '4', '5', '6', '7'].map((category) => (
                 <option value={`CATEGORY_${category}`} key={category}>
-                  {category}
+                  Category {category}
                 </option>
               ))}
             </select>
