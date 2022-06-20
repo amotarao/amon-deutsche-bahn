@@ -149,7 +149,7 @@ const Page: NextPage<Props> = ({ name }) => {
         }}
       />
 
-      {isFetching && <p className="px-2 py-1 text-sm">Fetching</p>}
+      {isFetching && <p className="px-4 py-2 text-sm">Fetching</p>}
 
       {!data ? null : data.data.ids.length > 0 ? (
         <StationIdList
@@ -160,7 +160,7 @@ const Page: NextPage<Props> = ({ name }) => {
         />
       ) : (
         <div className="flex flex-col gap-2">
-          <p className="px-2 py-1 text-sm font-bold">{data.data.name}</p>
+          <p className="px-4 py-1 text-sm font-bold">{data.data.name}</p>
           <div className="flex flex-col">
             {data.data.journeys.map((journey) => (
               <JourneyCard

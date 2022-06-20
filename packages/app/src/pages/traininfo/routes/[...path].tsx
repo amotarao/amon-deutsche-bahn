@@ -88,11 +88,11 @@ const Page: NextPage<Props> = ({ path }) => {
         <title>Train Info at {data?.data.train ?? ''}</title>
       </Head>
 
-      {isFetching && <p className="px-2 py-1 text-sm">Fetching</p>}
+      {isFetching && <p className="px-4 py-2 text-sm">Fetching</p>}
 
       {data && (
         <div className="flex flex-col gap-2">
-          <div className="flex flex-col gap-2 p-2">
+          <div className="px-4 py-2">
             <p className="text-sm font-bold">{data.data.train}</p>
             <p className="text-xs">{data.data.validFrom}</p>
           </div>
@@ -105,7 +105,7 @@ const Page: NextPage<Props> = ({ path }) => {
               />
             ))}
           </div>
-          <div className="flex flex-col gap-2 p-2">
+          <div className="flex flex-col gap-2 px-4 py-2">
             <div>
               {data.data.information.map((info, i) => (
                 <p className="text-xs" key={i}>
