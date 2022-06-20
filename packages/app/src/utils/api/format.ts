@@ -16,7 +16,7 @@ export const stringifyQuery = (query: NextApiRequest['query'], key: string, requ
 };
 
 export const arrayQuery = (query: NextApiRequest['query'], key: string, required = false): string[] => {
-  if (key in query) {
+  if (!(key in query)) {
     if (required) {
       throw new Error(`${key} query is missing.`);
     }
