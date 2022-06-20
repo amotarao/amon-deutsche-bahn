@@ -1,5 +1,6 @@
-import { collection, doc, endAt, getDocs, orderBy, query, startAt, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, endAt, getDocs, orderBy, Query, query, startAt, updateDoc, where } from 'firebase/firestore';
 import * as geofire from 'geofire-common';
+import debounce from 'lodash.debounce';
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useCallback, useMemo, useState, useEffect } from 'react';
@@ -57,19 +58,24 @@ const Page: NextPage = () => {
       return query(q, orderBy('position.geohash'), startAt(start), endAt(end));
     });
   }, [center, distance, filters]);
+  const fetchStations = useMemo(
+    () =>
+      debounce(async (queries: Query[]) => {
+        const stations: Station[] = [];
+        await Promise.all(
+          queries.map(async (q) => {
+            const querySnapshot = await getDocs(q);
+            const data = querySnapshot.docs.map((doc) => doc.data() as Station);
+            stations.push(...data);
+          })
+        );
+        setStations(stations);
+      }, 500),
+    []
+  );
   useEffect(() => {
-    (async () => {
-      const stations: Station[] = [];
-      await Promise.all(
-        stationsQueries.map(async (q) => {
-          const querySnapshot = await getDocs(q);
-          const data = querySnapshot.docs.map((doc) => doc.data() as Station);
-          stations.push(...data);
-        })
-      );
-      setStations(stations);
-    })();
-  }, [stationsQueries]);
+    fetchStations(stationsQueries);
+  }, [fetchStations, stationsQueries]);
 
   type Position = {
     lat: number;
@@ -131,7 +137,6 @@ const Page: NextPage = () => {
 
         {station && (
           <StationCard
-            className="border-red-300"
             station={station}
             onClickCenter={() => {
               map?.setCenter({ lat: station.position.lat, lng: station.position.lng });
@@ -154,9 +159,6 @@ const Page: NextPage = () => {
                     const geohash = geofire.geohashForLocation([lat, lng]);
                     const data = { position: { geohash, lat, lng }, googleMapsPlaceId: placeId };
                     updateDoc(docRef, data);
-                    const s = stations.find((s) => s.stationID === station.stationID);
-                    s?.position && (s.position = data.position);
-                    s?.googleMapsPlaceId && (s.googleMapsPlaceId = data.googleMapsPlaceId);
                   }}
                 >
                   Set Data
