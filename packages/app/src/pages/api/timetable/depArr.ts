@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
+import { stringifyQuery } from '../../../utils/api/format';
 import {
   TimetableResponse,
   JourneyWithArrivalDepartureInformation,
@@ -8,9 +9,9 @@ import {
 
 const fetchJourneys = async (query: NextApiRequest['query'], type: 'dep' | 'arr'): Promise<TimetableResponse> => {
   const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/timetable`);
-  url.searchParams.set('id', (query.id as string) || (query.station as string));
-  url.searchParams.set('date', query.date as string);
-  url.searchParams.set('time', query.time as string);
+  url.searchParams.set('id', stringifyQuery(query, 'id') || stringifyQuery(query, 'station'));
+  url.searchParams.set('date', stringifyQuery(query, 'date'));
+  url.searchParams.set('time', stringifyQuery(query, 'time'));
   url.searchParams.set('type', type);
 
   const resp = await fetch(url.href);
