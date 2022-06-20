@@ -9,9 +9,9 @@ import {
 
 const fetchJourneys = async (query: NextApiRequest['query'], type: 'dep' | 'arr'): Promise<TimetableResponse> => {
   const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/timetable`);
-  url.searchParams.set('id', stringifyQuery(query, 'id') || stringifyQuery(query, 'station'));
-  url.searchParams.set('date', stringifyQuery(query, 'date'));
-  url.searchParams.set('time', stringifyQuery(query, 'time'));
+  url.searchParams.set('id', stringifyQuery(query, 'id') || stringifyQuery(query, 'station', true));
+  url.searchParams.set('date', stringifyQuery(query, 'date', true));
+  url.searchParams.set('time', stringifyQuery(query, 'time', true));
   url.searchParams.set('type', type);
 
   const resp = await fetch(url.href);
