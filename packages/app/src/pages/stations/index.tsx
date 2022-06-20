@@ -135,14 +135,7 @@ const Page: NextPage = () => {
           </div>
         </div>
 
-        {station && (
-          <StationCard
-            station={station}
-            onClickCenter={() => {
-              map?.setCenter({ lat: station.position.lat, lng: station.position.lng });
-            }}
-          />
-        )}
+        {station && <StationCard station={station} />}
         {position && (
           <div className="flex flex-col gap-2 rounded border p-2">
             <p className="text-sm">Place ID: {position.placeId}</p>
