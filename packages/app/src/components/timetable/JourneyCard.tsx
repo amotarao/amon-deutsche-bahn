@@ -29,7 +29,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, journey }) 
             delayed={journey.delayed}
           />
         )}
-        <p className="flex-shrink flex-grow">
+        <p className="shrink grow">
           <Link href={journey.detailHref}>
             <a className="underline">{journey.train}</a>
           </Link>
@@ -40,7 +40,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, journey }) 
         </p>
         <p
           className={[
-            'w-10 flex-shrink-0',
+            'w-10 shrink-0',
             information?.changedPlatform ? 'text-right font-bold text-red-500' : 'text-right',
           ].join(' ')}
         >

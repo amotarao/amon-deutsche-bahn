@@ -62,7 +62,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
         />
       </div>
       <div className="flex border-b border-dashed border-gray-300">
-        <label className="flex w-1/4 items-center px-4 py-2">
+        <label className="flex grow items-center px-4 py-2">
           <input
             className="mr-2"
             type="radio"
@@ -75,7 +75,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           />
           All
         </label>
-        <label className="flex w-1/4 items-center px-4 py-2">
+        <label className="flex grow items-center px-4 py-2">
           <input
             className="mr-2"
             type="radio"
@@ -88,7 +88,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           />
           Express
         </label>
-        <label className="flex w-1/4 items-center px-4 py-2">
+        <label className="flex grow items-center px-4 py-2">
           <input
             className="mr-2"
             type="radio"
@@ -101,7 +101,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           />
           Train
         </label>
-        <label className="flex w-1/4 items-center px-4 py-2">
+        <label className="flex grow items-center px-4 py-2">
           <input
             className="mr-2"
             type="radio"
@@ -116,7 +116,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
         </label>
       </div>
       <div className="flex">
-        <label className="flex w-1/3 items-center px-4 py-2">
+        <label className="flex grow items-center px-4 py-2">
           <input
             className="mr-2"
             type="radio"
@@ -129,7 +129,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           />
           Departure
         </label>
-        <label className="flex w-1/3 items-center px-4 py-2">
+        <label className="flex grow items-center px-4 py-2">
           <input
             className="mr-2"
             type="radio"
@@ -142,7 +142,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           />
           Arrival
         </label>
-        <label className="flex w-1/3 items-center px-4 py-2">
+        <label className="flex grow items-center px-4 py-2">
           <input
             className="mr-2"
             type="radio"

@@ -89,8 +89,8 @@ const Page: NextPage = () => {
         />
       </div>
 
-      <section className="h-64 p-4 md:mx-auto md:w-[800px]">
-        <div className="mb-4 flex flex-wrap gap-2">
+      <section className="flex h-64 flex-col gap-4 p-4 md:mx-auto md:w-[800px]">
+        <div className="flex flex-wrap gap-2">
           <div className="flex flex-col gap-2">
             <p>Station Categories</p>
             <select

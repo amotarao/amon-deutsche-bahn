@@ -10,7 +10,7 @@ export const RouteStationCard: React.FC<RouteStationCardProps> = ({ className, s
   return (
     <div className={`flex flex-wrap gap-2 px-4 py-2 text-xs ${className}`}>
       <div className="flex w-full gap-2">
-        <div className="flex-shrink flex-grow">
+        <div className="shrink grow">
           <Link href={station.detailHref}>
             <a
               className={
@@ -26,7 +26,7 @@ export const RouteStationCard: React.FC<RouteStationCardProps> = ({ className, s
           {station.information.noStop && <span className="font-bold text-red-500">No Stop</span>}
           {station.information.extraStop && <span className="font-bold text-red-500">Extra Stop</span>}
         </div>
-        <p className="w-12 flex-shrink-0 text-right">
+        <p className="w-12 shrink-0 text-right">
           <span className={station.information.noStop ? 'font-bold text-red-500 line-through' : ''}>
             {station.arrivalTime}
           </span>
@@ -35,7 +35,7 @@ export const RouteStationCard: React.FC<RouteStationCardProps> = ({ className, s
             <span className={station.arrivalDelayed ? 'text-red-500' : ''}>&gt;{station.arrivalActualTime}</span>
           )}
         </p>
-        <p className="w-12 flex-shrink-0 text-right">
+        <p className="w-12 shrink-0 text-right">
           <span className={station.information.noStop ? 'font-bold text-red-500 line-through' : ''}>
             {station.departureTime}
           </span>
@@ -44,7 +44,7 @@ export const RouteStationCard: React.FC<RouteStationCardProps> = ({ className, s
             <span className={station.departureDelayed ? 'text-red-500' : ''}>&gt;{station.departureActualTime}</span>
           )}
         </p>
-        <p className="w-10 flex-shrink-0 text-right">
+        <p className="w-10 shrink-0 text-right">
           <span className={station.information.changedPlatform ? 'font-bold text-red-500' : ''}>
             {station.platform}
           </span>
