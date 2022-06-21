@@ -9,8 +9,8 @@ import { Journey, TimetableData } from '../../../utils/api/timetable/types';
 
 const parseFilter = (filter: string): string => {
   if (filter === 'all') return '11111';
-  if (filter === 'express') return '11000';
-  if (filter === 'train') return '00110';
+  if (filter === 'express') return '11100';
+  if (filter === 'train') return '00010';
   if (filter === 's') return '00001';
   return '11111';
 };
