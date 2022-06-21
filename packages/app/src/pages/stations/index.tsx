@@ -4,6 +4,7 @@ import debounce from 'lodash.debounce';
 import type { GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useCallback, useMemo, useState, useEffect } from 'react';
+import { SearchPlaces } from '../../components/stations/SearchPlaces';
 import { StationCard } from '../../components/stations/StationCard';
 import { StationMap } from '../../components/stations/StationMap';
 import { firestore } from '../../modules/firebase';
@@ -135,7 +136,31 @@ const Page: NextPage = () => {
           </div>
         </div>
 
+        <div className="flex gap-2">
+          <button
+            className="rounded border px-2 py-1"
+            onClick={() => {
+              map?.setCenter({ lat: 0, lng: 0 });
+            }}
+          >
+            Center: 0, 0
+          </button>
+        </div>
         {station && <StationCard station={station} />}
+        <SearchPlaces
+          onClickCenter={(lat, lng) => {
+            map?.setCenter({ lat, lng });
+          }}
+          onClickSetPosition={({ lat, lng, placeId }) => {
+            if (!station) {
+              return;
+            }
+            const docRef = doc(collection(firestore, 'stations'), station.dbRisStationId);
+            const geohash = geofire.geohashForLocation([lat, lng]);
+            const data = { position: { geohash, lat, lng }, googleMapsPlaceId: placeId };
+            updateDoc(docRef, data);
+          }}
+        />
         {position && (
           <div className="flex flex-col gap-2 rounded border p-2">
             <p className="text-sm">Place ID: {position.placeId}</p>
