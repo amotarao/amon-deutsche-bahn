@@ -7,6 +7,7 @@ export type TimetableFilterProps = {
   time: string;
   filter: string;
   type: string;
+  ignoreNullablePlatform: 'true' | 'false';
   onChange: (obj: Partial<TimetableRequestQuery>) => void;
 };
 
@@ -17,6 +18,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
   time,
   filter,
   type,
+  ignoreNullablePlatform,
   onChange,
 }) => {
   return (
@@ -62,7 +64,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
         />
       </div>
       <div className="flex border-b border-dashed border-gray-300">
-        <label className="flex grow items-center px-4 py-2">
+        <label className="flex grow items-center py-2 pl-4 pr-2">
           <input
             className="mr-2"
             type="radio"
@@ -75,7 +77,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           />
           All
         </label>
-        <label className="flex grow items-center px-4 py-2">
+        <label className="flex grow items-center py-2 pl-4 pr-2">
           <input
             className="mr-2"
             type="radio"
@@ -88,7 +90,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           />
           Express
         </label>
-        <label className="flex grow items-center px-4 py-2">
+        <label className="flex grow items-center py-2 pl-4 pr-2">
           <input
             className="mr-2"
             type="radio"
@@ -101,7 +103,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           />
           Train
         </label>
-        <label className="flex grow items-center px-4 py-2">
+        <label className="flex grow items-center py-2 pl-4 pr-2">
           <input
             className="mr-2"
             type="radio"
@@ -116,7 +118,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
         </label>
       </div>
       <div className="flex">
-        <label className="flex grow items-center px-4 py-2">
+        <label className="flex grow items-center py-2 pl-4 pr-2">
           <input
             className="mr-2"
             type="radio"
@@ -129,7 +131,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           />
           Departure
         </label>
-        <label className="flex grow items-center px-4 py-2">
+        <label className="flex grow items-center py-2 pl-4 pr-2">
           <input
             className="mr-2"
             type="radio"
@@ -142,7 +144,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           />
           Arrival
         </label>
-        <label className="flex grow items-center px-4 py-2">
+        <label className="flex grow items-center py-2 pl-4 pr-2">
           <input
             className="mr-2"
             type="radio"
@@ -153,7 +155,19 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
               onChange({ type: e.target.value });
             }}
           />
-          Both (Beta)
+          Both
+        </label>
+        <label className="flex grow items-center py-2 pl-4 pr-2">
+          <input
+            className="mr-2"
+            type="checkbox"
+            name="ignoreNullablePlatform"
+            checked={ignoreNullablePlatform === 'true'}
+            onChange={(e) => {
+              onChange({ ignoreNullablePlatform: e.target.checked ? 'true' : 'false' });
+            }}
+          />
+          has Plf
         </label>
       </div>
     </div>

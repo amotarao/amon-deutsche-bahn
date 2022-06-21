@@ -30,6 +30,17 @@ export const arrayQuery = (query: NextApiRequest['query'], key: string, required
   return [value];
 };
 
+export const booleanQuery = (query: NextApiRequest['query'], key: string, required = false): boolean => {
+  if (!(key in query)) {
+    if (required) {
+      throw new Error(`${key} query is missing.`);
+    }
+    return false;
+  }
+
+  return query[key] === 'true';
+};
+
 export const formatDate = (date: string): string => {
   return [date.slice(8, 10), date.slice(5, 7), date.slice(0, 4)].join('.');
 };

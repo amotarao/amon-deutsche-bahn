@@ -1,10 +1,11 @@
+import { query } from 'firebase/firestore';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
-import { formatDate, stringifyQuery } from '../../../utils/api/format';
+import { formatDate, stringifyQuery, booleanQuery } from '../../../utils/api/format';
 import { parseData } from '../../../utils/api/timetable/data';
 import { parseIdSelect } from '../../../utils/api/timetable/id-select';
 import { parseJourneys } from '../../../utils/api/timetable/journey';
-import { TimetableData } from '../../../utils/api/timetable/types';
+import { Journey, TimetableData } from '../../../utils/api/timetable/types';
 
 const parseFilter = (filter: string): string => {
   if (filter === 'all') return '11111';
@@ -30,7 +31,14 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
   const resp = await fetch(generateUrl(req.query));
   const html = await resp.text();
 
-  const journeys = parseJourneys(html, stringifyQuery(req.query, 'type') as 'dep' | 'arr');
+  const filter = (journey: Journey): boolean => {
+    if (booleanQuery(req.query, 'ignoreNullablePlatform')) {
+      return !!journey.platform;
+    }
+    return true;
+  };
+
+  const journeys = parseJourneys(html, stringifyQuery(req.query, 'type') as 'dep' | 'arr').filter(filter);
   const ids = parseIdSelect(html);
   const data = parseData(html);
 

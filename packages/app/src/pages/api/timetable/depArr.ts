@@ -14,6 +14,8 @@ const fetchJourneys = async (query: NextApiRequest['query'], type: 'dep' | 'arr'
   url.searchParams.set('time', stringifyQuery(query, 'time', true));
   'filter' in query && url.searchParams.set('filter', stringifyQuery(query, 'filter'));
   url.searchParams.set('type', type);
+  'ignoreNullablePlatform' in query &&
+    url.searchParams.set('ignoreNullablePlatform', stringifyQuery(query, 'ignoreNullablePlatform'));
 
   const resp = await fetch(url.href);
   const json = (await resp.json()) as TimetableResponse;

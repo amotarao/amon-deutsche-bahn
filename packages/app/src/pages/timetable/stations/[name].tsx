@@ -34,6 +34,7 @@ export type TimetableRequestQuery = {
   time: string;
   type: string;
   filter: string;
+  ignoreNullablePlatform: 'true' | 'false';
 };
 
 const Page: NextPage<Props> = () => {
@@ -56,6 +57,7 @@ const Page: NextPage<Props> = () => {
         url.searchParams.set('time', query.time);
         url.searchParams.set('filter', query.filter);
         url.searchParams.set('type', query.type);
+        url.searchParams.set('ignoreNullablePlatform', query.ignoreNullablePlatform);
 
         const res = await fetch(url);
         const json = (await res.json()) as TimetableResponse | TimetableWithArrivalDepartureResponse;
@@ -75,6 +77,7 @@ const Page: NextPage<Props> = () => {
     time: '',
     filter: '',
     type: '',
+    ignoreNullablePlatform: 'false',
   });
   useEffect(() => {
     if (!router.isReady || isReady) {
@@ -87,6 +90,7 @@ const Page: NextPage<Props> = () => {
       time: (router.query.time as string) || '',
       filter: (router.query.filter as string) || 'all',
       type: (router.query.type as string) || 'dep',
+      ignoreNullablePlatform: router.query.ignoreNullablePlatform === 'true' ? 'true' : 'false',
     }));
     setIsReady(true);
   }, [router.isReady, router.query, isReady]);
@@ -127,6 +131,7 @@ const Page: NextPage<Props> = () => {
       time: (router.query.time as string) || getDefaultTime(),
       filter: (router.query.filter as string) || 'all',
       type: (router.query.type as string) || 'dep',
+      ignoreNullablePlatform: router.query.ignoreNullablePlatform === 'true' ? 'true' : 'false',
     };
     fetchTimetable(query);
   }, [router.isReady, router.query, fetchTimetable]);
@@ -144,6 +149,7 @@ const Page: NextPage<Props> = () => {
         time={query.time || getDefaultTime()}
         filter={query.filter || 'all'}
         type={query.type || 'dep'}
+        ignoreNullablePlatform={query.ignoreNullablePlatform}
         onChange={(arg) => {
           updateQuery(arg);
         }}
