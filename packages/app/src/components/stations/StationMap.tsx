@@ -51,34 +51,57 @@ export const StationMap: React.FC<StationMapProps> = ({
   }
 
   return (
-    <GoogleMap
-      mapContainerStyle={{ width: '100%', height: '100%' }}
-      center={center}
-      zoom={12}
-      options={{
-        fullscreenControl: false,
-        mapTypeControl: false,
-        streetViewControl: false,
-        zoomControl: false,
-      }}
-      onClick={onClick}
-      onBoundsChanged={onChange}
-      onCenterChanged={onChange}
-      onZoomChanged={onChange}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-    >
-      {markers.map(({ key, ...marker }) => {
-        return (
-          <Marker
-            key={key}
-            {...marker}
-            onClick={() => {
-              onClickMarker && onClickMarker(key);
-            }}
-          />
-        );
-      })}
-    </GoogleMap>
+    <>
+      <GoogleMap
+        mapContainerStyle={{ width: '100%', height: '100%' }}
+        center={center}
+        zoom={12}
+        options={{
+          fullscreenControl: false,
+          mapTypeControl: false,
+          streetViewControl: false,
+          zoomControl: false,
+        }}
+        onClick={onClick}
+        onBoundsChanged={onChange}
+        onCenterChanged={onChange}
+        onZoomChanged={onChange}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+      >
+        {markers.map(({ key, ...marker }) => {
+          return (
+            <Marker
+              key={key}
+              {...marker}
+              onClick={() => {
+                onClickMarker && onClickMarker(key);
+              }}
+            />
+          );
+        })}
+      </GoogleMap>
+      <button
+        className="fixed right-6 bottom-6 h-14 w-14 rounded-full bg-slate-700 text-white"
+        onClick={() => {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude: lat, longitude: lng } = position.coords;
+              map?.setCenter({ lat, lng });
+            },
+            (error) => {
+              console.error(error);
+            },
+            {
+              enableHighAccuracy: true,
+              timeout: 5000,
+              maximumAge: 0,
+            }
+          );
+        }}
+      >
+        loc
+      </button>
+    </>
   );
 };
