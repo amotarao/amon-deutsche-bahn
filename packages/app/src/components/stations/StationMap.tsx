@@ -1,10 +1,9 @@
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, Marker, MarkerProps, useJsApiLoader } from '@react-google-maps/api';
 import debounce from 'lodash.debounce';
 import React, { useCallback, useState, useMemo } from 'react';
-import { Station } from '../../types/station';
 
 export type StationMapProps = {
-  stations: Station[];
+  markers: (MarkerProps & { key: string })[];
   onLoad?: (map: google.maps.Map) => void;
   onChange?: () => void;
   onClick?: (e: google.maps.MapMouseEvent) => void;
@@ -12,7 +11,7 @@ export type StationMapProps = {
 };
 
 export const StationMap: React.FC<StationMapProps> = ({
-  stations,
+  markers,
   onClick,
   onLoad: onLoadToParent,
   onChange: onChangeToParent,
@@ -57,8 +56,10 @@ export const StationMap: React.FC<StationMapProps> = ({
       center={center}
       zoom={12}
       options={{
+        fullscreenControl: false,
         mapTypeControl: false,
         streetViewControl: false,
+        zoomControl: false,
       }}
       onClick={onClick}
       onBoundsChanged={onChange}
@@ -67,21 +68,13 @@ export const StationMap: React.FC<StationMapProps> = ({
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
-      {stations.map((station) => {
-        const categoryNumber = parseInt(station.dbRisStationCateogry.replace(/^CATEGORY_/, '') ?? '7', 10);
-        const label = { 1: '1', 2: '2', 3: '3', 4: '4', 5: '', 6: '', 7: '' }[categoryNumber];
-        const opacity = { 1: 1, 2: 0.9, 3: 0.8, 4: 0.6, 5: 0.4, 6: 0.4, 7: 0.4 }[categoryNumber];
-
+      {markers.map(({ key, ...marker }) => {
         return (
           <Marker
-            key={station.dbRisStationId}
-            title={station.name}
-            label={label}
-            opacity={opacity}
-            zIndex={opacity}
-            position={{ lat: station.position.lat, lng: station.position.lng }}
+            key={key}
+            {...marker}
             onClick={() => {
-              onClickMarker && onClickMarker(station.dbRisStationId);
+              onClickMarker && onClickMarker(key);
             }}
           />
         );

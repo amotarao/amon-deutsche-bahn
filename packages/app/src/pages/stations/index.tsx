@@ -1,3 +1,4 @@
+import { MarkerProps } from '@react-google-maps/api';
 import { collection, doc, endAt, getDocs, orderBy, Query, query, startAt, updateDoc, where } from 'firebase/firestore';
 import * as geofire from 'geofire-common';
 import debounce from 'lodash.debounce';
@@ -46,6 +47,21 @@ const Page: NextPage = () => {
   // stations
   const [station, setStation] = useState<Station | null>(null);
   const [stations, setStations] = useState<Station[]>([]);
+  const markers = useMemo<(MarkerProps & { key: string })[]>(() => {
+    return stations.map((station) => {
+      const categoryNumber = parseInt(station.dbRisStationCateogry.replace(/^CATEGORY_/, '') ?? '7', 10);
+      const label = { 1: '1', 2: '2', 3: '3', 4: '4', 5: '', 6: '', 7: '' }[categoryNumber];
+      const opacity = { 1: 1, 2: 0.9, 3: 0.8, 4: 0.6, 5: 0.4, 6: 0.4, 7: 0.4 }[categoryNumber];
+      return {
+        key: station.dbRisStationId,
+        title: station.name,
+        label: label,
+        opacity: opacity,
+        zIndex: opacity,
+        position: { lat: station.position.lat, lng: station.position.lng },
+      };
+    });
+  }, [stations]);
   const stationsQueries = useMemo(() => {
     let q = query(collection(firestore, 'stations'));
     const maxDistance = 20000;
@@ -99,9 +115,9 @@ const Page: NextPage = () => {
         <title>Stations</title>
       </Head>
 
-      <div className="h-[480px] w-full">
+      <div className="h-screen h-[-webkit-fill-available] w-full">
         <StationMap
-          stations={stations}
+          markers={markers}
           onLoad={setMap}
           onChange={onChangeMap}
           onClick={onClickMap}
