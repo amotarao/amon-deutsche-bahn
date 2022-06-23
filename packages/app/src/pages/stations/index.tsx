@@ -64,7 +64,7 @@ const Page: NextPage = () => {
   }, [stations]);
   const stationsQueries = useMemo(() => {
     let q = query(collection(firestore, 'stations'));
-    const maxDistance = 20000;
+    const maxDistance = 10000;
 
     if (filters.categories.length) {
       q = query(q, where('dbRisStationCateogry', 'in', filters.categories));
