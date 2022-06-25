@@ -115,7 +115,7 @@ const Page: NextPage = () => {
         <title>Stations</title>
       </Head>
 
-      <div className="h-screen h-[-webkit-fill-available] w-full">
+      <div className="h-[calc(var(--vh)*100)] w-full">
         <StationMap
           markers={markers}
           onLoad={setMap}
