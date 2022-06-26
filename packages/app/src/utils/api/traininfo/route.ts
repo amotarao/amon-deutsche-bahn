@@ -63,7 +63,7 @@ const extractInformation = (information: string[]): StationInformation => {
   return {
     changedPlatform: information.includes('Gleiswechsel'),
     noStop: information.includes('Halt entfällt'),
-    extraStop: information.includes('"(zusätzlicher Halt)"'),
+    extraStop: information.includes('(zusätzlicher Halt)'),
     message: information.filter((i) => !['Gleiswechsel', 'Halt entfällt', '(zusätzlicher Halt)'].includes(i)),
   };
 };
