@@ -13,7 +13,7 @@ export const StationIdList: React.FC<StationIdListProps> = ({ ids, onClick }) =>
       {ids.map((id) => (
         <li key={id}>
           <button
-            className="p-2 text-xs underline"
+            className="px-4 py-2 text-xs underline"
             onClick={() => {
               onClick && onClick(id);
             }}
