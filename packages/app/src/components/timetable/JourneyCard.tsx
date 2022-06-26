@@ -47,9 +47,15 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, journey }) 
           {journey.platform}
         </p>
       </div>
-      {'information' in journey && <InformationField information={journey.information} />}
-      {'arrivalInformation' in journey && <InformationField information={journey.arrivalInformation} />}
-      {'departureInformation' in journey && <InformationField information={journey.departureInformation} />}
+      {
+        <InformationField
+          informations={[
+            'information' in journey ? journey.information : null,
+            'arrivalInformation' in journey ? journey.arrivalInformation : null,
+            'departureInformation' in journey ? journey.departureInformation : null,
+          ]}
+        />
+      }
       {journey.message && (
         <div className="w-full">
           <p lang="de-DE">{journey.message.title}</p>
@@ -80,25 +86,26 @@ const TimeField: React.FC<TimeFieldProps> = ({ information, time, actualTime, de
 };
 
 type InformationFieldProps = {
-  information: JourneyInformation | null;
+  informations: (JourneyInformation | null)[];
 };
 
-const InformationField: React.FC<InformationFieldProps> = ({ information }) => {
-  if (!information) {
-    return null;
-  }
+const InformationField: React.FC<InformationFieldProps> = ({ informations }) => {
+  const informationSet = new Set();
 
-  const informationText = [
-    information.replaced ? `Replaced: ${information.replacedTo}` : '',
-    information.changedRoute ? 'Changed Route' : '',
-    information.changedOrigin ? `Changed Origin: ${information.changedOriginTo}` : '',
-    information.changedDestination ? `Changed Destination: ${information.changedDestinationTo}` : '',
-    information.specialTrain ? 'Special Train' : '',
-    information.replacementTrain ? `Replacement Train: ${information.replacementTrainFrom}` : '',
-    ...information.others,
-  ]
-    .filter((info) => info)
-    .join(', ');
+  informations.forEach((information) => {
+    if (information === null) {
+      return;
+    }
+    information.replaced && informationSet.add(`Replaced: ${information.replacedTo}`);
+    information.changedRoute && informationSet.add('Changed Route');
+    information.changedOrigin && informationSet.add(`Changed Origin: ${information.changedOriginTo}`);
+    information.changedDestination && informationSet.add(`Changed Destination: ${information.changedDestinationTo}`);
+    information.specialTrain && informationSet.add('Special Train');
+    information.replacementTrain && informationSet.add(`Replacement Train: ${information.replacementTrainFrom}`);
+    information.others.forEach((other) => informationSet.add(other));
+  });
+
+  const informationText = Array.from(informationSet).join(', ');
 
   if (!informationText) {
     return null;
