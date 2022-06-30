@@ -6,6 +6,7 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { JourneyCard } from '../../../components/timetable/JourneyCard';
 import { StationIdList } from '../../../components/timetable/StationIdList';
 import { TimetableFilter } from '../../../components/timetable/TimetableFilter';
+import { fetchTimetable as fetchTimetableModule } from '../../../modules/fetch-api/timetable';
 import { TimetableResponse, TimetableWithArrivalDepartureResponse } from '../../../utils/api/timetable/types';
 
 type Props = {
@@ -47,21 +48,7 @@ const Page: NextPage<Props> = () => {
     () =>
       debounce(async (query: TimetableRequestQuery) => {
         setIsFetching(true);
-
-        const url = new URL(
-          query.type === 'both' ? `${location.origin}/api/timetable/depArr` : `${location.origin}/api/timetable`
-        );
-        url.searchParams.set('station', query.name);
-        url.searchParams.set('id', query.id);
-        url.searchParams.set('date', query.date);
-        url.searchParams.set('time', query.time);
-        url.searchParams.set('filter', query.filter);
-        url.searchParams.set('type', query.type);
-        url.searchParams.set('ignoreNullablePlatform', query.ignoreNullablePlatform);
-
-        const res = await fetch(url);
-        const json = (await res.json()) as TimetableResponse | TimetableWithArrivalDepartureResponse;
-
+        const json = await fetchTimetableModule(query);
         setData(json);
         setIsFetching(false);
       }, 1000),
