@@ -13,7 +13,7 @@ export const fetchTimetable = async (
   const queryString = JSON.stringify(query);
   const now = new Date();
   const cache = caches.find((cache) => cache.queryString === queryString);
-  if (cache && cache.fetchedAt.getTime() + 1000 * 60 * 3 < now.getTime()) {
+  if (cache && cache.fetchedAt.getTime() + 1000 * 60 * 3 >= now.getTime()) {
     return cache.data;
   }
   if (cache) {
