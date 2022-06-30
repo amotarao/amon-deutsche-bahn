@@ -123,6 +123,19 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             className="mr-2"
             type="radio"
             name="type"
+            value="both"
+            checked={type === 'both'}
+            onChange={(e) => {
+              onChange({ type: e.target.value });
+            }}
+          />
+          Both
+        </label>
+        <label className="flex grow items-center py-2 pl-4 pr-2">
+          <input
+            className="mr-2"
+            type="radio"
+            name="type"
             value="dep"
             checked={type === 'dep'}
             onChange={(e) => {
@@ -143,19 +156,6 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             }}
           />
           Arrival
-        </label>
-        <label className="flex grow items-center py-2 pl-4 pr-2">
-          <input
-            className="mr-2"
-            type="radio"
-            name="type"
-            value="both"
-            checked={type === 'both'}
-            onChange={(e) => {
-              onChange({ type: e.target.value });
-            }}
-          />
-          Both
         </label>
         <label className="flex grow items-center py-2 pl-4 pr-2">
           <input

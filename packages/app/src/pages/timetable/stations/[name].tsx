@@ -76,7 +76,7 @@ const Page: NextPage<Props> = () => {
       date: (router.query.date as string) || '',
       time: (router.query.time as string) || '',
       filter: (router.query.filter as string) || 'all',
-      type: (router.query.type as string) || 'dep',
+      type: (router.query.type as string) || 'both',
       ignoreNullablePlatform: router.query.ignoreNullablePlatform === 'true' ? 'true' : 'false',
     }));
     setIsReady(true);
@@ -117,7 +117,7 @@ const Page: NextPage<Props> = () => {
       date: (router.query.date as string) || getDefaultDate(),
       time: (router.query.time as string) || getDefaultTime(),
       filter: (router.query.filter as string) || 'all',
-      type: (router.query.type as string) || 'dep',
+      type: (router.query.type as string) || 'both',
       ignoreNullablePlatform: router.query.ignoreNullablePlatform === 'true' ? 'true' : 'false',
     };
     fetchTimetable(query);
@@ -135,7 +135,7 @@ const Page: NextPage<Props> = () => {
         date={query.date || getDefaultDate()}
         time={query.time || getDefaultTime()}
         filter={query.filter || 'all'}
-        type={query.type || 'dep'}
+        type={query.type || 'both'}
         ignoreNullablePlatform={query.ignoreNullablePlatform}
         onChange={(arg) => {
           updateQuery(arg);
