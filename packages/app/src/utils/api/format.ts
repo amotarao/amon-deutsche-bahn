@@ -27,7 +27,7 @@ export const arrayQuery = (query: NextApiRequest['query'], key: string, required
   if (Array.isArray(value)) {
     return value;
   }
-  return [value];
+  return value.split(',');
 };
 
 export const booleanQuery = (query: NextApiRequest['query'], key: string, required = false): boolean => {

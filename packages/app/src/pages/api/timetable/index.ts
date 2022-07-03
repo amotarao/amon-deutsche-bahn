@@ -1,18 +1,28 @@
-import { query } from 'firebase/firestore';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
-import { formatDate, stringifyQuery, booleanQuery } from '../../../utils/api/format';
+import { formatDate, stringifyQuery, booleanQuery, arrayQuery } from '../../../utils/api/format';
 import { parseData } from '../../../utils/api/timetable/data';
 import { parseIdSelect } from '../../../utils/api/timetable/id-select';
 import { parseJourneys } from '../../../utils/api/timetable/journey';
 import { Journey, TimetableData } from '../../../utils/api/timetable/types';
 
-const parseFilter = (filter: string): string => {
-  if (filter === 'all') return '11111';
-  if (filter === 'express') return '11100';
-  if (filter === 'train') return '00010';
-  if (filter === 's') return '00001';
-  return '11111';
+const parseFilter = (filter: string[]): string => {
+  const f = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
+  console.log(filter);
+
+  if (filter.includes('express')) {
+    f[0] = '1';
+    f[1] = '1';
+    f[2] = '1';
+  }
+  if (filter.includes('train')) {
+    f[3] = '1';
+  }
+  if (filter.includes('s-bahn')) {
+    f[4] = '1';
+  }
+
+  return f.join('');
 };
 
 const generateUrl = (query: NextApiRequest['query']): string => {
@@ -21,7 +31,7 @@ const generateUrl = (query: NextApiRequest['query']): string => {
   url.searchParams.set('boardType', stringifyQuery(query, 'type', true));
   url.searchParams.set('date', formatDate(stringifyQuery(query, 'date', true)));
   url.searchParams.set('time', stringifyQuery(query, 'time', true));
-  url.searchParams.set('productsFilter', parseFilter(stringifyQuery(query, 'filter')));
+  url.searchParams.set('productsFilter', parseFilter(arrayQuery(query, 'filter')));
   url.searchParams.set('rt', '1');
   url.searchParams.set('start', 'yes');
   return url.href;

@@ -34,7 +34,7 @@ export type TimetableRequestQuery = {
   date: string;
   time: string;
   type: string;
-  filter: string;
+  filter: string[];
   ignoreNullablePlatform: 'true' | 'false';
 };
 
@@ -62,7 +62,7 @@ const Page: NextPage<Props> = () => {
     id: '',
     date: '',
     time: '',
-    filter: '',
+    filter: [],
     type: '',
     ignoreNullablePlatform: 'false',
   });
@@ -75,7 +75,7 @@ const Page: NextPage<Props> = () => {
       id: (router.query.id as string) || '',
       date: (router.query.date as string) || '',
       time: (router.query.time as string) || '',
-      filter: (router.query.filter as string) || 'all',
+      filter: (router.query.filter as string[]) || ['express', 'train', 's-bahn'],
       type: (router.query.type as string) || 'both',
       ignoreNullablePlatform: router.query.ignoreNullablePlatform === 'true' ? 'true' : 'false',
     }));
@@ -116,7 +116,7 @@ const Page: NextPage<Props> = () => {
       id: (router.query.id as string) || '',
       date: (router.query.date as string) || getDefaultDate(),
       time: (router.query.time as string) || getDefaultTime(),
-      filter: (router.query.filter as string) || 'all',
+      filter: (router.query.filter as string[]) || ['express', 'train', 's-bahn'],
       type: (router.query.type as string) || 'both',
       ignoreNullablePlatform: router.query.ignoreNullablePlatform === 'true' ? 'true' : 'false',
     };
@@ -134,7 +134,7 @@ const Page: NextPage<Props> = () => {
         name={query.name}
         date={query.date || getDefaultDate()}
         time={query.time || getDefaultTime()}
-        filter={query.filter || 'all'}
+        filter={query.filter || ['express', 'train', 's-bahn']}
         type={query.type || 'both'}
         ignoreNullablePlatform={query.ignoreNullablePlatform}
         onChange={(arg) => {

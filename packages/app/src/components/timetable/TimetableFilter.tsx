@@ -5,7 +5,7 @@ export type TimetableFilterProps = {
   name: string;
   date: string;
   time: string;
-  filter: string;
+  filter: string[];
   type: string;
   ignoreNullablePlatform: 'true' | 'false';
   onChange: (obj: Partial<TimetableRequestQuery>) => void;
@@ -67,25 +67,15 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
         <label className="flex grow items-center py-2 pl-4 pr-2">
           <input
             className="mr-2"
-            type="radio"
-            name="filter"
-            value="all"
-            checked={filter === 'all'}
-            onChange={(e) => {
-              onChange({ filter: e.target.value });
-            }}
-          />
-          All
-        </label>
-        <label className="flex grow items-center py-2 pl-4 pr-2">
-          <input
-            className="mr-2"
-            type="radio"
+            type="checkbox"
             name="filter"
             value="express"
-            checked={filter === 'express'}
+            checked={filter.includes('express')}
             onChange={(e) => {
-              onChange({ filter: e.target.value });
+              console.log(e);
+              onChange({
+                filter: [...filter, 'express'].filter((item) => (item === 'express' ? e.target.checked : true)),
+              });
             }}
           />
           Express
@@ -93,12 +83,13 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
         <label className="flex grow items-center py-2 pl-4 pr-2">
           <input
             className="mr-2"
-            type="radio"
+            type="checkbox"
             name="filter"
             value="train"
-            checked={filter === 'train'}
+            checked={filter.includes('train')}
             onChange={(e) => {
-              onChange({ filter: e.target.value });
+              console.log(e);
+              onChange({ filter: [...filter, 'train'].filter((item) => (item === 'train' ? e.target.checked : true)) });
             }}
           />
           Train
@@ -106,12 +97,15 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
         <label className="flex grow items-center py-2 pl-4 pr-2">
           <input
             className="mr-2"
-            type="radio"
+            type="checkbox"
             name="filter"
-            value="s"
-            checked={filter === 's'}
+            value="s-bahn"
+            checked={filter.includes('s-bahn')}
             onChange={(e) => {
-              onChange({ filter: e.target.value });
+              console.log(e);
+              onChange({
+                filter: [...filter, 's-bahn'].filter((item) => (item === 's-bahn' ? e.target.checked : true)),
+              });
             }}
           />
           S-Bahn
