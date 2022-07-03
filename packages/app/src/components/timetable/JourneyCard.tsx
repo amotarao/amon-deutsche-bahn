@@ -47,15 +47,13 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, journey }) 
           {journey.platform}
         </p>
       </div>
-      {
-        <InformationField
-          informations={[
-            'information' in journey ? journey.information : null,
-            'arrivalInformation' in journey ? journey.arrivalInformation : null,
-            'departureInformation' in journey ? journey.departureInformation : null,
-          ]}
-        />
-      }
+      <InformationField
+        informations={[
+          'information' in journey ? journey.information : null,
+          'arrivalInformation' in journey ? journey.arrivalInformation : null,
+          'departureInformation' in journey ? journey.departureInformation : null,
+        ]}
+      />
       {journey.message && (
         <div className="w-full">
           <p lang="de-DE">{journey.message.title}</p>
