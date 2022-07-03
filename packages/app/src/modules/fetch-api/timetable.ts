@@ -24,15 +24,13 @@ export const fetchTimetable = async (
   const url = new URL(
     query.type === 'both' ? `${location.origin}/api/timetable/depArr` : `${location.origin}/api/timetable`
   );
-  url.searchParams.append('station', query.name);
-  url.searchParams.append('id', query.id);
-  url.searchParams.append('date', query.date);
-  url.searchParams.append('time', query.time);
-  query.filter.forEach((f) => {
-    url.searchParams.append('filter', f);
-  });
-  url.searchParams.append('type', query.type);
-  url.searchParams.append('ignoreNullablePlatform', query.ignoreNullablePlatform);
+  url.searchParams.set('station', query.name);
+  url.searchParams.set('id', query.id);
+  url.searchParams.set('date', query.date);
+  url.searchParams.set('time', query.time);
+  url.searchParams.set('filter', query.filter.join(','));
+  url.searchParams.set('type', query.type);
+  url.searchParams.set('ignoreNullablePlatform', query.ignoreNullablePlatform);
 
   const res = await fetch(url);
   const data = (await res.json()) as TimetableResponse | TimetableWithArrivalDepartureResponse;

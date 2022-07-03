@@ -8,7 +8,7 @@ import { Journey, TimetableData } from '../../../utils/api/timetable/types';
 
 const parseFilter = (filter: string[]): string => {
   const f = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
-  console.log(filter);
+  console.log({ filter });
 
   if (filter.includes('express')) {
     f[0] = '1';
@@ -31,7 +31,7 @@ const generateUrl = (query: NextApiRequest['query']): string => {
   url.searchParams.set('boardType', stringifyQuery(query, 'type', true));
   url.searchParams.set('date', formatDate(stringifyQuery(query, 'date', true)));
   url.searchParams.set('time', stringifyQuery(query, 'time', true));
-  url.searchParams.set('productsFilter', parseFilter(arrayQuery(query, 'filter')));
+  url.searchParams.set('productsFilter', parseFilter(stringifyQuery(query, 'filter').split(',')));
   url.searchParams.set('rt', '1');
   url.searchParams.set('start', 'yes');
   return url.href;
