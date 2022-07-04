@@ -1,14 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
-import { formatDate, stringifyQuery, booleanQuery, arrayQuery } from '../../../utils/api/format';
+import { formatDate, stringifyQuery, booleanQuery } from '../../../utils/api/format';
 import { parseData } from '../../../utils/api/timetable/data';
 import { parseIdSelect } from '../../../utils/api/timetable/id-select';
 import { parseJourneys } from '../../../utils/api/timetable/journey';
 import { Journey, TimetableData } from '../../../utils/api/timetable/types';
 
-const parseFilter = (filter: string[]): string => {
+const parseFilter = (filter: string | string[]): string => {
+  filter = Array.isArray(filter) ? filter : filter.split(',');
   const f = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
-  console.log({ filter });
 
   if (filter.includes('express')) {
     f[0] = '1';
@@ -31,7 +31,7 @@ const generateUrl = (query: NextApiRequest['query']): string => {
   url.searchParams.set('boardType', stringifyQuery(query, 'type', true));
   url.searchParams.set('date', formatDate(stringifyQuery(query, 'date', true)));
   url.searchParams.set('time', stringifyQuery(query, 'time', true));
-  url.searchParams.set('productsFilter', parseFilter(stringifyQuery(query, 'filter').split(',')));
+  url.searchParams.set('productsFilter', parseFilter(stringifyQuery(query, 'filter')));
   url.searchParams.set('rt', '1');
   url.searchParams.set('start', 'yes');
   return url.href;

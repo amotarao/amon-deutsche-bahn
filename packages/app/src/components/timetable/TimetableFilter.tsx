@@ -72,7 +72,6 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             value="express"
             checked={filter.includes('express')}
             onChange={(e) => {
-              console.log(e);
               onChange({
                 filter: [...filter, 'express'].filter((item) => (item === 'express' ? e.target.checked : true)),
               });
@@ -88,8 +87,9 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             value="train"
             checked={filter.includes('train')}
             onChange={(e) => {
-              console.log(e);
-              onChange({ filter: [...filter, 'train'].filter((item) => (item === 'train' ? e.target.checked : true)) });
+              onChange({
+                filter: [...filter, 'train'].filter((item) => (item === 'train' ? e.target.checked : true)),
+              });
             }}
           />
           Train
@@ -102,7 +102,6 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             value="s-bahn"
             checked={filter.includes('s-bahn')}
             onChange={(e) => {
-              console.log(e);
               onChange({
                 filter: [...filter, 's-bahn'].filter((item) => (item === 's-bahn' ? e.target.checked : true)),
               });

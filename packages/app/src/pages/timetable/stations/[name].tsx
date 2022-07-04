@@ -75,7 +75,11 @@ const Page: NextPage<Props> = () => {
       id: (router.query.id as string) || '',
       date: (router.query.date as string) || '',
       time: (router.query.time as string) || '',
-      filter: (router.query.filter as string[]) || ['express', 'train', 's-bahn'],
+      filter: Array.isArray(router.query.filter)
+        ? router.query.filter
+        : router.query.filter
+        ? [router.query.filter]
+        : ['express', 'train', 's-bahn'],
       type: (router.query.type as string) || 'both',
       ignoreNullablePlatform: router.query.ignoreNullablePlatform === 'true' ? 'true' : 'false',
     }));
@@ -116,7 +120,11 @@ const Page: NextPage<Props> = () => {
       id: (router.query.id as string) || '',
       date: (router.query.date as string) || getDefaultDate(),
       time: (router.query.time as string) || getDefaultTime(),
-      filter: (router.query.filter as string[]) || ['express', 'train', 's-bahn'],
+      filter: Array.isArray(router.query.filter)
+        ? router.query.filter
+        : router.query.filter
+        ? [router.query.filter]
+        : ['express', 'train', 's-bahn'],
       type: (router.query.type as string) || 'both',
       ignoreNullablePlatform: router.query.ignoreNullablePlatform === 'true' ? 'true' : 'false',
     };

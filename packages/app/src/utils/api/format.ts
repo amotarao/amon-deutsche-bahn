@@ -24,7 +24,6 @@ export const arrayQuery = (query: NextApiRequest['query'], key: string, required
   }
 
   const value = query[key];
-  console.log(value);
   if (Array.isArray(value)) {
     return value;
   }
