@@ -34,7 +34,7 @@ export type TimetableRequestQuery = {
   date: string;
   time: string;
   type: string;
-  filter: string[];
+  filter: string | string[];
   ignoreNullablePlatform: 'true' | 'false';
 };
 
@@ -62,7 +62,7 @@ const Page: NextPage<Props> = () => {
     id: '',
     date: '',
     time: '',
-    filter: [],
+    filter: '',
     type: '',
     ignoreNullablePlatform: 'false',
   });

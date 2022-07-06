@@ -1,3 +1,4 @@
+import { ChangeEventHandler, useMemo } from 'react';
 import { TimetableRequestQuery } from '../../pages/timetable/stations/[name]';
 
 export type TimetableFilterProps = {
@@ -5,7 +6,7 @@ export type TimetableFilterProps = {
   name: string;
   date: string;
   time: string;
-  filter: string[];
+  filter: string | string[];
   type: string;
   ignoreNullablePlatform: 'true' | 'false';
   onChange: (obj: Partial<TimetableRequestQuery>) => void;
@@ -21,6 +22,16 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
   ignoreNullablePlatform,
   onChange,
 }) => {
+  const filterArray = useMemo(() => {
+    return Array.isArray(filter) ? filter : [filter];
+  }, [filter]);
+
+  const onChangeFilter: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const value = e.target.value;
+    const newFilter = [...filterArray, value].filter((item) => (item === value ? e.target.checked : true));
+    onChange({ filter: newFilter.length <= 1 ? newFilter[0] || '' : newFilter });
+  };
+
   return (
     <div className={`flex flex-col border-b border-gray-300 bg-white text-sm ${className}`}>
       <div className="border-b border-dashed border-gray-300">
@@ -71,11 +82,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             name="filter"
             value="express"
             checked={filter.includes('express')}
-            onChange={(e) => {
-              onChange({
-                filter: [...filter, 'express'].filter((item) => (item === 'express' ? e.target.checked : true)),
-              });
-            }}
+            onChange={onChangeFilter}
           />
           Express
         </label>
@@ -86,11 +93,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             name="filter"
             value="train"
             checked={filter.includes('train')}
-            onChange={(e) => {
-              onChange({
-                filter: [...filter, 'train'].filter((item) => (item === 'train' ? e.target.checked : true)),
-              });
-            }}
+            onChange={onChangeFilter}
           />
           Train
         </label>
@@ -101,11 +104,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             name="filter"
             value="s-bahn"
             checked={filter.includes('s-bahn')}
-            onChange={(e) => {
-              onChange({
-                filter: [...filter, 's-bahn'].filter((item) => (item === 's-bahn' ? e.target.checked : true)),
-              });
-            }}
+            onChange={onChangeFilter}
           />
           S-Bahn
         </label>
