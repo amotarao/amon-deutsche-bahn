@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@supports (-webkit-touch-callout: none) {
-  html {
-    height: -webkit-fill-available;
-  }
-
-  body {
-    min-height: 100vh;
-    height: -webkit-fill-available;
-    padding-bottom: 160px;
-  }
+body {
+  padding-bottom: 160px;
 }
