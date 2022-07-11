@@ -28,7 +28,7 @@ export const fetchTimetable = async (
   url.searchParams.set('id', query.id);
   url.searchParams.set('date', query.date);
   url.searchParams.set('time', query.time);
-  url.searchParams.set('filter', query.filter.join(','));
+  url.searchParams.set('filter', Array.isArray(query.filter) ? query.filter.join(',') : query.filter);
   url.searchParams.set('type', query.type);
   url.searchParams.set('ignoreNullablePlatform', query.ignoreNullablePlatform);
 
