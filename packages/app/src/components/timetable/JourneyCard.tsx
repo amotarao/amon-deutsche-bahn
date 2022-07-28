@@ -89,6 +89,7 @@ type InformationFieldProps = {
 
 const InformationField: React.FC<InformationFieldProps> = ({ informations }) => {
   const informationSet = new Set();
+  const informationOthersSet = new Set();
 
   informations.forEach((information) => {
     if (information === null) {
@@ -96,14 +97,15 @@ const InformationField: React.FC<InformationFieldProps> = ({ informations }) => 
     }
     information.replaced && informationSet.add(`Replaced: ${information.replacedTo}`);
     information.changedRoute && informationSet.add('Changed Route');
-    information.changedOrigin && informationSet.add(`Changed Origin: ${information.changedOriginTo}`);
+    information.changedOrigin && informationSet.add(`Changed Origin`);
     information.changedDestination && informationSet.add(`Changed Destination: ${information.changedDestinationTo}`);
     information.specialTrain && informationSet.add('Special Train');
     information.replacementTrain && informationSet.add(`Replacement Train: ${information.replacementTrainFrom}`);
-    information.others.forEach((other) => informationSet.add(other));
+    information.others.forEach((other) => informationOthersSet.add(other));
   });
 
   const informationText = Array.from(informationSet).join(', ');
+  const informationOthersText = Array.from(informationOthersSet).join(', ');
 
   if (!informationText) {
     return null;
@@ -111,7 +113,8 @@ const InformationField: React.FC<InformationFieldProps> = ({ informations }) => 
 
   return (
     <div className="w-full">
-      <p className="text-red-500">* {informationText}</p>
+      <p className="font-bold text-red-500">* {informationText}</p>
+      <p className="text-red-500">* {informationOthersText}</p>
     </div>
   );
 };
