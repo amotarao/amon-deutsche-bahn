@@ -106,6 +106,20 @@ const Page: NextPage<Props> = () => {
     if (JSON.stringify(router.query) === JSON.stringify(query)) {
       return;
     }
+    if (
+      JSON.stringify([
+        router.query.name,
+        router.query.id,
+        router.query.date,
+        router.query.time,
+        router.query.type,
+        router.query.ignoreNullablePlatform,
+      ]) === JSON.stringify([query.name, query.id, query.date, query.time, query.type, query.ignoreNullablePlatform]) &&
+      (Array.isArray(router.query.filter) ? router.query.filter.join(',') : router.query.filter) ===
+        (Array.isArray(query.filter) ? query.filter.join(',') : query.filter)
+    ) {
+      return;
+    }
     router.replace({
       pathname: router.pathname,
       query,
