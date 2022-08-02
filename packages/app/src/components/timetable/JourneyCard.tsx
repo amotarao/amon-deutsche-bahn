@@ -113,8 +113,8 @@ const InformationField: React.FC<InformationFieldProps> = ({ informations }) => 
 
   return (
     <div className="w-full">
-      <p className="font-bold text-red-500">* {informationText}</p>
-      <p className="text-red-500">* {informationOthersText}</p>
+      {informationText && <p className="font-bold text-red-500">* {informationText}</p>}
+      {informationOthersText && <p className="text-red-500">* {informationOthersText}</p>}
     </div>
   );
 };
