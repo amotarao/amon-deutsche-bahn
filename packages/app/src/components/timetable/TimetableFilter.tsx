@@ -75,80 +75,44 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
         />
       </div>
       <div className="flex border-b border-dashed border-gray-300">
-        <label className="flex grow items-center py-2 pl-4 pr-2">
-          <input
-            className="mr-2"
-            type="checkbox"
-            name="filter"
-            value="express"
-            checked={filter.includes('express')}
-            onChange={onChangeFilter}
-          />
-          Express
-        </label>
-        <label className="flex grow items-center py-2 pl-4 pr-2">
-          <input
-            className="mr-2"
-            type="checkbox"
-            name="filter"
-            value="train"
-            checked={filter.includes('train')}
-            onChange={onChangeFilter}
-          />
-          Train
-        </label>
-        <label className="flex grow items-center py-2 pl-4 pr-2">
-          <input
-            className="mr-2"
-            type="checkbox"
-            name="filter"
-            value="s-bahn"
-            checked={filter.includes('s-bahn')}
-            onChange={onChangeFilter}
-          />
-          S-Bahn
-        </label>
+        {[
+          { id: 'express', name: 'Express' },
+          { id: 'train', name: 'Train' },
+          { id: 's-bahn', name: 'S-Bahn' },
+        ].map((currentFilter) => (
+          <label className="flex grow items-center py-2 pl-4 pr-2" key={currentFilter.id}>
+            <input
+              className="mr-2"
+              type="checkbox"
+              name="filter"
+              value={currentFilter.id}
+              checked={filter.includes(currentFilter.id)}
+              onChange={onChangeFilter}
+            />
+            {currentFilter.name}
+          </label>
+        ))}
       </div>
       <div className="flex">
-        <label className="flex grow items-center py-2 pl-4 pr-2">
-          <input
-            className="mr-2"
-            type="radio"
-            name="type"
-            value="both"
-            checked={type === 'both'}
-            onChange={(e) => {
-              onChange({ type: e.target.value });
-            }}
-          />
-          Both
-        </label>
-        <label className="flex grow items-center py-2 pl-4 pr-2">
-          <input
-            className="mr-2"
-            type="radio"
-            name="type"
-            value="dep"
-            checked={type === 'dep'}
-            onChange={(e) => {
-              onChange({ type: e.target.value });
-            }}
-          />
-          Departure
-        </label>
-        <label className="flex grow items-center py-2 pl-4 pr-2">
-          <input
-            className="mr-2"
-            type="radio"
-            name="type"
-            value="arr"
-            checked={type === 'arr'}
-            onChange={(e) => {
-              onChange({ type: e.target.value });
-            }}
-          />
-          Arrival
-        </label>
+        {[
+          { id: 'both', name: 'Both' },
+          { id: 'dep', name: 'Dep' },
+          { id: 'arr', name: 'Arr' },
+        ].map((currentType) => (
+          <label className="flex grow items-center py-2 pl-4 pr-2" key={currentType.id}>
+            <input
+              className="mr-2"
+              type="radio"
+              name="type"
+              value={currentType.id}
+              checked={type === currentType.id}
+              onChange={(e) => {
+                onChange({ type: e.target.value });
+              }}
+            />
+            {currentType.name}
+          </label>
+        ))}
         <label className="flex grow items-center py-2 pl-4 pr-2">
           <input
             className="mr-2"
