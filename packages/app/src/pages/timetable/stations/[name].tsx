@@ -195,12 +195,12 @@ export default Page;
 
 const getDefaultDate = (): string => {
   const date = new Date();
-  date.setHours(date.getHours() + 2);
+  date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
   return date.toISOString().slice(0, 10);
 };
 
 const getDefaultTime = (): string => {
   const date = new Date();
-  date.setHours(date.getHours() + 2);
+  date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
   return date.toISOString().slice(11, 16);
 };
