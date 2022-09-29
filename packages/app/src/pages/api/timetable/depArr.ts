@@ -57,6 +57,11 @@ const api = async (req: NextApiRequest, res: NextApiResponse) => {
         return false;
       }
 
+      // イギリスの列車名不明
+      if (arrJourney.train === '---') {
+        return false;
+      }
+
       // S-Bahn
       if (arrJourney.train.match(/^S(\s*\d+)?$/)) {
         if (
