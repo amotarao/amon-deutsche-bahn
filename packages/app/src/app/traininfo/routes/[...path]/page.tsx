@@ -1,42 +1,39 @@
-import type { GetServerSideProps, NextPage } from 'next';
-import Head from 'next/head';
-import { RouteStationCard } from '../../../components/traininfo/RouteStationCard';
-import { TraininfoResponse } from '../../../utils/api/traininfo/types';
+import type { Metadata } from 'next';
+import { RouteStationCard } from '../../../../components/traininfo/RouteStationCard';
+import { TraininfoResponse } from '../../../../utils/api/traininfo/types';
 
-type Params = {
-  path: string[];
-};
-
-type Props = {
-  data: TraininfoResponse;
-};
-
-export const getServerSideProps: GetServerSideProps<Props, Params> = async ({ params, query, req }) => {
-  const path = (params?.path ?? []).join('/');
-
-  const url = new URL(
-    `${
-      new URL(`${req.headers['x-forwarded-proto']}://${req.headers['x-forwarded-host']}`).origin
-    }/api/traininfo/${path}`
-  );
-  'date' in query && typeof query.date === 'string' && url.searchParams.set('date', query.date);
-
-  const res = await fetch(url);
-  const data = (await res.json()) as TraininfoResponse;
-
-  return {
-    props: {
-      data,
-    },
+type PageProps = {
+  params: {
+    path: string[];
+  };
+  searchParams: {
+    [key: string]: string;
   };
 };
 
-const Page: NextPage<Props> = ({ data }) => {
+type Data = {
+  data: TraininfoResponse;
+};
+
+const getData = async ({ params, searchParams }: PageProps): Promise<Data> => {
+  const path = (params?.path ?? []).join('/');
+
+  const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/traininfo/${path}`);
+  'date' in searchParams && typeof searchParams.date === 'string' && url.searchParams.set('date', searchParams.date);
+
+  const res = await fetch(url, { next: { revalidate: 60 } });
+  const data = (await res.json()) as TraininfoResponse;
+
+  return {
+    data,
+  };
+};
+
+export default async function Page({ params, searchParams }: PageProps) {
+  const { data } = await getData({ params, searchParams });
+
   return (
     <div>
-      <Head>
-        <title>Train Info at {data?.data.train ?? ''}</title>
-      </Head>
       {data && (
         <div className="flex flex-col gap-2">
           <div className="px-4 py-2">
@@ -71,6 +68,12 @@ const Page: NextPage<Props> = ({ data }) => {
       )}
     </div>
   );
-};
+}
 
-export default Page;
+export const generateMetadata = async ({ params, searchParams }: PageProps): Promise<Metadata> => {
+  const { data } = await getData({ params, searchParams });
+
+  return {
+    title: `Train Info at ${data?.data.train ?? ''}`,
+  };
+};
