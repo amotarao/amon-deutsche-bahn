@@ -1,7 +1,7 @@
 'use client';
 
 import debounce from 'lodash.debounce';
-import { Route } from 'next';
+import type { Route } from 'next';
 import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { ChangeEventHandler, useMemo } from 'react';

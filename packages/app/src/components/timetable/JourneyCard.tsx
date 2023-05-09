@@ -1,3 +1,4 @@
+import type { Route } from 'next';
 import Link from 'next/link';
 import { Journey, JourneyInformation, JourneyWithArrivalDepartureInformation } from '../../utils/api/timetable/types';
 
@@ -30,7 +31,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, journey }) 
           />
         )}
         <p className="shrink grow">
-          <Link className="underline" href={journey.detailHref}>
+          <Link className="underline" href={journey.detailHref as Route}>
             {journey.train}
           </Link>
           <br />
