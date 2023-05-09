@@ -138,9 +138,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
             className="mr-2"
             type="checkbox"
             name="ignoreNullablePlatform"
-            defaultChecked={
-              ignoreNullablePlatform === 'true' ? true : ignoreNullablePlatform === undefined ? true : false
-            }
+            defaultChecked={ignoreNullablePlatform === 'true' ? true : false}
             onChange={(e) => {
               replace({ ignoreNullablePlatform: e.target.checked ? 'true' : 'false' });
             }}
