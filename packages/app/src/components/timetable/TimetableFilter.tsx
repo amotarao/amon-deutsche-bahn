@@ -1,3 +1,6 @@
+import debounce from 'lodash.debounce';
+import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
+import { useRouter } from 'next/router';
 import { ChangeEventHandler, useMemo } from 'react';
 import { TimetableRequestQuery } from '../../pages/timetable/stations/[name]';
 
@@ -9,7 +12,6 @@ export type TimetableFilterProps = {
   filter: string | string[];
   type: string;
   ignoreNullablePlatform: 'true' | 'false';
-  onChange: (obj: Partial<TimetableRequestQuery>) => void;
 };
 
 export const TimetableFilter: React.FC<TimetableFilterProps> = ({
@@ -20,8 +22,25 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
   filter,
   type,
   ignoreNullablePlatform,
-  onChange,
 }) => {
+  const router = useRouter();
+  const onChange = useMemo(
+    () =>
+      debounce(({ name = '', ...query }: Partial<TimetableRequestQuery>) => {
+        router.replace(
+          formatUrl({
+            pathname: router.pathname.replace('[name]', name),
+            query: {
+              ...router.query,
+              ...query,
+              name: null,
+            },
+          })
+        );
+      }, 1000),
+    [router]
+  );
+
   const filterArray = useMemo(() => {
     return Array.isArray(filter) ? filter : [filter];
   }, [filter]);
@@ -39,7 +58,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           className="w-full px-4 py-2"
           type="text"
           name="name"
-          value={name}
+          defaultValue={name}
           onChange={(e) => {
             onChange({ name: e.target.value, id: '' });
           }}
@@ -59,7 +78,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           className="w-1/2 px-4 py-2"
           type="date"
           name="date"
-          value={date}
+          defaultValue={date}
           onChange={(e) => {
             onChange({ date: e.target.value });
           }}
@@ -68,7 +87,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           className="w-1/2 px-4 py-2"
           type="time"
           name="time"
-          value={time}
+          defaultValue={time}
           onChange={(e) => {
             onChange({ time: e.target.value });
           }}
@@ -85,7 +104,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
               className="mr-2"
               type="checkbox"
               name="filter"
-              value={currentFilter.id}
+              defaultValue={currentFilter.id}
               checked={filter.includes(currentFilter.id)}
               onChange={onChangeFilter}
             />
@@ -104,7 +123,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
               className="mr-2"
               type="radio"
               name="type"
-              value={currentType.id}
+              defaultValue={currentType.id}
               checked={type === currentType.id}
               onChange={(e) => {
                 onChange({ type: e.target.value });

@@ -1,9 +1,14 @@
+import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
 export type StationIdListProps = {
   ids: string[];
-  onClick?: (id: string) => void;
 };
 
-export const StationIdList: React.FC<StationIdListProps> = ({ ids, onClick }) => {
+export const StationIdList: React.FC<StationIdListProps> = ({ ids }) => {
+  const router = useRouter();
+
   if (!ids.length) {
     return null;
   }
@@ -12,14 +17,19 @@ export const StationIdList: React.FC<StationIdListProps> = ({ ids, onClick }) =>
     <ul className="flex flex-col gap-1">
       {ids.map((id) => (
         <li key={id}>
-          <button
+          <Link
             className="px-4 py-2 text-xs underline"
-            onClick={() => {
-              onClick && onClick(id);
-            }}
+            href={formatUrl({
+              pathname: router.asPath.split('?').slice(0, 1).join(''),
+              query: {
+                ...router.query,
+                id,
+              },
+            })}
+            replace
           >
             {id}
-          </button>
+          </Link>
         </li>
       ))}
     </ul>
