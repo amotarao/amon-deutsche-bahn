@@ -1,95 +1,42 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useEffect, useState, useCallback } from 'react';
 import { RouteStationCard } from '../../../components/traininfo/RouteStationCard';
 import { TraininfoResponse } from '../../../utils/api/traininfo/types';
 
+type Params = {
+  path: string[];
+};
+
 type Props = {
-  path: string;
+  data: TraininfoResponse;
 };
 
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  };
-};
+export const getServerSideProps: GetServerSideProps<Props, Params> = async ({ params, query, req }) => {
+  const path = (params?.path ?? []).join('/');
 
-export const getStaticProps: GetStaticProps<Props> = (context) => {
+  const url = new URL(
+    `${
+      new URL(`${req.headers['x-forwarded-proto']}://${req.headers['x-forwarded-host']}`).origin
+    }/api/traininfo/${path}`
+  );
+  'date' in query && typeof query.date === 'string' && url.searchParams.set('date', query.date);
+
+  const res = await fetch(url);
+  const data = (await res.json()) as TraininfoResponse;
+
   return {
     props: {
-      path: ((context.params?.path as string[]) ?? []).join('/'),
+      data,
     },
   };
 };
 
-type RequestQuery = {
-  path: string;
-  date: string;
-};
-
-const Page: NextPage<Props> = ({ path }) => {
-  const router = useRouter();
-
-  // request ready
-  const [isFetching, setIsFetching] = useState(false);
-  const [data, setData] = useState<TraininfoResponse | null>(null);
-  const fetchTraininfo = useCallback(
-    (query: RequestQuery) => {
-      (async () => {
-        setIsFetching(true);
-
-        const url = new URL(`${location.origin}/api/traininfo/${path}`);
-        url.searchParams.set('date', query.date);
-
-        const res = await fetch(url);
-        const json = (await res.json()) as TraininfoResponse;
-
-        setData(json);
-        setIsFetching(false);
-      })();
-    },
-    [path]
-  );
-
-  // initialize query
-  const [isReady, setIsReady] = useState(false);
-  const [query, setQuery] = useState<RequestQuery>({
-    path: '',
-    date: '',
-  });
-  useEffect(() => {
-    if (!router.isReady || isReady) {
-      return;
-    }
-    setQuery(() => ({
-      path,
-      date: (router.query.date as string) || new Date().toISOString().slice(0, 10),
-    }));
-    setIsReady(true);
-  }, [path, router.isReady, router.query, isReady]);
-
-  // fetch
-  useEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
-    const query: RequestQuery = {
-      path,
-      date: (router.query.date as string) || new Date().toISOString().slice(0, 10),
-    };
-    fetchTraininfo(query);
-  }, [path, router.isReady, router.query, fetchTraininfo]);
-
+const Page: NextPage<Props> = ({ data }) => {
   return (
     <div>
       <Head>
         <title>Train Info at {data?.data.train ?? ''}</title>
       </Head>
-
-      {isFetching && <p className="px-4 py-2 text-sm">Fetching</p>}
-
       {data && (
         <div className="flex flex-col gap-2">
           <div className="px-4 py-2">
