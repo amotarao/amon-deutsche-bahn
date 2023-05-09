@@ -104,8 +104,10 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
               className="mr-2"
               type="checkbox"
               name="filter"
-              defaultValue={currentFilter.id}
-              checked={filter.includes(currentFilter.id)}
+              value={currentFilter.id}
+              defaultChecked={
+                typeof filter === 'string' ? filter === currentFilter.id : filter.includes(currentFilter.id)
+              }
               onChange={onChangeFilter}
             />
             {currentFilter.name}
@@ -123,8 +125,8 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
               className="mr-2"
               type="radio"
               name="type"
-              defaultValue={currentType.id}
-              checked={type === currentType.id}
+              value={currentType.id}
+              defaultChecked={type === currentType.id}
               onChange={(e) => {
                 onChange({ type: e.target.value });
               }}
@@ -137,7 +139,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             className="mr-2"
             type="checkbox"
             name="ignoreNullablePlatform"
-            checked={ignoreNullablePlatform === 'true'}
+            defaultChecked={ignoreNullablePlatform === 'true'}
             onChange={(e) => {
               onChange({ ignoreNullablePlatform: e.target.checked ? 'true' : 'false' });
             }}
