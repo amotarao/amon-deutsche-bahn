@@ -8,7 +8,8 @@ const caches: {
 }[] = [];
 
 export const fetchTimetable = async (
-  query: TimetableRequestQuery
+  query: TimetableRequestQuery,
+  origin: string = location.origin
 ): Promise<TimetableResponse | TimetableWithArrivalDepartureResponse> => {
   const queryString = JSON.stringify(query);
   const now = new Date();
@@ -21,9 +22,7 @@ export const fetchTimetable = async (
     caches.splice(index, 1);
   }
 
-  const url = new URL(
-    query.type === 'both' ? `${location.origin}/api/timetable/depArr` : `${location.origin}/api/timetable`
-  );
+  const url = new URL(query.type === 'both' ? `${origin}/api/timetable/depArr` : `${origin}/api/timetable`);
   url.searchParams.set('station', query.name);
   url.searchParams.set('id', query.id);
   url.searchParams.set('date', query.date);
