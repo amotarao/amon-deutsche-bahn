@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { JourneyCard } from '../../../../components/timetable/JourneyCard';
 import { StationIdList } from '../../../../components/timetable/StationIdList';
 import { TimetableFilter } from '../../../../components/timetable/TimetableFilter';
-import { fetchTimetable as fetchTimetableModule } from '../../../../modules/fetch-api/timetable';
+import { fetchTimetable } from '../../../../modules/fetch-api/timetable';
 import { TimetableResponse, TimetableWithArrivalDepartureResponse } from '../../../../utils/api/timetable/types';
 
 type PageProps = {
@@ -46,7 +46,7 @@ const getData = async ({ params, searchParams = {} }: PageProps): Promise<Data> 
     ignoreNullablePlatform: searchParams.ignoreNullablePlatform === 'true' ? 'true' : 'false',
   };
 
-  const data = await fetchTimetableModule(query);
+  const data = await fetchTimetable(query);
 
   return {
     data,
