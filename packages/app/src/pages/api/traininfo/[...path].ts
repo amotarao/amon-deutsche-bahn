@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler, NextApiRequest } from 'next';
 import fetch from 'node-fetch';
 import { arrayQuery, formatDate, stringifyQuery } from '../../../utils/api/format';
 import { parseData } from '../../../utils/api/traininfo/data';
@@ -13,7 +13,7 @@ const generateUrl = (query: NextApiRequest['query']): string => {
   return url.href;
 };
 
-const api = async (req: NextApiRequest, res: NextApiResponse) => {
+const api: NextApiHandler = async (req, res) => {
   const resp = await fetch(generateUrl(req.query));
   const html = await resp.text();
 

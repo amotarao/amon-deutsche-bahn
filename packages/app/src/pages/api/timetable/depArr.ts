@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler, NextApiRequest } from 'next';
 import fetch from 'node-fetch';
 import { stringifyQuery } from '../../../utils/api/format';
 import {
@@ -22,7 +22,7 @@ const fetchJourneys = async (query: NextApiRequest['query'], type: 'dep' | 'arr'
   return json;
 };
 
-const api = async (req: NextApiRequest, res: NextApiResponse) => {
+const api: NextApiHandler = async (req, res) => {
   const [depRes, arrRes] = await Promise.all([fetchJourneys(req.query, 'dep'), fetchJourneys(req.query, 'arr')]);
   const {
     data: { journeys: depJourneys, ...baseData },
