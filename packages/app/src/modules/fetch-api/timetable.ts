@@ -1,28 +1,14 @@
-import { TimetableRequestQuery } from '../../pages/timetable/stations/[name]';
+import { TimetableRequestQuery } from '../../app/timetable/stations/[name]/page';
 import { TimetableResponse, TimetableWithArrivalDepartureResponse } from '../../utils/api/timetable/types';
 
-const caches: {
-  data: TimetableResponse | TimetableWithArrivalDepartureResponse;
-  queryString: string;
-  fetchedAt: Date;
-}[] = [];
-
 export const fetchTimetable = async (
-  query: TimetableRequestQuery,
-  origin: string = location.origin
+  query: TimetableRequestQuery
 ): Promise<TimetableResponse | TimetableWithArrivalDepartureResponse> => {
-  const queryString = JSON.stringify(query);
-  const now = new Date();
-  const cache = caches.find((cache) => cache.queryString === queryString);
-  if (cache && cache.fetchedAt.getTime() + 1000 * 60 * 3 >= now.getTime()) {
-    return cache.data;
-  }
-  if (cache) {
-    const index = caches.indexOf(cache);
-    caches.splice(index, 1);
-  }
-
-  const url = new URL(query.type === 'both' ? `${origin}/api/timetable/depArr` : `${origin}/api/timetable`);
+  const url = new URL(
+    query.type === 'both'
+      ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/timetable/depArr`
+      : `${process.env.NEXT_PUBLIC_BASE_URL}/api/timetable`
+  );
   url.searchParams.set('station', query.name);
   url.searchParams.set('id', query.id);
   url.searchParams.set('date', query.date);
@@ -31,9 +17,7 @@ export const fetchTimetable = async (
   url.searchParams.set('type', query.type);
   url.searchParams.set('ignoreNullablePlatform', query.ignoreNullablePlatform);
 
-  const res = await fetch(url);
+  const res = await fetch(url, { next: { revalidate: 60 * 3 } });
   const data = (await res.json()) as TimetableResponse | TimetableWithArrivalDepartureResponse;
-
-  caches.push({ data, queryString, fetchedAt: now });
   return data;
 };

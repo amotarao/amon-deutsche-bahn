@@ -1,9 +1,9 @@
+'use client';
+
 import { MarkerProps } from '@react-google-maps/api';
 import { collection, endAt, getDocs, orderBy, Query, query, startAt, where } from 'firebase/firestore';
 import * as geofire from 'geofire-common';
 import debounce from 'lodash.debounce';
-import type { GetStaticProps, NextPage } from 'next';
-import Head from 'next/head';
 import { useCallback, useMemo, useState, useEffect } from 'react';
 import { StationCard } from '../../components/stations/StationCard';
 import { StationMap } from '../../components/stations/StationMap';
@@ -11,13 +11,11 @@ import { firestore } from '../../modules/firebase';
 import { Station } from '../../types/station';
 import { calcDistance } from '../../utils/distance';
 
-export const getStaticProps: GetStaticProps = () => {
-  return {
-    props: {},
-  };
+export type MainProps = {
+  className?: string;
 };
 
-const Page: NextPage = () => {
+export const Main: React.FC<MainProps> = ({ className }) => {
   // map
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [center, setCenter] = useState<{ lat: number; lng: number }>({ lat: 50.107145, lng: 8.663789 });
@@ -109,11 +107,7 @@ const Page: NextPage = () => {
   };
 
   return (
-    <div>
-      <Head>
-        <title>Stations</title>
-      </Head>
-
+    <div className={className}>
       <div className="relative h-screen w-full">
         <StationMap
           markers={markers}
@@ -142,5 +136,3 @@ const Page: NextPage = () => {
     </div>
   );
 };
-
-export default Page;
