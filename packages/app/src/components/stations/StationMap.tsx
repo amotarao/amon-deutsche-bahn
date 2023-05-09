@@ -82,7 +82,7 @@ export const StationMap: React.FC<StationMapProps> = ({
         })}
       </GoogleMap>
       <button
-        className="fixed right-6 bottom-6 h-14 w-14 rounded-full bg-slate-700 text-white"
+        className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-slate-700 text-white"
         onClick={() => {
           navigator.geolocation.getCurrentPosition(
             (position) => {

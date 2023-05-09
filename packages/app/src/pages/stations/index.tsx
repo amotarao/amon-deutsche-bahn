@@ -128,7 +128,7 @@ const Page: NextPage = () => {
         {station && (
           <div className="absolute bottom-0 left-0 h-1/2 w-full rounded-t-2xl bg-white p-4 shadow-lg">
             <button
-              className="absolute top-2 right-2"
+              className="absolute right-2 top-2"
               onClick={() => {
                 setStation(null);
               }}
