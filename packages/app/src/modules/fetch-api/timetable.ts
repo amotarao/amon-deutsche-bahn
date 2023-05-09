@@ -6,7 +6,7 @@ export type TimetableRequestQuery = {
   date: string;
   time: string;
   type: string;
-  filter: string | string[];
+  filter: string[];
   ignoreNullablePlatform: 'true' | 'false';
 };
 
@@ -51,13 +51,13 @@ export const fetchTimetable = async (
   return data;
 };
 
-const getDefaultDate = (): string => {
+export const getDefaultDate = (): string => {
   const date = new Date();
   date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
   return date.toISOString().slice(0, 10);
 };
 
-const getDefaultTime = (): string => {
+export const getDefaultTime = (): string => {
   const date = new Date();
   date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
   return date.toISOString().slice(11, 16);
