@@ -51,11 +51,21 @@ export default async function Page({ params, searchParams }: PageProps) {
           </div>
           <div className="flex flex-col gap-2 px-4 py-2">
             <div>
-              {data.data.information.map((info, i) => (
-                <p className="text-xs" key={i}>
-                  {info}
-                </p>
-              ))}
+              {data.data.information.map((info, i) => {
+                if (info.startsWith('5    10   15   20   25   30')) {
+                  return (
+                    <p className="my-2 whitespace-pre-wrap font-mono text-xs tracking-widest" key={i}>
+                      {`        ${info}`}
+                    </p>
+                  );
+                }
+
+                return (
+                  <p className="text-xs" key={i}>
+                    {info}
+                  </p>
+                );
+              })}
             </div>
             {data.data.remark.map((r, i) => (
               <div key={i}>
