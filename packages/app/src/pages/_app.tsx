@@ -1,19 +1,8 @@
 import type { AppProps } from 'next/app';
 import Link from 'next/link';
-import { useCallback, useEffect } from 'react';
 import '../styles/globals.css';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  const setVh = useCallback(() => {
-    const height = window.innerHeight;
-    document.documentElement.style.setProperty('--vh', height / 100 + 'px');
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('load', setVh);
-    window.addEventListener('resize', setVh);
-  }, [setVh]);
-
   return (
     <>
       {false && (
