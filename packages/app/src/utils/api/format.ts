@@ -12,7 +12,7 @@ export const stringifyQuery = (query: NextApiRequest['query'], key: string, requ
   if (Array.isArray(value)) {
     return value[0];
   }
-  return value;
+  return value || '';
 };
 
 export const arrayQuery = (query: NextApiRequest['query'], key: string, required = false): string[] => {
@@ -27,7 +27,7 @@ export const arrayQuery = (query: NextApiRequest['query'], key: string, required
   if (Array.isArray(value)) {
     return value;
   }
-  return [value];
+  return value ? [value] : [];
 };
 
 export const booleanQuery = (query: NextApiRequest['query'], key: string, required = false): boolean => {
