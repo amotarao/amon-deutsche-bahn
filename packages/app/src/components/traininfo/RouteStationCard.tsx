@@ -1,3 +1,4 @@
+import type { Route } from 'next';
 import Link from 'next/link';
 import { Station } from '../../utils/api/traininfo/types';
 
@@ -17,7 +18,7 @@ export const RouteStationCard: React.FC<RouteStationCardProps> = ({ className, s
                 ? 'font-bold text-red-500 underline'
                 : 'underline'
             }
-            href={station.detailHref}
+            href={station.detailHref as Route}
           >
             {station.name}
           </Link>
