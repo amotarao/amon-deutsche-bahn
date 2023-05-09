@@ -4,58 +4,42 @@ import debounce from 'lodash.debounce';
 import type { Route } from 'next';
 import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { ChangeEventHandler, useMemo } from 'react';
-import { TimetableRequestQuery } from '../../app/timetable/stations/[name]/page';
+import { useMemo } from 'react';
+import { TimetableRequestQuery } from '../../modules/fetch-api/timetable';
 
 export type TimetableFilterProps = {
   className?: string;
   name: string;
-  date: string;
-  time: string;
-  filter: string | string[];
-  type: string;
-  ignoreNullablePlatform: 'true' | 'false';
 };
 
-export const TimetableFilter: React.FC<TimetableFilterProps> = ({
-  className,
-  name,
-  date,
-  time,
-  filter,
-  type,
-  ignoreNullablePlatform,
-}) => {
+export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, name }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const onChange = useMemo(
-    () =>
-      debounce(({ name = '', ...query }: Partial<TimetableRequestQuery>) => {
-        router.replace(
-          formatUrl({
-            pathname: name ? `/timetable/stations/${name}` : pathname,
-            query: {
-              ...Object.fromEntries(searchParams?.entries() ?? []),
-              ...query,
-              name: null,
-            },
-          }) as Route
-        );
-      }, 1000),
-    [router, pathname, searchParams]
-  );
+  const id = searchParams?.get('id') ?? '';
+  const date = searchParams?.get('date') ?? new Date().toISOString().slice(0, 10);
+  const time = searchParams?.get('time') ?? new Date().toISOString().slice(11, 16);
+  const filter = useMemo(() => searchParams?.getAll('filter') ?? ['express', 'train', 's-bahn'], [searchParams]);
+  const type = searchParams?.get('type') ?? 'both';
+  const ignoreNullablePlatform = (searchParams?.get('ignoreNullablePlatform') ?? 'false') === 'true' ? 'true' : 'false';
 
-  const filterArray = useMemo(() => {
-    return Array.isArray(filter) ? filter : [filter];
-  }, [filter]);
-
-  const onChangeFilter: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const value = e.target.value;
-    const newFilter = [...filterArray, value].filter((item) => (item === value ? e.target.checked : true));
-    onChange({ filter: newFilter.length <= 1 ? newFilter[0] || '' : newFilter });
-  };
+  const replace = debounce(({ name = '', ...query }: Partial<TimetableRequestQuery>) => {
+    router.replace(
+      formatUrl({
+        pathname: name ? `/timetable/stations/${name}` : pathname,
+        query: {
+          id,
+          date,
+          time,
+          filter,
+          type,
+          ignoreNullablePlatform,
+          ...query,
+        },
+      }) as Route
+    );
+  }, 1000);
 
   return (
     <div className={`flex flex-col border-b border-gray-300 bg-white text-sm ${className}`}>
@@ -66,16 +50,16 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           name="name"
           defaultValue={name}
           onChange={(e) => {
-            onChange({ name: e.target.value, id: '' });
+            replace({ name: e.target.value, id: '' });
           }}
           onKeyDown={(e) => {
             if (e.key !== 'Enter') {
               return;
             }
-            onChange({ id: '' });
+            replace({ id: '' });
           }}
           onBlur={(e) => {
-            onChange({ name: e.target.value, id: '' });
+            replace({ name: e.target.value, id: '' });
           }}
         />
       </div>
@@ -86,7 +70,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           name="date"
           defaultValue={date}
           onChange={(e) => {
-            onChange({ date: e.target.value });
+            replace({ date: e.target.value });
           }}
         />
         <input
@@ -95,7 +79,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           name="time"
           defaultValue={time}
           onChange={(e) => {
-            onChange({ time: e.target.value });
+            replace({ time: e.target.value });
           }}
         />
       </div>
@@ -111,10 +95,14 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
               type="checkbox"
               name="filter"
               value={currentFilter.id}
-              defaultChecked={
-                typeof filter === 'string' ? filter === currentFilter.id : filter.includes(currentFilter.id)
-              }
-              onChange={onChangeFilter}
+              defaultChecked={filter.length === 0 ? true : filter.includes(currentFilter.id)}
+              onChange={(e) => {
+                const value = e.target.value;
+                const newFilter = ['express', 'train', 's-bahn'].filter((item) =>
+                  item === value ? e.target.checked : true
+                );
+                replace({ filter: newFilter.length <= 1 ? newFilter[0] || '' : newFilter });
+              }}
             />
             {currentFilter.name}
           </label>
@@ -134,7 +122,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
               value={currentType.id}
               defaultChecked={type === currentType.id}
               onChange={(e) => {
-                onChange({ type: e.target.value });
+                replace({ type: e.target.value });
               }}
             />
             {currentType.name}
@@ -147,7 +135,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             name="ignoreNullablePlatform"
             defaultChecked={ignoreNullablePlatform === 'true'}
             onChange={(e) => {
-              onChange({ ignoreNullablePlatform: e.target.checked ? 'true' : 'false' });
+              replace({ ignoreNullablePlatform: e.target.checked ? 'true' : 'false' });
             }}
           />
           has Plf
