@@ -15,11 +15,17 @@ export const StationCard: React.FC<StationCardProps> = ({ className, station }) 
     <div className={`${className} flex flex-col gap-2 rounded border p-2`}>
       <p>{station.name}</p>
       <div className="flex gap-2">
-        <Link href={`/timetable/stations/${encodeURIComponent(station.name)}?type=dep`}>
-          <a className="block rounded border border-slate-300 px-2 py-0.5">Departure</a>
+        <Link
+          className="block rounded border border-slate-300 px-2 py-0.5"
+          href={`/timetable/stations/${encodeURIComponent(station.name)}?type=dep`}
+        >
+          Departure
         </Link>
-        <Link href={`/timetable/stations/${encodeURIComponent(station.name)}?type=arr`}>
-          <a className="block rounded border border-slate-300 px-2 py-0.5">Arrival</a>
+        <Link
+          className="block rounded border border-slate-300 px-2 py-0.5"
+          href={`/timetable/stations/${encodeURIComponent(station.name)}?type=arr`}
+        >
+          Arrival
         </Link>
         <a
           className="block rounded border border-slate-300 px-2 py-0.5"

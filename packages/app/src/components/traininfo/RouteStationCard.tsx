@@ -11,16 +11,15 @@ export const RouteStationCard: React.FC<RouteStationCardProps> = ({ className, s
     <div className={`flex flex-wrap gap-2 px-4 py-2 text-xs ${className}`}>
       <div className="flex w-full gap-2">
         <div className="shrink grow">
-          <Link href={station.detailHref}>
-            <a
-              className={
-                station.information.noStop || station.information.extraStop
-                  ? 'font-bold text-red-500 underline'
-                  : 'underline'
-              }
-            >
-              {station.name}
-            </a>
+          <Link
+            className={
+              station.information.noStop || station.information.extraStop
+                ? 'font-bold text-red-500 underline'
+                : 'underline'
+            }
+            href={station.detailHref}
+          >
+            {station.name}
           </Link>
           <br />
           {station.information.noStop && <span className="font-bold text-red-500">No Stop</span>}
