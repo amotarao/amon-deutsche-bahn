@@ -1,8 +1,11 @@
+'use client';
+
 import debounce from 'lodash.debounce';
+import { Route } from 'next';
 import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { ChangeEventHandler, useMemo } from 'react';
-import { TimetableRequestQuery } from '../../pages/timetable/stations/[name]';
+import { TimetableRequestQuery } from '../../app/timetable/stations/[name]/page';
 
 export type TimetableFilterProps = {
   className?: string;
@@ -24,21 +27,24 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
   ignoreNullablePlatform,
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const onChange = useMemo(
     () =>
       debounce(({ name = '', ...query }: Partial<TimetableRequestQuery>) => {
         router.replace(
           formatUrl({
-            pathname: router.pathname.replace('[name]', name),
+            pathname: name ? `/timetable/stations/${name}` : pathname,
             query: {
-              ...router.query,
+              ...Object.fromEntries(searchParams?.entries() ?? []),
               ...query,
               name: null,
             },
-          })
+          }) as Route
         );
       }, 1000),
-    [router]
+    [router, pathname, searchParams]
   );
 
   const filterArray = useMemo(() => {

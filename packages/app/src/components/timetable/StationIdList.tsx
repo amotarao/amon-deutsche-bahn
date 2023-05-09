@@ -1,13 +1,13 @@
-import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export type StationIdListProps = {
   ids: string[];
 };
 
 export const StationIdList: React.FC<StationIdListProps> = ({ ids }) => {
-  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   if (!ids.length) {
     return null;
@@ -19,13 +19,13 @@ export const StationIdList: React.FC<StationIdListProps> = ({ ids }) => {
         <li key={id}>
           <Link
             className="px-4 py-2 text-xs underline"
-            href={formatUrl({
-              pathname: router.asPath.split('?').slice(0, 1).join(''),
+            href={{
+              pathname,
               query: {
-                ...router.query,
+                ...Object.fromEntries(searchParams?.entries() ?? []),
                 id,
               },
-            })}
+            }}
             replace
           >
             {id}
