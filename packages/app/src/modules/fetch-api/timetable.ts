@@ -1,3 +1,6 @@
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { TimetableResponse, TimetableWithArrivalDepartureResponse } from '../../utils/api/timetable/types';
 
 export type TimetableRequestQuery = {
@@ -20,10 +23,8 @@ export const fetchTimetable = async (
   const query: TimetableRequestQuery = {
     name,
     id: (searchParams.id as string) || '',
-    // ToDo: デフォルト値はドイツ時間にするべき
-    date: (searchParams.date as string) || getDefaultDate(),
-    // ToDo: デフォルト値はドイツ時間にするべき
-    time: (searchParams.time as string) || getDefaultTime(),
+    date: (searchParams.date as string) || getGermanyDate(),
+    time: (searchParams.time as string) || getGermanyTime(),
     filter: Array.isArray(searchParams.filter)
       ? searchParams.filter
       : searchParams.filter
@@ -51,14 +52,13 @@ export const fetchTimetable = async (
   return data;
 };
 
-export const getDefaultDate = (): string => {
-  const date = new Date();
-  date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
-  return date.toISOString().slice(0, 10);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+export const getGermanyDate = (): string => {
+  return dayjs().tz('Europe/Berlin').format('YYYY-MM-DD');
 };
 
-export const getDefaultTime = (): string => {
-  const date = new Date();
-  date.setHours(date.getHours() - date.getTimezoneOffset() / 60);
-  return date.toISOString().slice(11, 16);
+export const getGermanyTime = (): string => {
+  return dayjs().tz('Europe/Berlin').format('HH:mm');
 };

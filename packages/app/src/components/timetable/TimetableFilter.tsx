@@ -4,7 +4,7 @@ import debounce from 'lodash.debounce';
 import type { Route } from 'next';
 import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { TimetableRequestQuery, getDefaultDate, getDefaultTime } from '../../modules/fetch-api/timetable';
+import { TimetableRequestQuery, getGermanyDate, getGermanyTime } from '../../modules/fetch-api/timetable';
 
 export type TimetableFilterProps = {
   className?: string;
@@ -73,7 +73,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
           className="w-1/2 px-4 py-2"
           type="date"
           name="date"
-          defaultValue={date || getDefaultDate()}
+          defaultValue={date || getGermanyDate()}
           onChange={(e) => {
             replace({ date: e.target.value });
           }}
@@ -82,7 +82,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
           className="w-1/2 px-4 py-2"
           type="time"
           name="time"
-          defaultValue={time || getDefaultTime()}
+          defaultValue={time || getGermanyTime()}
           onChange={(e) => {
             replace({ time: e.target.value });
           }}
