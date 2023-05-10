@@ -19,6 +19,7 @@ export const RouteStationCard: React.FC<RouteStationCardProps> = ({ className, s
                 : 'underline'
             }
             href={station.detailHref as Route}
+            prefetch={false}
           >
             {station.name}
           </Link>

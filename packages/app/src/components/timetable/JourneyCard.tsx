@@ -31,7 +31,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, journey }) 
           />
         )}
         <p className="shrink grow">
-          <Link className="underline" href={journey.detailHref as Route}>
+          <Link className="underline" href={journey.detailHref as Route} prefetch={false}>
             {journey.train}
           </Link>
           <br />

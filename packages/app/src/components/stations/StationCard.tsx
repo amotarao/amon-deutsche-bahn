@@ -18,12 +18,14 @@ export const StationCard: React.FC<StationCardProps> = ({ className, station }) 
         <Link
           className="block rounded border border-slate-300 px-2 py-0.5"
           href={`/timetable/stations/${encodeURIComponent(station.name)}?type=dep`}
+          prefetch={false}
         >
           Departure
         </Link>
         <Link
           className="block rounded border border-slate-300 px-2 py-0.5"
           href={`/timetable/stations/${encodeURIComponent(station.name)}?type=arr`}
+          prefetch={false}
         >
           Arrival
         </Link>

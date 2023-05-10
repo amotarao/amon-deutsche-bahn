@@ -27,6 +27,7 @@ export const StationIdList: React.FC<StationIdListProps> = ({ ids }) => {
               },
             }}
             replace
+            prefetch={false}
           >
             {id}
           </Link>
