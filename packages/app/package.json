@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@react-google-maps/api": "^2.12.0",
-    "@react-hook/debounce": "^4.0.0",
     "cheerio": "^1.0.0-rc.11",
     "dayjs": "^1.11.7",
     "firebase": "^9.8.3",
