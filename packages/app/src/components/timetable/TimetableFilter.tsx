@@ -53,7 +53,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
           className="w-full px-4 py-2"
           type="text"
           name="name"
-          defaultValue={name}
+          defaultValue={decodeURIComponent(name)}
           onChange={(e) => {
             replace({ name: e.target.value, id: '' });
           }}
