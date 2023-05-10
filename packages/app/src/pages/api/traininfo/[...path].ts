@@ -1,5 +1,4 @@
 import type { NextApiHandler, NextApiRequest } from 'next';
-import fetch from 'node-fetch';
 import { arrayQuery, formatDate, stringifyQuery } from '../../../utils/api/format';
 import { parseData } from '../../../utils/api/traininfo/data';
 import { parseRoute } from '../../../utils/api/traininfo/route';

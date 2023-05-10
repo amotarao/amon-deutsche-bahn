@@ -1,5 +1,4 @@
 import type { NextApiHandler, NextApiRequest } from 'next';
-import fetch from 'node-fetch';
 import { stringifyQuery } from '../../../utils/api/format';
 import {
   TimetableResponse,

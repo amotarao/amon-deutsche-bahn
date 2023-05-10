@@ -1,5 +1,4 @@
 import type { NextApiHandler, NextApiRequest } from 'next';
-import fetch from 'node-fetch';
 import { formatDate, stringifyQuery, booleanQuery } from '../../../utils/api/format';
 import { parseData } from '../../../utils/api/timetable/data';
 import { parseIdSelect } from '../../../utils/api/timetable/id-select';
