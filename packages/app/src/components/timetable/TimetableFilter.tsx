@@ -1,31 +1,34 @@
 'use client';
 
-import debounce from 'lodash.debounce';
 import type { Route } from 'next';
 import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { TimetableRequestQuery, getGermanyDate, getGermanyTime } from '../../modules/fetch-api/timetable';
+import { useState } from 'react';
+import { getGermanyDate, getGermanyTime } from '../../modules/fetch-api/timetable';
 
 export type TimetableFilterProps = {
   className?: string;
   name: string;
 };
 
-export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, name }) => {
+export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, name: defaultName }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const id = searchParams?.has('id') ? searchParams.get('id') || undefined : undefined;
-  const date = searchParams?.has('date') ? searchParams.get('date') || undefined : undefined;
-  const time = searchParams?.has('time') ? searchParams.get('time') || undefined : undefined;
-  const filter = searchParams?.has('filter') ? searchParams.getAll('filter') || undefined : undefined;
-  const type = searchParams?.has('type') ? searchParams.get('type') || undefined : undefined;
-  const ignoreNullablePlatform = searchParams?.has('ignoreNullablePlatform')
-    ? searchParams.get('ignoreNullablePlatform') || undefined
-    : undefined;
+  const [name, setName] = useState(decodeURIComponent(defaultName));
+  const [id, setId] = useState(searchParams?.has('id') ? searchParams.get('id') || undefined : undefined);
+  const [date, setDate] = useState(searchParams?.has('date') ? searchParams.get('date') || undefined : undefined);
+  const [time, setTime] = useState(searchParams?.has('time') ? searchParams.get('time') || undefined : undefined);
+  const [filter, setFilter] = useState(
+    searchParams?.has('filter') ? searchParams.getAll('filter') || undefined : undefined
+  );
+  const [type, setType] = useState(searchParams?.has('type') ? searchParams.get('type') || undefined : undefined);
+  const [ignoreNullablePlatform, setIgnoreNullablePlatform] = useState(
+    searchParams?.has('ignoreNullablePlatform') ? searchParams.get('ignoreNullablePlatform') || undefined : undefined
+  );
 
-  const replace = debounce(({ name = '', ...query }: Partial<TimetableRequestQuery>) => {
+  const search = () => {
     const newQuery = Object.fromEntries(
       Object.entries({
         id,
@@ -34,8 +37,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
         filter,
         type,
         ignoreNullablePlatform,
-        ...query,
-      }).filter(([, value]) => value !== undefined)
+      }).filter(([, value]) => !!value)
     );
 
     router.replace(
@@ -44,7 +46,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
         query: newQuery,
       }) as Route
     );
-  }, 1000);
+  };
 
   return (
     <div className={`flex flex-col border-b border-gray-300 bg-white text-sm ${className}`}>
@@ -53,40 +55,51 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
           className="w-full px-4 py-2"
           type="text"
           name="name"
-          defaultValue={decodeURIComponent(name)}
+          value={name}
           onChange={(e) => {
-            replace({ name: e.target.value, id: '' });
+            setName(e.target.value);
+            setId('');
           }}
           onKeyDown={(e) => {
             if (e.key !== 'Enter') {
               return;
             }
-            replace({ id: '' });
+            setId('');
           }}
           onBlur={(e) => {
-            replace({ name: e.target.value, id: '' });
+            setName(e.target.value);
+            setId('');
           }}
         />
       </div>
-      <div className="flex border-b border-dashed border-gray-300">
+      <div className="grid grid-cols-[1fr_1fr_auto] border-b border-dashed border-gray-300">
         <input
-          className="w-1/2 px-4 py-2"
+          className="px-4 py-2 pr-2"
           type="date"
           name="date"
-          defaultValue={date || getGermanyDate()}
+          value={date || getGermanyDate()}
           onChange={(e) => {
-            replace({ date: e.target.value });
+            setDate(e.target.value);
           }}
         />
         <input
-          className="w-1/2 px-4 py-2"
+          className="px-4 py-2 pr-2"
           type="time"
           name="time"
-          defaultValue={time || getGermanyTime()}
+          value={time || getGermanyTime()}
           onChange={(e) => {
-            replace({ time: e.target.value });
+            setTime(e.target.value);
           }}
         />
+        <button
+          className="px-4 py-2 text-center"
+          onClick={() => {
+            setDate(undefined);
+            setTime(undefined);
+          }}
+        >
+          Now
+        </button>
       </div>
       <div className="flex border-b border-dashed border-gray-300">
         {[
@@ -100,20 +113,20 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
               type="checkbox"
               name="filter"
               value={currentFilter.id}
-              defaultChecked={filter && filter.length > 0 ? filter.includes(currentFilter.id) : true}
+              checked={filter && filter.length > 0 ? filter.includes(currentFilter.id) : true}
               onChange={(e) => {
                 const value = e.target.value;
                 const newFilter = ['express', 'train', 's-bahn'].filter((item) =>
                   item === value ? e.target.checked : true
                 );
-                replace({ filter: newFilter });
+                setFilter(newFilter);
               }}
             />
             {currentFilter.name}
           </label>
         ))}
       </div>
-      <div className="flex">
+      <div className="flex border-b border-dashed border-gray-300">
         {[
           { id: 'both', name: 'Both' },
           { id: 'dep', name: 'Dep' },
@@ -125,9 +138,9 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
               type="radio"
               name="type"
               value={currentType.id}
-              defaultChecked={type ? type === currentType.id : 'both' === currentType.id}
+              checked={type ? type === currentType.id : 'both' === currentType.id}
               onChange={(e) => {
-                replace({ type: e.target.value });
+                setType(e.target.value);
               }}
             />
             {currentType.name}
@@ -138,13 +151,23 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
             className="mr-2"
             type="checkbox"
             name="ignoreNullablePlatform"
-            defaultChecked={ignoreNullablePlatform === 'true' ? true : false}
+            checked={ignoreNullablePlatform === 'true' ? true : false}
             onChange={(e) => {
-              replace({ ignoreNullablePlatform: e.target.checked ? 'true' : 'false' });
+              setIgnoreNullablePlatform(e.target.checked ? 'true' : 'false');
             }}
           />
           has Plf
         </label>
+      </div>
+      <div className="grid grid-cols-1 border-dashed border-gray-300">
+        <button
+          className="px-4 py-2 text-center"
+          onClick={() => {
+            search();
+          }}
+        >
+          Search
+        </button>
       </div>
     </div>
   );
