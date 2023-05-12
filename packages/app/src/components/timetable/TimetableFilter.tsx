@@ -49,8 +49,10 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
   };
 
   return (
-    <div className={`flex flex-col border-b border-gray-300 bg-white text-sm ${className}`}>
-      <div className="border-b border-dashed border-gray-300">
+    <div
+      className={`flex flex-col bg-white text-sm [&>*]:border-b [&>*]:border-dashed [&>*]:border-gray-300 ${className}`}
+    >
+      <div className="grid grid-cols-[1fr_auto]">
         <input
           className="w-full px-4 py-2"
           type="text"
@@ -71,10 +73,18 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
             setId('');
           }}
         />
+        <button
+          className="bg-gray-200 px-4 py-2 text-center"
+          onClick={() => {
+            search();
+          }}
+        >
+          Search
+        </button>
       </div>
-      <div className="grid grid-cols-[1fr_1fr_auto] border-b border-dashed border-gray-300">
+      <div className="grid grid-cols-[1fr_1fr_auto] ">
         <input
-          className="px-4 py-2 pr-2"
+          className="w-full bg-transparent px-4 py-2 pr-2"
           type="date"
           name="date"
           value={date || getGermanyDate()}
@@ -83,7 +93,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
           }}
         />
         <input
-          className="px-4 py-2 pr-2"
+          className="w-full bg-transparent px-4 py-2 pr-2"
           type="time"
           name="time"
           value={time || getGermanyTime()}
@@ -92,7 +102,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
           }}
         />
         <button
-          className="px-4 py-2 text-center"
+          className="bg-gray-200 px-4 py-2 text-center"
           onClick={() => {
             setDate(undefined);
             setTime(undefined);
@@ -101,7 +111,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
           Now
         </button>
       </div>
-      <div className="flex border-b border-dashed border-gray-300">
+      <div className="flex">
         {[
           { id: 'express', name: 'Express' },
           { id: 'train', name: 'Train' },
@@ -126,7 +136,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
           </label>
         ))}
       </div>
-      <div className="flex border-b border-dashed border-gray-300">
+      <div className="flex">
         {[
           { id: 'both', name: 'Both' },
           { id: 'dep', name: 'Dep' },
@@ -158,16 +168,6 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
           />
           has Plf
         </label>
-      </div>
-      <div className="grid grid-cols-1 border-dashed border-gray-300">
-        <button
-          className="px-4 py-2 text-center"
-          onClick={() => {
-            search();
-          }}
-        >
-          Search
-        </button>
       </div>
     </div>
   );
