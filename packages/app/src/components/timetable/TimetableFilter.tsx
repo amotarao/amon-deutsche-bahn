@@ -79,7 +79,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
             search();
           }}
         >
-          Search
+          Go
         </button>
       </div>
       <div className="grid grid-cols-[1fr_1fr_auto] ">
