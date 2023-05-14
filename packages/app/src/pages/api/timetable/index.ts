@@ -7,21 +7,33 @@ import { Journey, TimetableData } from '../../../utils/api/timetable/types';
 
 const parseFilter = (filter: string | string[]): string => {
   filter = Array.isArray(filter) ? filter : filter.split(',');
-  const f = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0'];
+
+  const f = {
+    ice: '0',
+    ic: '0',
+    d: '0',
+    nv: '0',
+    s: '0',
+    bus: '0',
+    ferry: '0',
+    u: '0',
+    tram: '0',
+    taxi: '0',
+  };
 
   if (filter.includes('express')) {
-    f[0] = '1';
-    f[1] = '1';
-    f[2] = '1';
+    f.ice = '1';
+    f.ic = '1';
+    f.d = '1';
   }
   if (filter.includes('train')) {
-    f[3] = '1';
+    f.nv = '1';
   }
   if (filter.includes('s-bahn')) {
-    f[4] = '1';
+    f.s = '1';
   }
 
-  return f.join('');
+  return Object.values(f).join('');
 };
 
 const generateUrl = (query: NextApiRequest['query']): string => {
