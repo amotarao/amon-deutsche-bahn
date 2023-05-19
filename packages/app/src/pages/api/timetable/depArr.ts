@@ -52,7 +52,11 @@ const api: NextApiHandler = async (req, res) => {
       }
 
       // ホームの記載がないもの
-      if (!arrJourney.platform || !depJourney.platform) {
+      // ただし、フランスの長距離列車系は除く
+      if (
+        !['TGV', 'THA', 'OGV'].includes(arrJourney.train.slice(0, 3)) &&
+        (!arrJourney.platform || !depJourney.platform)
+      ) {
         return false;
       }
 
