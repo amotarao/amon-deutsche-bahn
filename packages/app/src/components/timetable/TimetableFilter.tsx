@@ -121,11 +121,11 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
               type="checkbox"
               name="filter"
               value={currentFilter.id}
-              checked={filter.length > 0 ? filter.includes(currentFilter.id) : true}
+              checked={filter.includes(currentFilter.id)}
               onChange={(e) => {
                 const value = e.target.value;
                 const newFilter = [...filter, value].filter((item) => (item === value ? e.target.checked : true));
-                setFilter(newFilter);
+                setFilter(Array.from(new Set(newFilter)));
               }}
             />
             {currentFilter.name}
