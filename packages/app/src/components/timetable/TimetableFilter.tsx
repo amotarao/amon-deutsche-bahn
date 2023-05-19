@@ -20,9 +20,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
   const [id, setId] = useState(searchParams?.has('id') ? searchParams.get('id') || undefined : undefined);
   const [date, setDate] = useState(searchParams?.has('date') ? searchParams.get('date') || undefined : undefined);
   const [time, setTime] = useState(searchParams?.has('time') ? searchParams.get('time') || undefined : undefined);
-  const [filter, setFilter] = useState(
-    searchParams?.has('filter') ? searchParams.getAll('filter') || undefined : undefined
-  );
+  const [filter, setFilter] = useState(searchParams?.has('filter') ? searchParams.getAll('filter') || [] : []);
   const [type, setType] = useState(searchParams?.has('type') ? searchParams.get('type') || undefined : undefined);
   const [ignoreNullablePlatform, setIgnoreNullablePlatform] = useState(
     searchParams?.has('ignoreNullablePlatform') ? searchParams.get('ignoreNullablePlatform') || undefined : undefined
@@ -123,12 +121,10 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
               type="checkbox"
               name="filter"
               value={currentFilter.id}
-              checked={filter && filter.length > 0 ? filter.includes(currentFilter.id) : true}
+              checked={filter.length > 0 ? filter.includes(currentFilter.id) : true}
               onChange={(e) => {
                 const value = e.target.value;
-                const newFilter = ['express', 'train', 's-bahn'].filter((item) =>
-                  item === value ? e.target.checked : true
-                );
+                const newFilter = [...filter, value].filter((item) => (item === value ? e.target.checked : true));
                 setFilter(newFilter);
               }}
             />
