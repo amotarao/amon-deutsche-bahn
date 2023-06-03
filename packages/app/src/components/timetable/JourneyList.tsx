@@ -17,7 +17,7 @@ export async function JourneyList({ className, name, searchParams }: Props) {
     ? (searchParams.type as 'arr' | 'dep' | 'both')
     : 'both';
 
-  const journeyList = response.data.journeys
+  const journeyItems = response.data.journeyItems
     .filter((journey) => {
       const trainType = searchParams.trainType;
       if (!trainType) return true;
@@ -41,7 +41,7 @@ export async function JourneyList({ className, name, searchParams }: Props) {
   return (
     <section className={className}>
       <div className="flex flex-col">
-        {journeyList.map((journey) => (
+        {journeyItems.map((journey) => (
           <JourneyCard
             key={journey.detailHref}
             className="border-b border-dashed border-gray-300"

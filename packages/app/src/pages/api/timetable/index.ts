@@ -52,12 +52,12 @@ const api: NextApiHandler = async (req, res) => {
   const resp = await fetch(generateUrl(req.query));
   const html = await resp.text();
 
-  const journeys = parseJourneys(html, stringifyQuery(req.query, 'type') as 'dep' | 'arr');
+  const journeyItems = parseJourneys(html, stringifyQuery(req.query, 'type') as 'dep' | 'arr');
   const ids = parseIdSelect(html);
   const data = parseData(html);
 
   const json: TimetableData = {
-    journeys,
+    journeyItems,
     ids,
     ...data,
   };

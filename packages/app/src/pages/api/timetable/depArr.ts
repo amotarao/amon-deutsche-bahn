@@ -22,10 +22,10 @@ const fetchJourneys = async (query: NextApiRequest['query'], type: 'dep' | 'arr'
 const api: NextApiHandler = async (req, res) => {
   const [depRes, arrRes] = await Promise.all([fetchJourneys(req.query, 'dep'), fetchJourneys(req.query, 'arr')]);
   const {
-    data: { journeys: depJourneys, ...baseData },
+    data: { journeyItems: depJourneys, ...baseData },
   } = depRes;
   const {
-    data: { journeys: arrJourneys },
+    data: { journeyItems: arrJourneys },
   } = arrRes;
 
   const baseJourneys: JourneyWithArrivalDepartureInformation[] = arrJourneys.map((journey) => {
@@ -99,7 +99,7 @@ const api: NextApiHandler = async (req, res) => {
 
   const json: TimetableWithArrivalDepartureResponse = {
     data: {
-      journeys: baseJourneys.sort((a, b) => {
+      journeyItems: baseJourneys.sort((a, b) => {
         const aTime = parseInt(
           (a.arrivalActualTime || a.arrivalTime || a.departureActualTime || a.departureTime)?.replace(/:/, '') ?? '0',
           10

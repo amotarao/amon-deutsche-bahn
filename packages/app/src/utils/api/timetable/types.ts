@@ -51,7 +51,7 @@ export type JourneyInformation = {
 export type TrainType = 'ice' | 'ic' | 'd' | 'nv' | 's' | 'bus' | 'ferry' | 'u' | 'tram' | 'taxi';
 
 export type TimetableData = {
-  journeys: Journey[];
+  journeyItems: Journey[];
   name: string;
   id: string;
   date: string;
@@ -65,7 +65,7 @@ export type TimetableResponse = {
 };
 
 export type TimetableWithArrivalDepartureData = {
-  journeys: JourneyWithArrivalDepartureInformation[];
+  journeyItems: JourneyWithArrivalDepartureInformation[];
   name: string;
   id: string;
   date: string;
