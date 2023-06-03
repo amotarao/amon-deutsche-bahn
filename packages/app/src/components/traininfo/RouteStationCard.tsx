@@ -32,8 +32,10 @@ export const RouteStationCard: React.FC<RouteStationCardProps> = ({ className, s
             {station.arrivalTime}
           </span>
           <br />
-          {station.arrivalActualTime && station.arrivalTime !== station.arrivalActualTime && (
-            <span className={station.arrivalDelayed ? 'text-red-500' : ''}>&gt;{station.arrivalActualTime}</span>
+          {station.arrivalActualTime && (
+            <span className={station.arrivalDelayed ? 'text-red-500' : ''}>
+              {station.arrivalTime !== station.arrivalActualTime ? <>&gt;{station.arrivalActualTime}</> : <>+0</>}
+            </span>
           )}
         </p>
         <p className="w-12 shrink-0 text-right">
@@ -41,8 +43,10 @@ export const RouteStationCard: React.FC<RouteStationCardProps> = ({ className, s
             {station.departureTime}
           </span>
           <br />
-          {station.departureActualTime && station.departureTime !== station.departureActualTime && (
-            <span className={station.departureDelayed ? 'text-red-500' : ''}>&gt;{station.departureActualTime}</span>
+          {station.departureActualTime && (
+            <span className={station.departureDelayed ? 'text-red-500' : ''}>
+              {station.departureTime !== station.departureActualTime ? <>&gt;{station.departureActualTime}</> : <>+0</>}
+            </span>
           )}
         </p>
         <p className="w-10 shrink-0 text-right">

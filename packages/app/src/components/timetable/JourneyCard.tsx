@@ -21,7 +21,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, type = 'bot
       <div className="flex w-full gap-2">
         {(type === 'both' || type === 'arr') && (
           <TimeField
-            information={information}
+            information={journey.arrivalInformation}
             time={journey.arrivalTime}
             actualTime={journey.arrivalActualTime}
             delayed={journey.delayed}
@@ -29,7 +29,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, type = 'bot
         )}
         {(type === 'both' || type === 'dep') && (
           <TimeField
-            information={information}
+            information={journey.departureInformation}
             time={journey.departureTime}
             actualTime={journey.departureActualTime}
             delayed={journey.delayed}
@@ -82,7 +82,9 @@ const TimeField: React.FC<TimeFieldProps> = ({ information, time, actualTime, de
       <p>
         <span className={information?.canceled ? 'font-bold text-red-500 line-through' : ''}>{time}</span>
         <br />
-        {actualTime && time !== actualTime && <span className={delayed ? 'text-red-500' : ''}>&gt;{actualTime}</span>}
+        {actualTime && (
+          <span className={delayed ? 'text-red-500' : ''}>{time !== actualTime ? <>&gt;{actualTime}</> : <>+0</>}</span>
+        )}
       </p>
     </div>
   );
