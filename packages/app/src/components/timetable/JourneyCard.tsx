@@ -1,20 +1,25 @@
 import type { Route } from 'next';
 import Link from 'next/link';
-import { Journey, JourneyInformation, JourneyWithArrivalDepartureInformation } from '../../utils/api/timetable/types';
+import { JourneyInformation, JourneyWithArrivalDepartureInformation } from '../../utils/api/timetable/types';
 
 export type JourneyCardProps = {
   className?: string;
-  journey: Journey | JourneyWithArrivalDepartureInformation;
+  type: 'arr' | 'dep' | 'both';
+  journey: JourneyWithArrivalDepartureInformation;
 };
 
-export const JourneyCard: React.FC<JourneyCardProps> = ({ className, journey }) => {
+export const JourneyCard: React.FC<JourneyCardProps> = ({ className, type = 'both', journey }) => {
   const information =
-    'information' in journey ? journey.information : journey.departureInformation || journey.arrivalInformation;
+    type === 'both'
+      ? journey.departureInformation || journey.arrivalInformation
+      : type === 'arr'
+      ? journey.arrivalInformation
+      : journey.departureInformation;
 
   return (
     <div className={`flex flex-wrap gap-2 px-4 py-2 text-xs ${className}`}>
       <div className="flex w-full gap-2">
-        {(('information' in journey && journey.arrivalTime) || !('information' in journey)) && (
+        {(type === 'both' || type === 'arr') && (
           <TimeField
             information={information}
             time={journey.arrivalTime}
@@ -22,7 +27,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, journey }) 
             delayed={journey.delayed}
           />
         )}
-        {(('information' in journey && journey.departureTime) || !('information' in journey)) && (
+        {(type === 'both' || type === 'dep') && (
           <TimeField
             information={information}
             time={journey.departureTime}
@@ -50,7 +55,6 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, journey }) 
       </div>
       <InformationField
         informations={[
-          'information' in journey ? journey.information : null,
           'arrivalInformation' in journey ? journey.arrivalInformation : null,
           'departureInformation' in journey ? journey.departureInformation : null,
         ]}

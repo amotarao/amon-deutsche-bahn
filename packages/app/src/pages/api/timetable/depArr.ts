@@ -11,7 +11,7 @@ const fetchJourneys = async (query: NextApiRequest['query'], type: 'dep' | 'arr'
   url.searchParams.set('id', stringifyQuery(query, 'id') || stringifyQuery(query, 'station', true));
   url.searchParams.set('date', stringifyQuery(query, 'date', true));
   url.searchParams.set('time', stringifyQuery(query, 'time', true));
-  'filter' in query && url.searchParams.set('filter', stringifyQuery(query, 'filter'));
+  'trainType' in query && url.searchParams.set('trainType', stringifyQuery(query, 'trainType'));
   url.searchParams.set('type', type);
   'ignoreNullablePlatform' in query &&
     url.searchParams.set('ignoreNullablePlatform', stringifyQuery(query, 'ignoreNullablePlatform'));

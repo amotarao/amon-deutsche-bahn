@@ -20,7 +20,9 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
   const [id, setId] = useState(searchParams?.has('id') ? searchParams.get('id') || undefined : undefined);
   const [date, setDate] = useState(searchParams?.has('date') ? searchParams.get('date') || undefined : undefined);
   const [time, setTime] = useState(searchParams?.has('time') ? searchParams.get('time') || undefined : undefined);
-  const [filter, setFilter] = useState(searchParams?.has('filter') ? searchParams.getAll('filter') || [] : []);
+  const [trainType, setTrainType] = useState(
+    searchParams?.has('trainType') ? searchParams.getAll('trainType') || [] : []
+  );
   const [type, setType] = useState(searchParams?.has('type') ? searchParams.get('type') || undefined : undefined);
   const [ignoreNullablePlatform, setIgnoreNullablePlatform] = useState(
     searchParams?.has('ignoreNullablePlatform') ? searchParams.get('ignoreNullablePlatform') || undefined : undefined
@@ -32,7 +34,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
         id,
         date,
         time,
-        filter,
+        trainType,
         type,
         ignoreNullablePlatform,
       }).filter(([, value]) => !!value)
@@ -114,21 +116,21 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
           { id: 'express', name: 'Express' },
           { id: 'train', name: 'Train' },
           { id: 's-bahn', name: 'S-Bahn' },
-        ].map((currentFilter) => (
-          <label className="flex grow items-center py-2 pl-4 pr-2" key={currentFilter.id}>
+        ].map((curretTrainType) => (
+          <label className="flex grow items-center py-2 pl-4 pr-2" key={curretTrainType.id}>
             <input
               className="mr-2"
               type="checkbox"
-              name="filter"
-              value={currentFilter.id}
-              checked={filter.includes(currentFilter.id)}
+              name="trainType"
+              value={curretTrainType.id}
+              checked={trainType.includes(curretTrainType.id)}
               onChange={(e) => {
                 const value = e.target.value;
-                const newFilter = [...filter, value].filter((item) => (item === value ? e.target.checked : true));
-                setFilter(Array.from(new Set(newFilter)));
+                const newTrainType = [...trainType, value].filter((item) => (item === value ? e.target.checked : true));
+                setTrainType(Array.from(new Set(newTrainType)));
               }}
             />
-            {currentFilter.name}
+            {curretTrainType.name}
           </label>
         ))}
       </div>

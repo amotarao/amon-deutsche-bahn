@@ -1,12 +1,12 @@
 import type { NextApiHandler, NextApiRequest } from 'next';
-import { formatDate, stringifyQuery, booleanQuery } from '../../../utils/api/format';
+import { formatDate, stringifyQuery } from '../../../utils/api/format';
 import { parseData } from '../../../utils/api/timetable/data';
 import { parseIdSelect } from '../../../utils/api/timetable/id-select';
 import { parseJourneys } from '../../../utils/api/timetable/journey';
-import { Journey, TimetableData, TrainType } from '../../../utils/api/timetable/types';
+import { TimetableData, TrainType } from '../../../utils/api/timetable/types';
 
-const parseFilter = (filter: string | string[]): string => {
-  filter = Array.isArray(filter) ? filter : filter.split(',');
+const parseTrainType = (trainType: string | string[]): string => {
+  trainType = Array.isArray(trainType) ? trainType : trainType.split(',');
 
   const f: Record<TrainType, '0' | '1'> = {
     ice: '0',
@@ -21,15 +21,15 @@ const parseFilter = (filter: string | string[]): string => {
     taxi: '0',
   };
 
-  if (filter.includes('express')) {
+  if (trainType.includes('express')) {
     f.ice = '1';
     f.ic = '1';
     f.d = '1';
   }
-  if (filter.includes('train')) {
+  if (trainType.includes('train')) {
     f.nv = '1';
   }
-  if (filter.includes('s-bahn')) {
+  if (trainType.includes('s-bahn')) {
     f.s = '1';
   }
 
@@ -42,7 +42,7 @@ const generateUrl = (query: NextApiRequest['query']): string => {
   url.searchParams.set('boardType', stringifyQuery(query, 'type', true));
   url.searchParams.set('date', formatDate(stringifyQuery(query, 'date', true)));
   url.searchParams.set('time', stringifyQuery(query, 'time', true));
-  url.searchParams.set('productsFilter', parseFilter(stringifyQuery(query, 'filter')));
+  url.searchParams.set('productsFilter', parseTrainType(stringifyQuery(query, 'trainType')));
   url.searchParams.set('rt', '1');
   url.searchParams.set('start', 'yes');
   return url.href;
