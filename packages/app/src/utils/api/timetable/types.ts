@@ -5,6 +5,7 @@ export type Journey = {
   departureActualTime: string | null;
   detailHref: string;
   delayed: boolean;
+  trainType: TrainType | null;
   train: string;
   origin: string | null;
   destination: string | null;
@@ -46,6 +47,8 @@ export type JourneyInformation = {
   replacementTrainFrom: string | null;
   others: string[];
 };
+
+export type TrainType = 'ice' | 'ic' | 'd' | 'nv' | 's' | 'bus' | 'ferry' | 'u' | 'tram' | 'taxi';
 
 export type TimetableData = {
   journeys: Journey[];

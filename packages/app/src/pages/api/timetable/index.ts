@@ -3,12 +3,12 @@ import { formatDate, stringifyQuery, booleanQuery } from '../../../utils/api/for
 import { parseData } from '../../../utils/api/timetable/data';
 import { parseIdSelect } from '../../../utils/api/timetable/id-select';
 import { parseJourneys } from '../../../utils/api/timetable/journey';
-import { Journey, TimetableData } from '../../../utils/api/timetable/types';
+import { Journey, TimetableData, TrainType } from '../../../utils/api/timetable/types';
 
 const parseFilter = (filter: string | string[]): string => {
   filter = Array.isArray(filter) ? filter : filter.split(',');
 
-  const f = {
+  const f: Record<TrainType, '0' | '1'> = {
     ice: '0',
     ic: '0',
     d: '0',

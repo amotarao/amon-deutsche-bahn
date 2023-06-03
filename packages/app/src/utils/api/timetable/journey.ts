@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { Journey, JourneyInformation, JourneyMessage, JourneyStop } from './types';
+import { Journey, JourneyInformation, JourneyMessage, JourneyStop, TrainType } from './types';
 
 const baseUrl = 'https://reiseauskunft.bahn.de';
 
@@ -11,6 +11,7 @@ export const parseJourneys = (html: string, type: 'dep' | 'arr'): Journey[] => {
     .map((index, elm) => {
       const $elm = $(elm);
       const time = $elm.find('.time').text().trim();
+      const trainType = parseTrainType($elm.find('.train:nth-child(2) img').attr('src') || '');
       const train = $elm.find('.train:nth-child(3)').text().trim().replace(/\s+/, ' ');
       const detailHref = parseDetailHref($elm.find('.train:nth-child(3) a').attr('href') || '');
       const originOrDestination = $elm.find('.route > .bold:first-child').text().trim();
@@ -36,6 +37,7 @@ export const parseJourneys = (html: string, type: 'dep' | 'arr'): Journey[] => {
         departureActualTime: type === 'dep' ? actualTime : null,
         detailHref,
         delayed,
+        trainType,
         train,
         origin: type === 'arr' ? originOrDestination : null,
         destination: type === 'dep' ? originOrDestination : null,
@@ -49,6 +51,22 @@ export const parseJourneys = (html: string, type: 'dep' | 'arr'): Journey[] => {
     .get();
 
   return journey;
+};
+
+const parseTrainType = (src: string): TrainType | null => {
+  if (src.match(/ice/)) return 'ice';
+  if (src.match(/ec_ic/)) return 'ic';
+  if (src.match(/ir/)) return 'd';
+  if (src.match(/re/)) return 'nv';
+  if (src.match(/sbahn/)) return 's';
+  if (src.match(/bus/)) return 'bus';
+  // ToDo: 不明
+  // if (src.match(/./)) return 'ferry';
+  if (src.match(/ubahn/)) return 'u';
+  if (src.match(/tram/)) return 'tram';
+  // ToDo: 不明
+  // if (src.match(/./)) return 'taxi';
+  return null;
 };
 
 const parseStops = ($row: cheerio.Cheerio<cheerio.Element>): JourneyStop[] => {
