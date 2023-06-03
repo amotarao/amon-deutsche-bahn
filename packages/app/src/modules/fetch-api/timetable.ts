@@ -37,7 +37,7 @@ export const fetchTimetable = async (
   url.searchParams.set('id', query.id);
   url.searchParams.set('date', query.date);
   url.searchParams.set('time', query.time);
-  url.searchParams.set('trainType', '');
+  url.searchParams.set('trainType', 'express,train,s-bahn');
 
   const res = await fetch(url, requestInit);
   const data = (await res.json()) as TimetableWithArrivalDepartureResponse;
