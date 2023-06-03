@@ -1,9 +1,8 @@
-import { use } from 'react';
 import { fetchTimetable } from '../../modules/fetch-api/timetable';
-import { JourneyCard } from './JourneyCard';
+import { JourneyList } from './JourneyList';
 import { StationIdList } from './StationIdList';
 
-export type MainProps = {
+type Props = {
   className?: string;
   name: string;
   searchParams: {
@@ -11,8 +10,8 @@ export type MainProps = {
   };
 };
 
-export const Main: React.FC<MainProps> = ({ className, name, searchParams }) => {
-  const response = use(fetchTimetable(name, searchParams, { next: { revalidate: 60 * 3 } }));
+export async function Main({ className, name, searchParams }: Props) {
+  const response = await fetchTimetable(name, searchParams, { next: { revalidate: 60 * 3 } });
 
   return (
     <main className={className}>
@@ -21,17 +20,10 @@ export const Main: React.FC<MainProps> = ({ className, name, searchParams }) => 
       ) : (
         <div className="flex flex-col gap-2">
           <p className="px-4 py-1 text-sm font-bold">{response.data.name}</p>
-          <div className="flex flex-col">
-            {response.data.journeys.map((journey) => (
-              <JourneyCard
-                className="border-b border-dashed border-gray-300"
-                journey={journey}
-                key={journey.detailHref}
-              />
-            ))}
-          </div>
+          {/* @ts-expect-error Async Server Component */}
+          <JourneyList name={name} searchParams={searchParams} />
         </div>
       )}
     </main>
   );
-};
+}

@@ -17,6 +17,7 @@ export default function Page({ params, searchParams }: PageProps) {
     <div>
       <TimetableFilter className="sticky top-0 mb-4" name={params.name} />
       <Suspense fallback={<p className="px-4 py-2 text-sm">Fetching</p>}>
+        {/* @ts-expect-error Async Server Component */}
         <Main name={params.name} searchParams={searchParams} />
       </Suspense>
     </div>
