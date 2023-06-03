@@ -52,14 +52,7 @@ const api: NextApiHandler = async (req, res) => {
   const resp = await fetch(generateUrl(req.query));
   const html = await resp.text();
 
-  const filter = (journey: Journey): boolean => {
-    if (booleanQuery(req.query, 'ignoreNullablePlatform')) {
-      return !!journey.platform;
-    }
-    return true;
-  };
-
-  const journeys = parseJourneys(html, stringifyQuery(req.query, 'type') as 'dep' | 'arr').filter(filter);
+  const journeys = parseJourneys(html, stringifyQuery(req.query, 'type') as 'dep' | 'arr');
   const ids = parseIdSelect(html);
   const data = parseData(html);
 

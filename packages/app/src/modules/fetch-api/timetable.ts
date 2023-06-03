@@ -10,7 +10,6 @@ export type TimetableRequestQuery = {
   time: string;
   type: string;
   trainType: string[];
-  ignoreNullablePlatform: 'true' | 'false';
 };
 
 export const fetchTimetable = async (
@@ -31,7 +30,6 @@ export const fetchTimetable = async (
       ? [searchParams.trainType]
       : ['express', 'train', 's-bahn'],
     type: (searchParams.type as string) || 'both',
-    ignoreNullablePlatform: searchParams.ignoreNullablePlatform === 'true' ? 'true' : 'false',
   };
 
   const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/timetable/depArr`);
@@ -40,7 +38,6 @@ export const fetchTimetable = async (
   url.searchParams.set('date', query.date);
   url.searchParams.set('time', query.time);
   url.searchParams.set('trainType', '');
-  url.searchParams.set('ignoreNullablePlatform', 'false');
 
   const res = await fetch(url, requestInit);
   const data = (await res.json()) as TimetableWithArrivalDepartureResponse;
