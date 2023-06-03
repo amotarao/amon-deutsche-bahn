@@ -3,7 +3,7 @@
 import type { Route } from 'next';
 import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getGermanyDate, getGermanyTime } from '../../modules/fetch-api/timetable';
 
 export type TimetableFilterProps = {
@@ -27,6 +27,10 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
   const [ignoreNullablePlatform, setIgnoreNullablePlatform] = useState(
     searchParams?.has('ignoreNullablePlatform') ? searchParams.get('ignoreNullablePlatform') || undefined : undefined
   );
+
+  useEffect(() => {
+    setId(searchParams?.has('id') ? searchParams.get('id') || undefined : undefined);
+  }, [searchParams]);
 
   const search = () => {
     const newQuery = Object.fromEntries(
@@ -66,11 +70,9 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
             if (e.key !== 'Enter') {
               return;
             }
-            setId('');
           }}
           onBlur={(e) => {
             setName(e.target.value);
-            setId('');
           }}
         />
         <button
