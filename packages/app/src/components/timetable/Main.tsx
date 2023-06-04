@@ -20,7 +20,6 @@ export async function Main({ className, name, searchParams }: Props) {
       ) : (
         <div className="flex flex-col gap-2">
           <p className="px-4 py-1 text-sm font-bold">{response.data.name}</p>
-          {/* @ts-expect-error Async Server Component */}
           <JourneyList name={name} searchParams={searchParams} />
         </div>
       )}
