@@ -27,6 +27,9 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
   const [ignoreNullablePlatform, setIgnoreNullablePlatform] = useState(
     searchParams?.has('ignoreNullablePlatform') ? searchParams.get('ignoreNullablePlatform') || undefined : undefined
   );
+  const [onlyAccurateStation, setOnlyAccurateStation] = useState(
+    searchParams?.has('onlyAccurateStation') ? searchParams.get('onlyAccurateStation') || undefined : undefined
+  );
 
   useEffect(() => {
     setId(searchParams?.has('id') ? searchParams.get('id') || undefined : undefined);
@@ -41,6 +44,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
         trainType,
         type,
         ignoreNullablePlatform,
+        onlyAccurateStation,
       }).filter(([, value]) => !!value)
     );
 
@@ -137,6 +141,32 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
         ))}
       </div>
       <div className="flex">
+        <label className="flex grow items-center py-2 pl-4 pr-2">
+          <input
+            className="mr-2"
+            type="checkbox"
+            name="ignoreNullablePlatform"
+            checked={ignoreNullablePlatform === 'true' ? true : false}
+            onChange={(e) => {
+              setIgnoreNullablePlatform(e.target.checked ? 'true' : 'false');
+            }}
+          />
+          has plf
+        </label>
+        <label className="flex grow items-center py-2 pl-4 pr-2">
+          <input
+            className="mr-2"
+            type="checkbox"
+            name="onlyAccurateStation"
+            checked={onlyAccurateStation === 'true' ? true : false}
+            onChange={(e) => {
+              setOnlyAccurateStation(e.target.checked ? 'true' : 'false');
+            }}
+          />
+          only acc sta
+        </label>
+      </div>
+      <div className="flex">
         {[
           { id: 'both', name: 'Both' },
           { id: 'dep', name: 'Dep' },
@@ -156,18 +186,6 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
             {currentType.name}
           </label>
         ))}
-        <label className="flex grow items-center py-2 pl-4 pr-2">
-          <input
-            className="mr-2"
-            type="checkbox"
-            name="ignoreNullablePlatform"
-            checked={ignoreNullablePlatform === 'true' ? true : false}
-            onChange={(e) => {
-              setIgnoreNullablePlatform(e.target.checked ? 'true' : 'false');
-            }}
-          />
-          has Plf
-        </label>
       </div>
     </div>
   );

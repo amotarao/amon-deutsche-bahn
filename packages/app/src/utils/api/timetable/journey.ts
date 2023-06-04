@@ -19,7 +19,8 @@ export const parseJourneys = (html: string, type: 'dep' | 'arr'): Journey[] => {
       const message = parseMessage($elm);
 
       const platform = $elm.find('.platform > strong').text().trim() || null;
-      const actualTime = $elm.find('.ris > .delay, .ris > .delayOnTime').text().trim() || null;
+      const accurateStation = ($elm.find('.platform').html()?.split('<br>')[1]?.trim() || null) ?? null;
+      const actualTime = ($elm.find('.ris > .delay, .ris > .delayOnTime').text().trim() || null) ?? null;
       const delayed = $elm.find('.ris > .delay').text().trim() !== '';
 
       const information = $elm
@@ -43,6 +44,7 @@ export const parseJourneys = (html: string, type: 'dep' | 'arr'): Journey[] => {
         destination: type === 'dep' ? originOrDestination : null,
         stops,
         platform,
+        accurateStation,
         message,
         information: extractInformation(information),
       };

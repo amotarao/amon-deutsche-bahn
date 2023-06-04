@@ -36,6 +36,10 @@ export async function JourneyList({ className, name, searchParams }: Props) {
     .filter((journery) => {
       if (searchParams.ignoreNullablePlatform === 'true') return journery.platform !== null;
       return true;
+    })
+    .filter((journery) => {
+      if (searchParams.onlyAccurateStation === 'true') return journery.accurateStation === null;
+      return true;
     });
 
   return (

@@ -11,6 +11,7 @@ export type Journey = {
   destination: string | null;
   stops: JourneyStop[];
   platform: string | null;
+  accurateStation: string | null;
   message: JourneyMessage | null;
   information: JourneyInformation;
 };
