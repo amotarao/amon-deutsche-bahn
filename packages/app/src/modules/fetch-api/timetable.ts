@@ -20,7 +20,7 @@ export const fetchTimetable = async (
   requestInit?: RequestInit
 ): Promise<TimetableWithArrivalDepartureResponse> => {
   const query: TimetableRequestQuery = {
-    name,
+    name: decodeURIComponent(name),
     id: (searchParams.id as string) || '',
     date: (searchParams.date as string) || getGermanyDate(),
     time: (searchParams.time as string) || getGermanyTime(),
