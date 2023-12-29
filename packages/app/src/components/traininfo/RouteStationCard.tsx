@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { Station } from '../../utils/api/traininfo/types';
@@ -9,7 +10,7 @@ export type RouteStationCardProps = {
 
 export const RouteStationCard: React.FC<RouteStationCardProps> = ({ className, station }) => {
   return (
-    <div className={`flex flex-wrap gap-2 px-4 py-2 text-xs ${className}`}>
+    <div className={classNames('flex flex-wrap gap-2 px-4 py-2 text-xs', className)}>
       <div className="flex w-full gap-2">
         <div className="shrink grow">
           <Link

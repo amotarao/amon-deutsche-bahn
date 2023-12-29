@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import Link from 'next/link';
 import { Station } from '../../types/station';
 
@@ -12,7 +13,7 @@ export const StationCard: React.FC<StationCardProps> = ({ className, station }) 
   youtubeUrl.searchParams.set('sp', 'CAISAhABQgIIAQ%3D%3D');
 
   return (
-    <div className={`${className} flex flex-col gap-2 rounded border p-2`}>
+    <div className={classNames('flex flex-col gap-2 rounded border p-2', className)}>
       <p>{station.name}</p>
       <div className="flex gap-2">
         <Link

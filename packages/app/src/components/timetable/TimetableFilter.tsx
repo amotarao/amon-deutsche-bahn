@@ -1,5 +1,6 @@
 'use client';
 
+import classNames from 'classnames';
 import type { Route } from 'next';
 import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
@@ -58,7 +59,10 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
 
   return (
     <div
-      className={`flex flex-col bg-white text-sm [&>*]:border-b [&>*]:border-dashed [&>*]:border-gray-300 ${className}`}
+      className={classNames(
+        'flex flex-col bg-white text-sm [&>*]:border-b [&>*]:border-dashed [&>*]:border-gray-300',
+        className
+      )}
     >
       <div className="grid grid-cols-[1fr_auto]">
         <input

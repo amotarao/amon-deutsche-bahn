@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import type { Route } from 'next';
 import Link from 'next/link';
 import { JourneyInformation, JourneyWithArrivalDepartureInformation } from '../../utils/api/timetable/types';
@@ -13,11 +14,11 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, type = 'bot
     type === 'both'
       ? journey.departureInformation || journey.arrivalInformation
       : type === 'arr'
-      ? journey.arrivalInformation
-      : journey.departureInformation;
+        ? journey.arrivalInformation
+        : journey.departureInformation;
 
   return (
-    <div className={`flex flex-wrap gap-2 px-4 py-2 text-xs ${className}`}>
+    <div className={classNames('flex flex-wrap gap-2 px-4 py-2 text-xs', className)}>
       <div className="flex w-full gap-2">
         {(type === 'both' || type === 'arr') && (
           <TimeField
