@@ -14,10 +14,10 @@
   "dependencies": {
     "firebase-admin": "^10.3.0",
     "geofire-common": "^5.2.0",
-    "node-fetch": "^3.2.6"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.2"
+    "lint-staged": "^13.3.0"
   }
 }
