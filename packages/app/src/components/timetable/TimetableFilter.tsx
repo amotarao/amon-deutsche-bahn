@@ -50,7 +50,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
 
     router.replace(
       formatUrl({
-        pathname: name ? `/timetable/stations/${name}` : pathname,
+        pathname: name ? `/timetable/stations/${encodeURIComponent(name)}` : pathname,
         query: newQuery,
       }) as Route
     );
