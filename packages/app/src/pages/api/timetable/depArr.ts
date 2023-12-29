@@ -82,6 +82,7 @@ const api: NextApiHandler = async (req, res) => {
     if (target) {
       target.departureTime = depJourney.departureTime;
       target.departureActualTime = depJourney.departureActualTime;
+      target.departureDelayed = depJourney.departureDelayed;
       target.destination = depJourney.destination;
       target.stops = [...target.stops, ...depJourney.stops];
       target.departureInformation = depJourney.information;

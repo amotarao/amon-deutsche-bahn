@@ -25,7 +25,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, type = 'bot
             information={journey.arrivalInformation}
             time={journey.arrivalTime}
             actualTime={journey.arrivalActualTime}
-            delayed={journey.delayed}
+            delayed={journey.arrivalDelayed}
           />
         )}
         {(type === 'both' || type === 'dep') && (
@@ -33,7 +33,7 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({ className, type = 'bot
             information={journey.departureInformation}
             time={journey.departureTime}
             actualTime={journey.departureActualTime}
-            delayed={journey.delayed}
+            delayed={journey.departureDelayed}
           />
         )}
         <p className="shrink grow">

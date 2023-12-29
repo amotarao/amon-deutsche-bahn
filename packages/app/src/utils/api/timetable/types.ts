@@ -4,7 +4,8 @@ export type Journey = {
   departureTime: string | null;
   departureActualTime: string | null;
   detailHref: string;
-  delayed: boolean;
+  arrivalDelayed: boolean;
+  departureDelayed: boolean;
   trainType: TrainType | null;
   train: string;
   origin: string | null;
