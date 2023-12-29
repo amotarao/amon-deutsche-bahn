@@ -37,7 +37,7 @@ export const Main: React.FC<MainProps> = ({ className }) => {
   }, [map]);
 
   // filters
-  const [filters, setFilters] = useState({
+  const [filters] = useState({
     categories: [] as string[],
   });
 
@@ -96,11 +96,11 @@ export const Main: React.FC<MainProps> = ({ className }) => {
     lng: number;
     placeId: string;
   };
-  const [position, setPosition] = useState<Position | null>();
+  const [, setPosition] = useState<Position | null>();
   const onClickMap = (e: google.maps.MapMouseEvent) => {
     const lat = e.latLng?.lat();
     const lng = e.latLng?.lng();
-    const placeId = (e as any).placeId as string | undefined;
+    const placeId = 'placeId' in e && e.placeId && typeof e.placeId === 'string' ? e.placeId : undefined;
     if (lat !== undefined && lng !== undefined && placeId) {
       setPosition({ lat, lng, placeId });
     }

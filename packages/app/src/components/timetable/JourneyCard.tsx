@@ -79,7 +79,7 @@ type TimeFieldProps = {
 
 const TimeField: React.FC<TimeFieldProps> = ({ information, time, actualTime, delayed }) => {
   return (
-    <div className="w-10 flex-shrink-0 text-right">
+    <div className="w-10 shrink-0 text-right">
       <p>
         <span className={information?.canceled ? 'font-bold text-red-500 line-through' : ''}>{time}</span>
         <br />

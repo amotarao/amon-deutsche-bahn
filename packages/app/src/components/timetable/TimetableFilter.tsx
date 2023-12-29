@@ -25,7 +25,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
     searchParams?.has('trainType') ? searchParams.getAll('trainType') || [] : []
   );
   const [type, setType] = useState(searchParams?.has('type') ? searchParams.get('type') || undefined : undefined);
-  const [ignoreNullablePlatform, setIgnoreNullablePlatform] = useState(
+  const [ignoreNullablePlatform] = useState(
     searchParams?.has('ignoreNullablePlatform') ? searchParams.get('ignoreNullablePlatform') || undefined : undefined
   );
   const [onlyAccurateStation, setOnlyAccurateStation] = useState(
