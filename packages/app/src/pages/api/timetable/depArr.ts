@@ -99,16 +99,16 @@ const api: NextApiHandler = async (req, res) => {
 
   const json: TimetableWithArrivalDepartureResponse = {
     data: {
-      journeyItems: baseJourneys.sort((a, b) => {
+      journeyItems: baseJourneys.sort((a, z) => {
         const aTime = parseInt(
           (a.arrivalActualTime || a.arrivalTime || a.departureActualTime || a.departureTime)?.replace(/:/, '') ?? '0',
           10
         );
-        const bTime = parseInt(
-          (b.arrivalActualTime || b.arrivalTime || b.departureActualTime || b.departureTime)?.replace(/:/, '') ?? '0',
+        const zTime = parseInt(
+          (z.arrivalActualTime || z.arrivalTime || z.departureActualTime || z.departureTime)?.replace(/:/, '') ?? '0',
           10
         );
-        return aTime - bTime;
+        return aTime - zTime;
       }),
       ...baseData,
     },
