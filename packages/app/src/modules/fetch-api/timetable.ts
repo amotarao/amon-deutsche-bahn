@@ -27,8 +27,8 @@ export const fetchTimetable = async (
     trainType: Array.isArray(searchParams.trainType)
       ? searchParams.trainType
       : searchParams.trainType
-      ? [searchParams.trainType]
-      : ['express', 'train', 's-bahn'],
+        ? [searchParams.trainType]
+        : ['express', 'train', 's-bahn'],
     type: (searchParams.type as string) || 'both',
   };
 
