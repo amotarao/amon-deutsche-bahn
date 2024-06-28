@@ -1,7 +1,7 @@
-import { Metadata } from 'next';
-import { Suspense } from 'react';
-import { Main } from '../../../../components/timetable/Main';
-import { TimetableFilter } from '../../../../components/timetable/TimetableFilter';
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import { Main } from "../../../../components/timetable/Main";
+import { TimetableFilter } from "../../../../components/timetable/TimetableFilter";
 
 type PageProps = {
   params: {
@@ -23,7 +23,9 @@ export default function Page({ params, searchParams }: PageProps) {
   );
 }
 
-export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
+export const generateMetadata = async ({
+  params,
+}: PageProps): Promise<Metadata> => {
   return {
     title: `Timetable at ${params.name}`,
   };

@@ -1,6 +1,6 @@
-import type { Metadata } from 'next';
-import { RouteStationCard } from '../../../../components/traininfo/RouteStationCard';
-import { TraininfoResponse } from '../../../../utils/api/traininfo/types';
+import type { Metadata } from "next";
+import { RouteStationCard } from "../../../../components/traininfo/RouteStationCard";
+import type { TrainInfoResponse } from "../../../../utils/api/traininfo/types";
 
 type PageProps = {
   params: {
@@ -12,17 +12,21 @@ type PageProps = {
 };
 
 type Data = {
-  data: TraininfoResponse;
+  data: TrainInfoResponse;
 };
 
 const getData = async ({ params, searchParams }: PageProps): Promise<Data> => {
-  const path = (params?.path ?? []).join('/');
+  const path = (params?.path ?? []).join("/");
 
-  const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/traininfo/${path}`);
-  'date' in searchParams && typeof searchParams.date === 'string' && url.searchParams.set('date', searchParams.date);
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/traininfo/${path}`,
+  );
+  "date" in searchParams &&
+    typeof searchParams.date === "string" &&
+    url.searchParams.set("date", searchParams.date);
 
   const res = await fetch(url, { next: { revalidate: 60 } });
-  const data = (await res.json()) as TraininfoResponse;
+  const data = (await res.json()) as TrainInfoResponse;
 
   return {
     data,
@@ -52,15 +56,20 @@ export default async function Page({ params, searchParams }: PageProps) {
           <div className="flex flex-col gap-2 px-4 py-2">
             <div>
               {data.data.information.map((info, i) => {
-                if (info.startsWith('5    10   15   20   25   30')) {
+                if (info.startsWith("5    10   15   20   25   30")) {
                   return (
-                    <p className="my-2 whitespace-pre-wrap font-mono text-xs tracking-widest" key={i}>
+                    <p
+                      className="my-2 whitespace-pre-wrap font-mono text-xs tracking-widest"
+                      // biome-ignore lint/suspicious/noArrayIndexKey: 問題無し
+                      key={i}
+                    >
                       {`        ${info}`}
                     </p>
                   );
                 }
 
                 return (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: 問題無し
                   <p className="text-xs" key={i}>
                     {info}
                   </p>
@@ -68,6 +77,7 @@ export default async function Page({ params, searchParams }: PageProps) {
               })}
             </div>
             {data.data.remark.map((r, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: 問題無し
               <div key={i}>
                 <p className="text-xs font-bold">{r.title}</p>
                 <p className="text-xs">{r.text}</p>
@@ -80,10 +90,13 @@ export default async function Page({ params, searchParams }: PageProps) {
   );
 }
 
-export const generateMetadata = async ({ params, searchParams }: PageProps): Promise<Metadata> => {
+export const generateMetadata = async ({
+  params,
+  searchParams,
+}: PageProps): Promise<Metadata> => {
   const { data } = await getData({ params, searchParams });
 
   return {
-    title: `Train Info at ${data?.data.train ?? ''}`,
+    title: `Train Info at ${data?.data.train ?? ""}`,
   };
 };

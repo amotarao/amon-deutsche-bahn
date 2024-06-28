@@ -17,7 +17,10 @@ export type Journey = {
   information: JourneyInformation;
 };
 
-export type JourneyWithArrivalDepartureInformation = Omit<Journey, 'information'> & {
+export type JourneyWithArrivalDepartureInformation = Omit<
+  Journey,
+  "information"
+> & {
   arrivalInformation: JourneyInformation | null;
   departureInformation: JourneyInformation | null;
 };
@@ -50,7 +53,17 @@ export type JourneyInformation = {
   others: string[];
 };
 
-export type TrainType = 'ice' | 'ic' | 'd' | 'nv' | 's' | 'bus' | 'ferry' | 'u' | 'tram' | 'taxi';
+export type TrainType =
+  | "ice"
+  | "ic"
+  | "d"
+  | "nv"
+  | "s"
+  | "bus"
+  | "ferry"
+  | "u"
+  | "tram"
+  | "taxi";
 
 export type TimetableData = {
   journeyItems: Journey[];

@@ -20,7 +20,7 @@ export type StationInformation = {
   message: string[];
 };
 
-export type TraininfoMeta = {
+export type TrainInfoMeta = {
   station: string;
   stationId: string;
   date: string;
@@ -28,7 +28,7 @@ export type TraininfoMeta = {
   type: string;
 };
 
-export type TraininfoData = {
+export type TrainInfoData = {
   route: Route;
   train: string;
   validFrom: string;
@@ -39,6 +39,6 @@ export type TraininfoData = {
   }[];
 };
 
-export type TraininfoResponse = {
-  data: TraininfoData;
+export type TrainInfoResponse = {
+  data: TrainInfoData;
 };

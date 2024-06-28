@@ -1,18 +1,25 @@
-import type { NextApiHandler, NextApiRequest } from 'next';
-import { stringifyQuery } from '../../../utils/api/format';
-import {
-  TimetableResponse,
+import type { NextApiHandler, NextApiRequest } from "next";
+import { stringifyQuery } from "../../../utils/api/format";
+import type {
   JourneyWithArrivalDepartureInformation,
+  TimetableResponse,
   TimetableWithArrivalDepartureResponse,
-} from '../../../utils/api/timetable/types';
+} from "../../../utils/api/timetable/types";
 
-const fetchJourneys = async (query: NextApiRequest['query'], type: 'dep' | 'arr'): Promise<TimetableResponse> => {
+const fetchJourneys = async (
+  query: NextApiRequest["query"],
+  type: "dep" | "arr",
+): Promise<TimetableResponse> => {
   const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/timetable`);
-  url.searchParams.set('id', stringifyQuery(query, 'id') || stringifyQuery(query, 'station', true));
-  url.searchParams.set('date', stringifyQuery(query, 'date', true));
-  url.searchParams.set('time', stringifyQuery(query, 'time', true));
-  'trainType' in query && url.searchParams.set('trainType', stringifyQuery(query, 'trainType'));
-  url.searchParams.set('type', type);
+  url.searchParams.set(
+    "id",
+    stringifyQuery(query, "id") || stringifyQuery(query, "station", true),
+  );
+  url.searchParams.set("date", stringifyQuery(query, "date", true));
+  url.searchParams.set("time", stringifyQuery(query, "time", true));
+  "trainType" in query &&
+    url.searchParams.set("trainType", stringifyQuery(query, "trainType"));
+  url.searchParams.set("type", type);
 
   const resp = await fetch(url.href);
   const json = (await resp.json()) as TimetableResponse;
@@ -20,7 +27,10 @@ const fetchJourneys = async (query: NextApiRequest['query'], type: 'dep' | 'arr'
 };
 
 const api: NextApiHandler = async (req, res) => {
-  const [depRes, arrRes] = await Promise.all([fetchJourneys(req.query, 'dep'), fetchJourneys(req.query, 'arr')]);
+  const [depRes, arrRes] = await Promise.all([
+    fetchJourneys(req.query, "dep"),
+    fetchJourneys(req.query, "arr"),
+  ]);
   const {
     data: { journeyItems: depJourneys, ...baseData },
   } = depRes;
@@ -28,14 +38,15 @@ const api: NextApiHandler = async (req, res) => {
     data: { journeyItems: arrJourneys },
   } = arrRes;
 
-  const baseJourneys: JourneyWithArrivalDepartureInformation[] = arrJourneys.map((journey) => {
-    const { information, ...data } = journey;
-    return {
-      ...data,
-      arrivalInformation: information,
-      departureInformation: null,
-    };
-  });
+  const baseJourneys: JourneyWithArrivalDepartureInformation[] =
+    arrJourneys.map((journey) => {
+      const { information, ...data } = journey;
+      return {
+        ...data,
+        arrivalInformation: information,
+        departureInformation: null,
+      };
+    });
 
   depJourneys.forEach((depJourney) => {
     const target = baseJourneys.find((arrJourney) => {
@@ -52,14 +63,14 @@ const api: NextApiHandler = async (req, res) => {
       // ホームの記載がないもの
       // ただし、フランスの長距離列車系は除く
       if (
-        !['TGV', 'THA', 'OGV'].includes(arrJourney.train.slice(0, 3)) &&
+        !["TGV", "THA", "OGV"].includes(arrJourney.train.slice(0, 3)) &&
         (!arrJourney.platform || !depJourney.platform)
       ) {
         return false;
       }
 
       // イギリスの列車名不明
-      if (arrJourney.train === '---') {
+      if (arrJourney.train === "---") {
         return false;
       }
 
@@ -68,8 +79,10 @@ const api: NextApiHandler = async (req, res) => {
         if (
           arrJourney.platform === depJourney.platform &&
           arrJourney.origin !== depJourney.destination &&
-          timeToNumberForCalc(arrJourney.arrivalTime || '') <= timeToNumberForCalc(depJourney.departureTime || '') &&
-          timeToNumberForCalc(depJourney.departureTime || '') <= timeToNumberForCalc(arrJourney.arrivalTime || '') + 5
+          timeToNumberForCalc(arrJourney.arrivalTime || "") <=
+            timeToNumberForCalc(depJourney.departureTime || "") &&
+          timeToNumberForCalc(depJourney.departureTime || "") <=
+            timeToNumberForCalc(arrJourney.arrivalTime || "") + 5
         ) {
           return true;
         }
@@ -101,13 +114,23 @@ const api: NextApiHandler = async (req, res) => {
   const json: TimetableWithArrivalDepartureResponse = {
     data: {
       journeyItems: baseJourneys.sort((a, z) => {
-        const aTime = parseInt(
-          (a.arrivalActualTime || a.arrivalTime || a.departureActualTime || a.departureTime)?.replace(/:/, '') ?? '0',
-          10
+        const aTime = Number.parseInt(
+          (
+            a.arrivalActualTime ||
+            a.arrivalTime ||
+            a.departureActualTime ||
+            a.departureTime
+          )?.replace(/:/, "") ?? "0",
+          10,
         );
-        const zTime = parseInt(
-          (z.arrivalActualTime || z.arrivalTime || z.departureActualTime || z.departureTime)?.replace(/:/, '') ?? '0',
-          10
+        const zTime = Number.parseInt(
+          (
+            z.arrivalActualTime ||
+            z.arrivalTime ||
+            z.departureActualTime ||
+            z.departureTime
+          )?.replace(/:/, "") ?? "0",
+          10,
         );
         return aTime - zTime;
       }),
@@ -121,7 +144,7 @@ const api: NextApiHandler = async (req, res) => {
 export default api;
 
 const timeToNumberForCalc = (time: string): number => {
-  const [, h, m] = time.match(/(\d+):(\d+)/) || ['0', '0', '0'];
-  const num = parseInt(h, 10) * 60 + parseInt(m, 10);
+  const [, h, m] = time.match(/(\d+):(\d+)/) || ["0", "0", "0"];
+  const num = Number.parseInt(h, 10) * 60 + Number.parseInt(m, 10);
   return num;
 };

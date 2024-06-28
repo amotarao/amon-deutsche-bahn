@@ -1,7 +1,7 @@
-import * as geofire from 'geofire-common';
-import { applicationDefault, initializeApp } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
-import fetch from 'node-fetch';
+import { applicationDefault, initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
+import * as geofire from "geofire-common";
+import fetch from "node-fetch";
 
 initializeApp({
   credential: applicationDefault(),
@@ -14,10 +14,10 @@ const single = async (offset) => {
     `https://apis.deutschebahn.com/db-api-marketplace/apis/ris-stations/v1/stations?offset=${offset}`,
     {
       headers: {
-        'DB-Client-Id': process.env.DB_CLIENT_ID,
-        'DB-Api-Key': process.env.DB_API_KEY,
+        "DB-Client-Id": process.env.DB_CLIENT_ID,
+        "DB-Api-Key": process.env.DB_API_KEY,
       },
-    }
+    },
   );
   const json = await res.json();
 
@@ -29,15 +29,19 @@ const single = async (offset) => {
 
     const data = {
       name: station.names.DE.name,
-      googleMapsPlaceId: '',
+      googleMapsPlaceId: "",
       dbRisStationId: station.stationID,
-      dbRisStationCateogry: station.stationCategory || '',
+      dbRisStationCateogry: station.stationCategory || "",
       position: { geohash, lat, lng },
     };
-    const ref = db.collection('stations').doc(station.stationID);
+    const ref = db.collection("stations").doc(station.stationID);
     bulkWriter.set(ref, data);
 
-    const subRef = db.collection('stations').doc(station.stationID).collection('db_ris').doc('db_ris');
+    const subRef = db
+      .collection("stations")
+      .doc(station.stationID)
+      .collection("db_ris")
+      .doc("db_ris");
     bulkWriter.set(subRef, station);
   });
   await bulkWriter.close();

@@ -4,12 +4,10 @@
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
-    "run:stations": "GOOGLE_APPLICATION_CREDENTIALS=./credential.json node ./scripts/stations.js",
-    "prepare": "husky install"
+    "check": "biome check --write .",
+    "run:stations": "GOOGLE_APPLICATION_CREDENTIALS=./credential.json node ./scripts/stations.js"
   },
   "dependencies": {
     "firebase-admin": "^10.3.0",
@@ -17,8 +15,6 @@
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.3.0"
+    "@biomejs/biome": "^1.8.3"
   }
 }

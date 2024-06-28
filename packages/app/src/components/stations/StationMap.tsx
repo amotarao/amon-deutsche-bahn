@@ -1,6 +1,12 @@
-import { GoogleMap, Marker, MarkerProps, useJsApiLoader } from '@react-google-maps/api';
-import debounce from 'lodash.debounce';
-import React, { useCallback, useState, useMemo } from 'react';
+import {
+  GoogleMap,
+  Marker,
+  type MarkerProps,
+  useJsApiLoader,
+} from "@react-google-maps/api";
+import debounce from "lodash.debounce";
+import type React from "react";
+import { useCallback, useMemo, useState } from "react";
 
 export type StationMapProps = {
   markers: (MarkerProps & { key: string })[];
@@ -18,8 +24,8 @@ export const StationMap: React.FC<StationMapProps> = ({
   onClickMarker,
 }) => {
   const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+    id: "google-map-script",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
   });
 
   const center = useMemo(
@@ -27,23 +33,23 @@ export const StationMap: React.FC<StationMapProps> = ({
       lat: 50.107145,
       lng: 8.663789,
     }),
-    []
+    [],
   );
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const onLoad = useCallback(
     (map: google.maps.Map) => {
       setMap(map);
-      onLoadToParent && onLoadToParent(map);
+      onLoadToParent?.(map);
     },
-    [onLoadToParent]
+    [onLoadToParent],
   );
   const onUnmount = useCallback(() => {
     setMap(null);
   }, []);
 
   const onChange = debounce(() => {
-    onChangeToParent && onChangeToParent();
+    onChangeToParent?.();
   }, 300);
 
   if (!isLoaded) {
@@ -53,7 +59,7 @@ export const StationMap: React.FC<StationMapProps> = ({
   return (
     <>
       <GoogleMap
-        mapContainerStyle={{ width: '100%', height: '100%' }}
+        mapContainerStyle={{ width: "100%", height: "100%" }}
         center={center}
         zoom={12}
         options={{
@@ -75,7 +81,7 @@ export const StationMap: React.FC<StationMapProps> = ({
               key={key}
               {...marker}
               onClick={() => {
-                onClickMarker && onClickMarker(key);
+                onClickMarker?.(key);
               }}
             />
           );
@@ -83,6 +89,7 @@ export const StationMap: React.FC<StationMapProps> = ({
       </GoogleMap>
       <button
         className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-slate-700 text-white"
+        type="button"
         onClick={() => {
           navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -96,7 +103,7 @@ export const StationMap: React.FC<StationMapProps> = ({
               enableHighAccuracy: true,
               timeout: 5000,
               maximumAge: 0,
-            }
+            },
           );
         }}
       >

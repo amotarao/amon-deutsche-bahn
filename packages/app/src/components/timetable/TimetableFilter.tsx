@@ -1,39 +1,67 @@
-'use client';
+"use client";
 
-import classNames from 'classnames';
-import type { Route } from 'next';
-import { formatUrl } from 'next/dist/shared/lib/router/utils/format-url';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { getGermanyDate, getGermanyTime } from '../../modules/fetch-api/timetable';
+import classNames from "classnames";
+import type { Route } from "next";
+import { formatUrl } from "next/dist/shared/lib/router/utils/format-url";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import {
+  getGermanyDate,
+  getGermanyTime,
+} from "../../modules/fetch-api/timetable";
 
 export type TimetableFilterProps = {
   className?: string;
   name: string;
 };
 
-export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, name: defaultName }) => {
+export const TimetableFilter: React.FC<TimetableFilterProps> = ({
+  className,
+  name: defaultName,
+}) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [name, setName] = useState(decodeURIComponent(defaultName));
-  const [id, setId] = useState(searchParams?.has('id') ? searchParams.get('id') || undefined : undefined);
-  const [date, setDate] = useState(searchParams?.has('date') ? searchParams.get('date') || undefined : undefined);
-  const [time, setTime] = useState(searchParams?.has('time') ? searchParams.get('time') || undefined : undefined);
-  const [trainType, setTrainType] = useState(
-    searchParams?.has('trainType') ? searchParams.getAll('trainType') || [] : []
+  const [id, setId] = useState(
+    searchParams?.has("id") ? searchParams.get("id") || undefined : undefined,
   );
-  const [type, setType] = useState(searchParams?.has('type') ? searchParams.get('type') || undefined : undefined);
+  const [date, setDate] = useState(
+    searchParams?.has("date")
+      ? searchParams.get("date") || undefined
+      : undefined,
+  );
+  const [time, setTime] = useState(
+    searchParams?.has("time")
+      ? searchParams.get("time") || undefined
+      : undefined,
+  );
+  const [trainType, setTrainType] = useState(
+    searchParams?.has("trainType")
+      ? searchParams.getAll("trainType") || []
+      : [],
+  );
+  const [type, setType] = useState(
+    searchParams?.has("type")
+      ? searchParams.get("type") || undefined
+      : undefined,
+  );
   const [ignoreNullablePlatform] = useState(
-    searchParams?.has('ignoreNullablePlatform') ? searchParams.get('ignoreNullablePlatform') || undefined : undefined
+    searchParams?.has("ignoreNullablePlatform")
+      ? searchParams.get("ignoreNullablePlatform") || undefined
+      : undefined,
   );
   const [onlyAccurateStation, setOnlyAccurateStation] = useState(
-    searchParams?.has('onlyAccurateStation') ? searchParams.get('onlyAccurateStation') || undefined : undefined
+    searchParams?.has("onlyAccurateStation")
+      ? searchParams.get("onlyAccurateStation") || undefined
+      : undefined,
   );
 
   useEffect(() => {
-    setId(searchParams?.has('id') ? searchParams.get('id') || undefined : undefined);
+    setId(
+      searchParams?.has("id") ? searchParams.get("id") || undefined : undefined,
+    );
   }, [searchParams]);
 
   const search = () => {
@@ -46,22 +74,24 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
         type,
         ignoreNullablePlatform,
         onlyAccurateStation,
-      }).filter(([, value]) => !!value)
+      }).filter(([, value]) => !!value),
     );
 
     router.replace(
       formatUrl({
-        pathname: name ? `/timetable/stations/${encodeURIComponent(name)}` : pathname,
+        pathname: name
+          ? `/timetable/stations/${encodeURIComponent(name)}`
+          : pathname,
         query: newQuery,
-      }) as Route
+      }) as Route,
     );
   };
 
   return (
     <div
       className={classNames(
-        'flex flex-col bg-white text-sm [&>*]:border-b [&>*]:border-dashed [&>*]:border-gray-300',
-        className
+        "flex flex-col bg-white text-sm [&>*]:border-b [&>*]:border-dashed [&>*]:border-gray-300",
+        className,
       )}
     >
       <div className="grid grid-cols-[1fr_auto]">
@@ -72,10 +102,10 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
           value={name}
           onChange={(e) => {
             setName(e.target.value);
-            setId('');
+            setId("");
           }}
           onKeyDown={(e) => {
-            if (e.key !== 'Enter') {
+            if (e.key !== "Enter") {
               return;
             }
           }}
@@ -85,6 +115,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
         />
         <button
           className="bg-gray-200 px-4 py-2 text-center"
+          type="button"
           onClick={() => {
             search();
           }}
@@ -113,6 +144,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
         />
         <button
           className="bg-gray-200 px-4 py-2 text-center"
+          type="button"
           onClick={() => {
             setDate(undefined);
             setTime(undefined);
@@ -123,11 +155,14 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
       </div>
       <div className="flex">
         {[
-          { id: 'express', name: 'Express' },
-          { id: 'train', name: 'Train' },
-          { id: 's-bahn', name: 'S-Bahn' },
+          { id: "express", name: "Express" },
+          { id: "train", name: "Train" },
+          { id: "s-bahn", name: "S-Bahn" },
         ].map((curretTrainType) => (
-          <label className="flex grow items-center py-2 pl-4 pr-2" key={curretTrainType.id}>
+          <label
+            className="flex grow items-center py-2 pl-4 pr-2"
+            key={curretTrainType.id}
+          >
             <input
               className="mr-2"
               type="checkbox"
@@ -136,7 +171,9 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
               checked={trainType.includes(curretTrainType.id)}
               onChange={(e) => {
                 const value = e.target.value;
-                const newTrainType = [...trainType, value].filter((item) => (item === value ? e.target.checked : true));
+                const newTrainType = [...trainType, value].filter((item) =>
+                  item === value ? e.target.checked : true,
+                );
                 setTrainType(Array.from(new Set(newTrainType)));
               }}
             />
@@ -146,17 +183,22 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
       </div>
       <div className="flex">
         {[
-          { id: 'both', name: 'Both' },
-          { id: 'dep', name: 'Dep' },
-          { id: 'arr', name: 'Arr' },
+          { id: "both", name: "Both" },
+          { id: "dep", name: "Dep" },
+          { id: "arr", name: "Arr" },
         ].map((currentType) => (
-          <label className="flex grow items-center py-2 pl-4 pr-2" key={currentType.id}>
+          <label
+            className="flex grow items-center py-2 pl-4 pr-2"
+            key={currentType.id}
+          >
             <input
               className="mr-2"
               type="radio"
               name="type"
               value={currentType.id}
-              checked={type ? type === currentType.id : 'both' === currentType.id}
+              checked={
+                type ? type === currentType.id : "both" === currentType.id
+              }
               onChange={(e) => {
                 setType(e.target.value);
               }}
@@ -169,9 +211,9 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({ className, nam
             className="mr-2"
             type="checkbox"
             name="onlyAccurateStation"
-            checked={onlyAccurateStation === 'true' ? true : false}
+            checked={onlyAccurateStation === "true"}
             onChange={(e) => {
-              setOnlyAccurateStation(e.target.checked ? 'true' : 'false');
+              setOnlyAccurateStation(e.target.checked ? "true" : "false");
             }}
           />
           only acc sta

@@ -1,21 +1,29 @@
-import { NextApiRequest } from 'next';
+import type { NextApiRequest } from "next";
 
-export const stringifyQuery = (query: NextApiRequest['query'], key: string, required = false): string => {
+export const stringifyQuery = (
+  query: NextApiRequest["query"],
+  key: string,
+  required = false,
+): string => {
   if (!(key in query)) {
     if (required) {
       throw new Error(`${key} query is missing.`);
     }
-    return '';
+    return "";
   }
 
   const value = query[key];
   if (Array.isArray(value)) {
     return value[0];
   }
-  return value || '';
+  return value || "";
 };
 
-export const arrayQuery = (query: NextApiRequest['query'], key: string, required = false): string[] => {
+export const arrayQuery = (
+  query: NextApiRequest["query"],
+  key: string,
+  required = false,
+): string[] => {
   if (!(key in query)) {
     if (required) {
       throw new Error(`${key} query is missing.`);
@@ -30,7 +38,11 @@ export const arrayQuery = (query: NextApiRequest['query'], key: string, required
   return value ? [value] : [];
 };
 
-export const booleanQuery = (query: NextApiRequest['query'], key: string, required = false): boolean => {
+export const booleanQuery = (
+  query: NextApiRequest["query"],
+  key: string,
+  required = false,
+): boolean => {
   if (!(key in query)) {
     if (required) {
       throw new Error(`${key} query is missing.`);
@@ -38,9 +50,9 @@ export const booleanQuery = (query: NextApiRequest['query'], key: string, requir
     return false;
   }
 
-  return query[key] === 'true';
+  return query[key] === "true";
 };
 
 export const formatDate = (date: string): string => {
-  return [date.slice(8, 10), date.slice(5, 7), date.slice(0, 4)].join('.');
+  return [date.slice(8, 10), date.slice(5, 7), date.slice(0, 4)].join(".");
 };

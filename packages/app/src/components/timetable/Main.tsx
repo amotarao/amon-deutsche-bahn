@@ -1,6 +1,6 @@
-import { fetchTimetable } from '../../modules/fetch-api/timetable';
-import { JourneyList } from './JourneyList';
-import { StationIdList } from './StationIdList';
+import { fetchTimetable } from "../../modules/fetch-api/timetable";
+import { JourneyList } from "./JourneyList";
+import { StationIdList } from "./StationIdList";
 
 type Props = {
   className?: string;
@@ -11,7 +11,9 @@ type Props = {
 };
 
 export async function Main({ className, name, searchParams }: Props) {
-  const response = await fetchTimetable(name, searchParams, { next: { revalidate: 60 * 3 } });
+  const response = await fetchTimetable(name, searchParams, {
+    next: { revalidate: 60 * 3 },
+  });
 
   return (
     <main className={className}>

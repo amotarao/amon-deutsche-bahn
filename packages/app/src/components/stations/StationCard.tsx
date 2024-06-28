@@ -1,19 +1,27 @@
-import classNames from 'classnames';
-import Link from 'next/link';
-import { Station } from '../../types/station';
+import classNames from "classnames";
+import Link from "next/link";
+import type { Station } from "../../types/station";
 
 export type StationCardProps = {
   className?: string;
   station: Station;
 };
 
-export const StationCard: React.FC<StationCardProps> = ({ className, station }) => {
-  const youtubeUrl = new URL('https://www.youtube.com/results');
-  youtubeUrl.searchParams.set('search_query', station.name + ` bahnhof`);
-  youtubeUrl.searchParams.set('sp', 'CAISAhABQgIIAQ%3D%3D');
+export const StationCard: React.FC<StationCardProps> = ({
+  className,
+  station,
+}) => {
+  const youtubeUrl = new URL("https://www.youtube.com/results");
+  youtubeUrl.searchParams.set("search_query", station.name + " bahnhof");
+  youtubeUrl.searchParams.set("sp", "CAISAhABQgIIAQ%3D%3D");
 
   return (
-    <div className={classNames('flex flex-col gap-2 rounded border p-2', className)}>
+    <div
+      className={classNames(
+        "flex flex-col gap-2 rounded border p-2",
+        className,
+      )}
+    >
       <p>{station.name}</p>
       <div className="flex gap-2">
         <Link
