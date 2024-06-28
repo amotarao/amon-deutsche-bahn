@@ -10,8 +10,8 @@
     "run:stations": "GOOGLE_APPLICATION_CREDENTIALS=./credential.json node ./scripts/stations.js"
   },
   "dependencies": {
-    "firebase-admin": "^10.3.0",
-    "geofire-common": "^5.2.0",
+    "firebase-admin": "^12.2.0",
+    "geofire-common": "^6.0.0",
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
