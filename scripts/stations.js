@@ -1,7 +1,6 @@
 import { applicationDefault, initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import * as geofire from "geofire-common";
-import fetch from "node-fetch";
 
 initializeApp({
   credential: applicationDefault(),
