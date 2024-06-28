@@ -1,5 +1,5 @@
-import { fetchTimetable } from "../../modules/fetch-api/timetable";
-import type { TrainType } from "../../utils/api/timetable/types";
+import { fetchTimetable } from "../../../modules/fetch-api/timetable";
+import type { TrainType } from "../../../utils/api/timetable/types";
 import { JourneyCard } from "./JourneyCard";
 
 type Props = {

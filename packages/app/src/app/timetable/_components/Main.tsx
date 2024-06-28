@@ -1,4 +1,4 @@
-import { fetchTimetable } from "../../modules/fetch-api/timetable";
+import { fetchTimetable } from "../../../modules/fetch-api/timetable";
 import { JourneyList } from "./JourneyList";
 import { StationIdList } from "./StationIdList";
 

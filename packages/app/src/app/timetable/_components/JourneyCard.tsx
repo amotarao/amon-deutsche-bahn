@@ -4,7 +4,7 @@ import Link from "next/link";
 import type {
   JourneyInformation,
   JourneyWithArrivalDepartureInformation,
-} from "../../utils/api/timetable/types";
+} from "../../../utils/api/timetable/types";
 
 export type JourneyCardProps = {
   className?: string;
@@ -79,8 +79,8 @@ export const JourneyCard: React.FC<JourneyCardProps> = ({
       />
       {journey.message && (
         <div className="w-full">
-          <p lang="de-DE">{journey.message.title}</p>
-          <p lang="de-DE">{journey.message.text}</p>
+          <p>{journey.message.title}</p>
+          <p>{journey.message.text}</p>
         </div>
       )}
     </div>

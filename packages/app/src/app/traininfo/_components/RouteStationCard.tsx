@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import type { Route } from "next";
 import Link from "next/link";
-import type { Station } from "../../utils/api/traininfo/types";
+import type { Station } from "../../../utils/api/traininfo/types";
 
 export type RouteStationCardProps = {
   className?: string;

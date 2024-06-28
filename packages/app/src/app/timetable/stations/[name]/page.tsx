@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Main } from "../../../../components/timetable/Main";
-import { TimetableFilter } from "../../../../components/timetable/TimetableFilter";
+import { Main } from "../../_components/Main";
+import { TimetableFilter } from "../../_components/TimetableFilter";
 
 type PageProps = {
   params: {

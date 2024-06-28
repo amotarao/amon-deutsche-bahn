@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import {
   getGermanyDate,
   getGermanyTime,
-} from "../../modules/fetch-api/timetable";
+} from "../../../modules/fetch-api/timetable";
 
 export type TimetableFilterProps = {
   className?: string;
@@ -150,25 +150,25 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             setTime(undefined);
           }}
         >
-          Now
+          Jetzt
         </button>
       </div>
       <div className="flex">
         {[
-          { id: "express", name: "Express" },
-          { id: "train", name: "Train" },
+          { id: "express", name: "Fern" },
+          { id: "train", name: "Regio" },
           { id: "s-bahn", name: "S-Bahn" },
-        ].map((curretTrainType) => (
+        ].map((currentTrainType) => (
           <label
             className="flex grow items-center py-2 pl-4 pr-2"
-            key={curretTrainType.id}
+            key={currentTrainType.id}
           >
             <input
               className="mr-2"
               type="checkbox"
               name="trainType"
-              value={curretTrainType.id}
-              checked={trainType.includes(curretTrainType.id)}
+              value={currentTrainType.id}
+              checked={trainType.includes(currentTrainType.id)}
               onChange={(e) => {
                 const value = e.target.value;
                 const newTrainType = [...trainType, value].filter((item) =>
@@ -177,15 +177,15 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
                 setTrainType(Array.from(new Set(newTrainType)));
               }}
             />
-            {curretTrainType.name}
+            {currentTrainType.name}
           </label>
         ))}
       </div>
       <div className="flex">
         {[
-          { id: "both", name: "Both" },
-          { id: "dep", name: "Dep" },
-          { id: "arr", name: "Arr" },
+          { id: "both", name: "Ab/An" },
+          { id: "dep", name: "Ab" },
+          { id: "arr", name: "An" },
         ].map((currentType) => (
           <label
             className="flex grow items-center py-2 pl-4 pr-2"

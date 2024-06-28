@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { RouteStationCard } from "../../../../components/traininfo/RouteStationCard";
 import type { TrainInfoResponse } from "../../../../utils/api/traininfo/types";
+import { RouteStationCard } from "../../_components/RouteStationCard";
 
 type PageProps = {
   params: {
