@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { Main } from "../../_components/Main";
 import { TimetableFilter } from "../../_components/TimetableFilter";
 
@@ -7,18 +6,13 @@ type PageProps = {
   params: {
     name: string;
   };
-  searchParams: {
-    [key: string]: string;
-  };
 };
 
-export default function Page({ params, searchParams }: PageProps) {
+export default function Page({ params }: PageProps) {
   return (
     <div>
       <TimetableFilter className="sticky top-0 mb-4" name={params.name} />
-      <Suspense fallback={<p className="px-4 py-2 text-sm">Fetching</p>}>
-        <Main name={params.name} searchParams={searchParams} />
-      </Suspense>
+      <Main name={params.name} />
     </div>
   );
 }

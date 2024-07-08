@@ -17,24 +17,23 @@ export const StationIdList: React.FC<StationIdListProps> = ({ ids }) => {
 
   return (
     <ul className="flex flex-col gap-1">
-      {ids.map((id) => (
-        <li key={id}>
-          <Link
-            className="px-4 py-2 text-xs underline"
-            href={{
-              pathname,
-              query: {
-                ...Object.fromEntries(searchParams?.entries() ?? []),
-                id,
-              },
-            }}
-            replace
-            prefetch={false}
-          >
-            {id}
-          </Link>
-        </li>
-      ))}
+      {ids.map((id) => {
+        const qs = new URLSearchParams(searchParams ?? "");
+        qs.set("id", id);
+
+        return (
+          <li key={id}>
+            <Link
+              className="px-4 py-2 text-xs underline"
+              href={`${pathname ?? ""}?${qs}`}
+              replace
+              prefetch={false}
+            >
+              {id}
+            </Link>
+          </li>
+        );
+      })}
     </ul>
   );
 };

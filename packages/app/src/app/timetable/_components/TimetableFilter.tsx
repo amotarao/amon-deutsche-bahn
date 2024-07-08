@@ -25,43 +25,35 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
 
   const [name, setName] = useState(decodeURIComponent(defaultName));
   const [id, setId] = useState(
-    searchParams?.has("id") ? searchParams.get("id") || undefined : undefined,
+    searchParams?.has("id") ? searchParams.get("id") : null,
   );
   const [date, setDate] = useState(
-    searchParams?.has("date")
-      ? searchParams.get("date") || undefined
-      : undefined,
+    searchParams?.has("date") ? searchParams.get("date") : null,
   );
   const [time, setTime] = useState(
-    searchParams?.has("time")
-      ? searchParams.get("time") || undefined
-      : undefined,
+    searchParams?.has("time") ? searchParams.get("time") : null,
   );
   const [trainType, setTrainType] = useState(
     searchParams?.has("trainType")
-      ? searchParams.getAll("trainType") || []
+      ? searchParams.getAll("trainType") ?? []
       : [],
   );
   const [type, setType] = useState(
-    searchParams?.has("type")
-      ? searchParams.get("type") || undefined
-      : undefined,
+    searchParams?.has("type") ? searchParams.get("type") : null,
   );
   const [ignoreNullablePlatform] = useState(
     searchParams?.has("ignoreNullablePlatform")
-      ? searchParams.get("ignoreNullablePlatform") || undefined
-      : undefined,
+      ? searchParams.get("ignoreNullablePlatform")
+      : null,
   );
   const [onlyAccurateStation, setOnlyAccurateStation] = useState(
     searchParams?.has("onlyAccurateStation")
-      ? searchParams.get("onlyAccurateStation") || undefined
-      : undefined,
+      ? searchParams.get("onlyAccurateStation")
+      : null,
   );
 
   useEffect(() => {
-    setId(
-      searchParams?.has("id") ? searchParams.get("id") || undefined : undefined,
-    );
+    setId(searchParams?.has("id") ? searchParams.get("id") : null);
   }, [searchParams]);
 
   const search = () => {
@@ -88,11 +80,15 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
   };
 
   return (
-    <div
+    <form
       className={classNames(
         "flex flex-col bg-white text-sm [&>*]:border-b [&>*]:border-dashed [&>*]:border-gray-300",
         className,
       )}
+      onSubmit={(e) => {
+        e.preventDefault();
+        search();
+      }}
     >
       <div className="grid grid-cols-[1fr_auto]">
         <input
@@ -104,22 +100,11 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             setName(e.target.value);
             setId("");
           }}
-          onKeyDown={(e) => {
-            if (e.key !== "Enter") {
-              return;
-            }
-          }}
           onBlur={(e) => {
             setName(e.target.value);
           }}
         />
-        <button
-          className="bg-gray-200 px-4 py-2 text-center"
-          type="button"
-          onClick={() => {
-            search();
-          }}
-        >
+        <button className="bg-gray-200 px-4 py-2 text-center" type="submit">
           Go
         </button>
       </div>
@@ -128,7 +113,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           className="w-full bg-transparent px-4 py-2 pr-2"
           type="date"
           name="date"
-          value={date || getGermanyDate()}
+          value={date ?? getGermanyDate()}
           onChange={(e) => {
             setDate(e.target.value);
           }}
@@ -137,7 +122,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           className="w-full bg-transparent px-4 py-2 pr-2"
           type="time"
           name="time"
-          value={time || getGermanyTime()}
+          value={time ?? getGermanyTime()}
           onChange={(e) => {
             setTime(e.target.value);
           }}
@@ -146,8 +131,8 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           className="bg-gray-200 px-4 py-2 text-center"
           type="button"
           onClick={() => {
-            setDate(undefined);
-            setTime(undefined);
+            setDate(null);
+            setTime(null);
           }}
         >
           Jetzt
@@ -219,6 +204,6 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           only acc sta
         </label>
       </div>
-    </div>
+    </form>
   );
 };

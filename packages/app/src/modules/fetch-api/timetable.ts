@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import type { ReadonlyURLSearchParams } from "next/navigation";
 import type { TimetableWithArrivalDepartureResponse } from "../../utils/api/timetable/types";
 
 export type TimetableRequestQuery = {
@@ -14,22 +15,22 @@ export type TimetableRequestQuery = {
 
 export const fetchTimetable = async (
   name: string,
-  searchParams: {
-    [key: string]: string;
-  },
+  searchParamsString: string | undefined,
   requestInit?: RequestInit,
 ): Promise<TimetableWithArrivalDepartureResponse> => {
+  const searchParams = new URLSearchParams(searchParamsString);
+
   const query: TimetableRequestQuery = {
     name: decodeURIComponent(name),
-    id: (searchParams.id as string) || "",
-    date: (searchParams.date as string) || getGermanyDate(),
-    time: (searchParams.time as string) || getGermanyTime(),
-    trainType: Array.isArray(searchParams.trainType)
-      ? searchParams.trainType
-      : searchParams.trainType
-        ? [searchParams.trainType]
-        : ["express", "train", "s-bahn"],
-    type: (searchParams.type as string) || "both",
+    id: searchParams?.get("id") ?? "",
+    date: searchParams?.get("date") ?? getGermanyDate(),
+    time: searchParams?.get("time") ?? getGermanyTime(),
+    trainType: searchParams?.getAll("trainType") ?? [
+      "express",
+      "train",
+      "s-bahn",
+    ],
+    type: searchParams?.get("type") ?? "both",
   };
 
   const url = new URL(
