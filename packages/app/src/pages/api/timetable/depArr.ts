@@ -1,6 +1,7 @@
 import type { NextApiHandler, NextApiRequest } from "next";
 import { stringifyQuery } from "../../../utils/api/format";
 import type {
+  Journey,
   JourneyWithArrivalDepartureInformation,
   TimetableResponse,
   TimetableWithArrivalDepartureResponse,
@@ -61,10 +62,10 @@ const api: NextApiHandler = async (req, res) => {
       }
 
       // ホームの記載がないもの
-      // ただし、フランスの長距離列車系は除く
+      // ただし、おそらく同じ列車なものを除く
       if (
-        !["TGV", "THA", "OGV"].includes(arrJourney.train.slice(0, 3)) &&
-        (!arrJourney.platform || !depJourney.platform)
+        (!arrJourney.platform || !depJourney.platform) &&
+        !isMaybeSameTrain(arrJourney)
       ) {
         return false;
       }
@@ -147,4 +148,22 @@ const timeToNumberForCalc = (time: string): number => {
   const [, h, m] = time.match(/(\d+):(\d+)/) || ["0", "0", "0"];
   const num = Number.parseInt(h, 10) * 60 + Number.parseInt(m, 10);
   return num;
+};
+
+const isMaybeSameTrain = (
+  arr: JourneyWithArrivalDepartureInformation,
+): boolean => {
+  const france = ["TGV", "THA", "OGV"].includes(arr.train.slice(0, 3));
+  if (france) return true;
+
+  const matches = arr.train.split(" ");
+  if (matches) {
+    const same =
+      matches.length === 2 &&
+      matches[0].match(/^[A-Za-z]{2,3}$/) &&
+      matches[1].match(/^\d{3,5}$/);
+    if (same) return true;
+  }
+
+  return false;
 };
