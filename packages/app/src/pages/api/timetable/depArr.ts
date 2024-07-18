@@ -160,7 +160,7 @@ const isMaybeSameTrain = (
   if (matches) {
     const same =
       matches.length === 2 &&
-      matches[0].match(/^[A-Za-z]{2,3}$/) &&
+      matches[0].match(/^[A-Za-z]{1,4}$/) &&
       matches[1].match(/^\d{3,5}$/);
     if (same) return true;
   }
