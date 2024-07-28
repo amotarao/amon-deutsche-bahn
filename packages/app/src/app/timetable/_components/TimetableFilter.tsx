@@ -24,36 +24,22 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
   const searchParams = useSearchParams();
 
   const [name, setName] = useState(decodeURIComponent(defaultName));
-  const [id, setId] = useState(
-    searchParams?.has("id") ? searchParams.get("id") : null,
-  );
-  const [date, setDate] = useState(
-    searchParams?.has("date") ? searchParams.get("date") : null,
-  );
-  const [time, setTime] = useState(
-    searchParams?.has("time") ? searchParams.get("time") : null,
-  );
+  const [id, setId] = useState(searchParams?.get("id") ?? null);
+  const [date, setDate] = useState(searchParams?.get("date") ?? null);
+  const [time, setTime] = useState(searchParams?.get("time") ?? null);
   const [trainType, setTrainType] = useState(
-    searchParams?.has("trainType")
-      ? searchParams.getAll("trainType") ?? []
-      : [],
+    searchParams?.getAll("trainType") ?? [],
   );
-  const [type, setType] = useState(
-    searchParams?.has("type") ? searchParams.get("type") : null,
-  );
+  const [type, setType] = useState(searchParams?.get("type") ?? null);
   const [ignoreNullablePlatform] = useState(
-    searchParams?.has("ignoreNullablePlatform")
-      ? searchParams.get("ignoreNullablePlatform")
-      : null,
+    searchParams?.get("ignoreNullablePlatform"),
   );
   const [onlyAccurateStation, setOnlyAccurateStation] = useState(
-    searchParams?.has("onlyAccurateStation")
-      ? searchParams.get("onlyAccurateStation")
-      : null,
+    searchParams?.get("onlyAccurateStation"),
   );
 
   useEffect(() => {
-    setId(searchParams?.has("id") ? searchParams.get("id") : null);
+    setId(searchParams?.get("id") ?? null);
   }, [searchParams]);
 
   const search = () => {

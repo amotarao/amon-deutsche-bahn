@@ -35,8 +35,8 @@ export function JourneyList({ className, name }: Props) {
 
   const journeyItems = data.data.journeyItems
     .filter((journey) => {
-      const trainType = searchParams?.get("trainType");
-      if (!trainType) return true;
+      const trainType = searchParams?.getAll("trainType");
+      if (!trainType || trainType.length === 0) return true;
 
       const allowedTrainType: TrainType[] = [];
       if (trainType.includes("express"))
