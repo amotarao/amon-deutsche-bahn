@@ -1,6 +1,7 @@
 "use client";
 
 import classNames from "classnames";
+import dayjs from "dayjs";
 import type { Route } from "next";
 import { formatUrl } from "next/dist/shared/lib/router/utils/format-url";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -65,6 +66,38 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
     );
   };
 
+  const prev1h = () => {
+    const newDate = dayjs(
+      (date ?? getGermanyDate()) + " " + (time ?? getGermanyTime()),
+    ).add(-1, "hour");
+    setDate(newDate.format("YYYY-MM-DD"));
+    setTime(newDate.format("HH:mm"));
+  };
+
+  const next1h = () => {
+    const newDate = dayjs(
+      (date ?? getGermanyDate()) + " " + (time ?? getGermanyTime()),
+    ).add(1, "hour");
+    setDate(newDate.format("YYYY-MM-DD"));
+    setTime(newDate.format("HH:mm"));
+  };
+
+  const prev1d = () => {
+    const newDate = dayjs(
+      (date ?? getGermanyDate()) + " " + (time ?? getGermanyTime()),
+    ).add(-1, "day");
+    setDate(newDate.format("YYYY-MM-DD"));
+    setTime(newDate.format("HH:mm"));
+  };
+
+  const next1d = () => {
+    const newDate = dayjs(
+      (date ?? getGermanyDate()) + " " + (time ?? getGermanyTime()),
+    ).add(1, "day");
+    setDate(newDate.format("YYYY-MM-DD"));
+    setTime(newDate.format("HH:mm"));
+  };
+
   return (
     <form
       className={classNames(
@@ -94,7 +127,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           Go
         </button>
       </div>
-      <div className="grid grid-cols-[1fr_1fr_auto] ">
+      <div className="grid grid-cols-[1fr_1fr] ">
         <input
           className="w-full bg-transparent px-4 py-2 pr-2"
           type="date"
@@ -113,6 +146,22 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
             setTime(e.target.value);
           }}
         />
+      </div>
+      <div className="grid grid-cols-[repeat(5,1fr)] ">
+        <button
+          className="bg-gray-200 px-4 py-2 text-center"
+          type="button"
+          onClick={prev1d}
+        >
+          -1d
+        </button>
+        <button
+          className="bg-gray-200 px-4 py-2 text-center"
+          type="button"
+          onClick={prev1h}
+        >
+          -1h
+        </button>
         <button
           className="bg-gray-200 px-4 py-2 text-center"
           type="button"
@@ -122,6 +171,20 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
           }}
         >
           Jetzt
+        </button>
+        <button
+          className="bg-gray-200 px-4 py-2 text-center"
+          type="button"
+          onClick={next1h}
+        >
+          +1h
+        </button>
+        <button
+          className="bg-gray-200 px-4 py-2 text-center"
+          type="button"
+          onClick={next1d}
+        >
+          +1d
         </button>
       </div>
       <div className="flex">
