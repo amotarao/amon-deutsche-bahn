@@ -2,14 +2,19 @@
 
 import classNames from "classnames";
 import Link from "next/link";
+import { getRomaniaDate } from "../../../_lib/time";
 import type { Train } from "../_types";
 
 type Props = {
   className?: string;
   train: Train;
+  date?: string;
 };
 
-export function TrainCard({ className, train }: Props) {
+export function TrainCard({ className, train, date }: Props) {
+  const searchParams = new URLSearchParams();
+  searchParams.set("date", date ?? getRomaniaDate());
+
   return (
     <div
       className={classNames(
@@ -21,9 +26,12 @@ export function TrainCard({ className, train }: Props) {
         <TimeField type="arrival" info={train.arrival} />
         <TimeField type="departure" info={train.departure} />
         <p className="shrink grow">
-          <span>
+          <Link
+            className="underline"
+            href={`/cfr/train/${encodeURIComponent(train.train.split(" ")[1] ?? "")}?${searchParams.toString()}`}
+          >
             {train.train} ({train.operator})
-          </span>
+          </Link>
           <br />
           {train.origin && (
             <Link
