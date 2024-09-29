@@ -14,7 +14,7 @@ export const stringifyQuery = (
 
   const value = query[key];
   if (Array.isArray(value)) {
-    return value[0];
+    return value[0] || "";
   }
   return value || "";
 };

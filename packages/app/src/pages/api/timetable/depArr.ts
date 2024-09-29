@@ -145,8 +145,9 @@ const api: NextApiHandler = async (req, res) => {
 export default api;
 
 const timeToNumberForCalc = (time: string): number => {
-  const [, h, m] = time.match(/(\d+):(\d+)/) || ["0", "0", "0"];
-  const num = Number.parseInt(h, 10) * 60 + Number.parseInt(m, 10);
+  const [, h, m] = time.match(/(\d+):(\d+)/) ?? [];
+  const num =
+    Number.parseInt(h ?? "0", 10) * 60 + Number.parseInt(m ?? "0", 10);
   return num;
 };
 
@@ -160,8 +161,8 @@ const isMaybeSameTrain = (
   if (matches) {
     const same =
       matches.length === 2 &&
-      matches[0].match(/^[A-Za-z]{1,4}$/) &&
-      matches[1].match(/^\d{3,5}$/);
+      matches[0]?.match(/^[A-Za-z]{1,4}$/) &&
+      matches[1]?.match(/^\d{3,5}$/);
     if (same) return true;
   }
 

@@ -26,9 +26,9 @@ export function PageClient({ params }: PageProps) {
             <p className="text-sm font-bold">{data.name}</p>
           </div>
           <div className="flex flex-col">
-            {data.stations.map((station, i) => (
+            {data.stations.map((station) => (
               <RouteStationCard
-                key={station.name + "_" + i}
+                key={station.name}
                 className="border-b border-dashed border-gray-300"
                 station={station}
               />

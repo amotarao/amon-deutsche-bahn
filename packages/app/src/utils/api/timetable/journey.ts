@@ -111,9 +111,9 @@ const parseStops = ($row: cheerio.Cheerio<cheerio.Element>): JourneyStop[] => {
         const [, station, time] = matches || ["", "", ""];
 
         return {
-          station: station.replace("(Halt entfällt)", "").trim(),
-          time,
-          noStop: station.includes("(Halt entfällt)"),
+          station: station?.replace("(Halt entfällt)", "").trim() ?? "",
+          time: time ?? "",
+          noStop: station?.includes("(Halt entfällt)") ?? false,
         };
       }) ?? []
   );
