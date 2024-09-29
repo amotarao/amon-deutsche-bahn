@@ -54,6 +54,9 @@ export async function GET(request: Request) {
       credentials: "include",
     },
   );
+
+  console.log(res.status, res.ok);
+
   const html = await res.text();
 
   const departures = parseTrains(html, "departure");
