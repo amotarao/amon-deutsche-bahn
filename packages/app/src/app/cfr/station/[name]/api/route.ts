@@ -1,8 +1,12 @@
 import * as cheerio from "cheerio";
 import dayjs from "dayjs";
-import { parseDelay, parsePlatform } from "../../../_lib/delay";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { getRomaniaDate } from "../../../_lib/time";
+import { parseDelay, parsePlatform } from "../../../_lib/utils";
 import { getLinkStationName } from "../_lib/station";
 import type { ApiResponse, Arrival, Departure, Train } from "../_types";
+
+dayjs.extend(customParseFormat);
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -58,8 +62,8 @@ export async function GET(request: Request) {
 
   const html = await res.text();
 
-  const departures = parseTrains(html, "departure");
-  const arrivals = parseTrains(html, "arrival");
+  const departures = parseTrains("departure", html, date);
+  const arrivals = parseTrains("arrival", html, date);
   const trains = mergeTrains(departures, arrivals);
   return Response.json({
     name: parseName(html),
@@ -86,44 +90,64 @@ async function getKeyAndToken(station: string, date: string) {
   };
 }
 
-function parseTrains(html: string, type: "departure"): Departure[];
-function parseTrains(html: string, type: "arrival"): Arrival[];
-function parseTrains<Type extends "departure" | "arrival">(
+function parseTrains(
+  type: "departure",
   html: string,
+  defaultDate: string,
+): Departure[];
+function parseTrains(
+  type: "arrival",
+  html: string,
+  defaultDate: string,
+): Arrival[];
+function parseTrains<Type extends "departure" | "arrival">(
   type: Type,
+  html: string,
+  defaultDate: string,
 ) {
   const $ = cheerio.load(html);
   const trains = $(`li.list-group-item[id^=li-train-${type}s-]`)
     .toArray()
     .map((element) => {
-      const time = $(element)
+      const $element = $(element);
+      const time = $element
         .find(".col-md-2.col-4")
         .first()
         .find("div")
         .last()
         .text()
         .trim();
-      const originOrDestination = $(element)
+      const originOrDestination = $element
         .find(".col-md-3.col-8 a")
         .text()
         .trim();
-      const trainCategory = $(element)
+      const trainCategory = $element
         .find('[class^="span-train-category-"]')
         .text()
         .trim();
-      const trainNumber = $(element).find(".col-md-2.col-4 a").text().trim();
+      const trainNumber = $element.find(".col-md-2.col-4 a").text().trim();
       const train = (trainCategory + " " + trainNumber).trim();
-      const operator = $(element).find(".img-train-operator").attr("alt") || "";
-      const delay = $(element)
+      const operator = $element.find(".img-train-operator").attr("alt") || "";
+      const delay = $element
         .find(".div-stations-train-real-time-badge .d-inline-block:first-child")
         .text()
         .trim();
-      const platform = $(element)
+      const platform = $element
         .find(".div-stations-train-real-time-badge .d-inline-block.ml-3")
         .text()
         .trim();
+      const date =
+        $element
+          .find(".col-md-2.col-4.text-1-1rem a")
+          .attr("href")
+          ?.split("?Date=")[1] ?? defaultDate;
+      const dateObj = dayjs(date, "DD/MM/YYYY");
+      const dateYmd = dateObj.isValid()
+        ? dateObj.format("YYYY-MM-DD")
+        : getRomaniaDate();
 
       return {
+        date: dateYmd,
         time,
         train,
         originOrDestination,
@@ -160,6 +184,7 @@ function mergeTrains(departures: Departure[], arrivals: Arrival[]): Train[] {
       destination: departure.destination,
       arrival: null,
       departure: {
+        date: departure.date,
         time: departure.time,
         delay: departure.delay,
         platform: departure.platform,
@@ -172,6 +197,7 @@ function mergeTrains(departures: Departure[], arrivals: Arrival[]): Train[] {
     if (train) {
       train.origin = arrival.origin;
       train.arrival = {
+        date: arrival.date,
         time: arrival.time,
         delay: arrival.delay,
         platform: arrival.platform,
@@ -184,6 +210,7 @@ function mergeTrains(departures: Departure[], arrivals: Arrival[]): Train[] {
       origin: arrival.origin,
       destination: null,
       arrival: {
+        date: arrival.date,
         time: arrival.time,
         delay: arrival.delay,
         platform: arrival.platform,

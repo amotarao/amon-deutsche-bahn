@@ -8,12 +8,11 @@ import type { Train } from "../_types";
 type Props = {
   className?: string;
   train: Train;
-  date: string;
 };
 
-export function TrainCard({ className, train, date }: Props) {
+export function TrainCard({ className, train }: Props) {
   const searchParams = new URLSearchParams();
-  searchParams.set("date", date);
+  searchParams.set("date", train.arrival?.date ?? train.departure?.date ?? "");
 
   return (
     <div

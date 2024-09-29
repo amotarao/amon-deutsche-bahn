@@ -1,8 +1,8 @@
 import * as cheerio from "cheerio";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { parseDelay, parsePlatform } from "../../../_lib/delay";
 import { getRomaniaDate } from "../../../_lib/time";
+import { parseDelay, parsePlatform } from "../../../_lib/utils";
 import type { ApiResponse, Station } from "../_types";
 
 dayjs.extend(customParseFormat);
@@ -94,22 +94,21 @@ function parseStations(html: string): Station[] {
   const stations = $(".mt-3 .list-group li.list-group-item")
     .toArray()
     .map((element): Station => {
-      const stationElement = $(element);
+      const $element = $(element);
 
-      const name = stationElement.find(".col-md-5 a").text().trim();
+      const name = $element.find(".col-md-5 a").text().trim();
       const date =
-        stationElement.find(".col-md-5 a").attr("href")?.split("Date=")[1] ??
-        "";
+        $element.find(".col-md-5 a").attr("href")?.split("Date=")[1] ?? "";
       const dateObj = dayjs(date, "DD/MM/YYYY");
       const dateYmd = dateObj.isValid()
         ? dateObj.format("YYYY-MM-DD")
         : getRomaniaDate();
-      const platform = stationElement
+      const platform = $element
         .find(".col-6.col-md-8 .col-md-2:last-child")
         .text()
         .trim();
 
-      const arrivalElement = stationElement.find(".col-3.col-md-2:first-child");
+      const arrivalElement = $element.find(".col-3.col-md-2:first-child");
       const arrivalTime = arrivalElement.find(".text-1-3rem").text().trim();
       const arrivalDelay = arrivalElement.find(".text-0-8rem").text().trim();
 
@@ -122,9 +121,7 @@ function parseStations(html: string): Station[] {
           }
         : null;
 
-      const departureElement = stationElement.find(
-        ".col-3.col-md-2:last-child",
-      );
+      const departureElement = $element.find(".col-3.col-md-2:last-child");
       const departureTime = departureElement.find(".text-1-3rem").text().trim();
       const departureDelay = departureElement
         .find(".text-0-8rem")
@@ -140,7 +137,12 @@ function parseStations(html: string): Station[] {
           }
         : null;
 
-      return { name, arrival, departure };
+      // 型解決
+      if (arrival && departure) return { name, arrival, departure };
+      if (arrival) return { name, arrival, departure };
+      if (departure) return { name, arrival, departure };
+
+      throw new Error();
     });
 
   return stations;
