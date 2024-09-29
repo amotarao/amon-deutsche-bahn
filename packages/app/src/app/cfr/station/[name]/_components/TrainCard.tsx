@@ -21,7 +21,9 @@ export function TrainCard({ className, train }: Props) {
         <TimeField type="arrival" info={train.arrival} />
         <TimeField type="departure" info={train.departure} />
         <p className="shrink grow">
-          <span>{train.train}</span>
+          <span>
+            {train.train} ({train.operator})
+          </span>
           <br />
           {train.origin && (
             <Link

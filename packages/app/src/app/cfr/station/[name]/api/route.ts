@@ -113,9 +113,7 @@ function parseTrains<Type extends "departure" | "arrival">(
       const train = (trainCategory + " " + trainNumber).trim();
       const operator = $(element).find(".img-train-operator").attr("alt") || "";
       const delay = $(element)
-        .find(
-          ".div-stations-train-real-time-badge .color-firebrick, .color-darkgreen",
-        )
+        .find(".div-stations-train-real-time-badge .d-inline-block:first-child")
         .text()
         .trim();
       const platform =
@@ -205,6 +203,7 @@ function mergeTrains(departures: Departure[], arrivals: Arrival[]): Train[] {
 function parseDelay(text: string): number | null {
   if (text === "") return null;
   if (text === "on time") return 0;
+  if (text === "on time*") return 0;
   if (text.startsWith("+")) {
     return Number(text.replace(/^\+/, "").replace(/ min.+$/, ""));
   }
