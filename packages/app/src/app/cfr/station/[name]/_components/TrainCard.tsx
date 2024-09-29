@@ -32,23 +32,9 @@ export function TrainCard({ className, train }: Props) {
             {train.train} ({train.operator})
           </Link>
           <br />
-          {train.origin && (
-            <Link
-              className="underline"
-              href={`/cfr/station/${encodeURIComponent(train.origin)}`}
-            >
-              {train.origin}
-            </Link>
-          )}
+          {train.origin && <span>{train.origin}</span>}
           {train.origin && train.destination && <span> -&gt; </span>}
-          {train.destination && (
-            <Link
-              className="underline"
-              href={`/cfr/station/${encodeURIComponent(train.destination)}`}
-            >
-              {train.destination}
-            </Link>
-          )}
+          {train.destination && <span>{train.destination}</span>}
         </p>
         <p className="w-10 shrink-0">
           {train.departure?.platform ?? train.arrival?.platform ?? ""}
