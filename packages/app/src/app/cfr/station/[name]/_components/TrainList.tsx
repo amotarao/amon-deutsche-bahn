@@ -5,9 +5,10 @@ import { TrainCard } from "./TrainCard";
 
 type Props = {
   trains: Train[];
+  date: string;
 };
 
-export function TrainList({ trains }: Props) {
+export function TrainList({ trains, date }: Props) {
   return (
     <section>
       <div className="flex flex-col">
@@ -16,6 +17,7 @@ export function TrainList({ trains }: Props) {
             key={train.train}
             className="border-b border-dashed border-gray-300"
             train={train}
+            date={date}
           />
         ))}
       </div>

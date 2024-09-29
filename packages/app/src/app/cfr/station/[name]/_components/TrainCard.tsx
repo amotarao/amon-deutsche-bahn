@@ -8,12 +8,12 @@ import type { Train } from "../_types";
 type Props = {
   className?: string;
   train: Train;
-  date?: string;
+  date: string;
 };
 
 export function TrainCard({ className, train, date }: Props) {
   const searchParams = new URLSearchParams();
-  searchParams.set("date", date ?? getRomaniaDate());
+  searchParams.set("date", date);
 
   return (
     <div
