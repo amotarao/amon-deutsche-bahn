@@ -107,7 +107,7 @@ function parseTrains<Type extends "departure" | "arrival">(
         .text()
         .trim();
       const trainCategory = $(element)
-        .find(".span-train-category-ir, .span-train-category-r")
+        .find('[class^="span-train-category-"]')
         .text()
         .trim();
       const trainNumber = $(element).find(".col-md-2.col-4 a").text().trim();
