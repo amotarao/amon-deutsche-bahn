@@ -1,5 +1,6 @@
 import * as cheerio from "cheerio";
 import dayjs from "dayjs";
+import { parseDelay, parsePlatform } from "../../../_lib/delay";
 import { getLinkStationName } from "../_lib/station";
 import type { ApiResponse, Arrival, Departure, Train } from "../_types";
 
@@ -117,12 +118,10 @@ function parseTrains<Type extends "departure" | "arrival">(
         .find(".div-stations-train-real-time-badge .d-inline-block:first-child")
         .text()
         .trim();
-      const platform =
-        $(element)
-          .find(".div-stations-train-real-time-badge .d-inline-block.ml-3")
-          .text()
-          .trim()
-          .replace("platform ", "") || null;
+      const platform = $(element)
+        .find(".div-stations-train-real-time-badge .d-inline-block.ml-3")
+        .text()
+        .trim();
 
       return {
         time,
@@ -130,7 +129,7 @@ function parseTrains<Type extends "departure" | "arrival">(
         originOrDestination,
         operator,
         delay: parseDelay(delay),
-        platform: platform,
+        platform: parsePlatform(platform),
       };
     });
 
@@ -199,19 +198,6 @@ function mergeTrains(departures: Departure[], arrivals: Arrival[]): Train[] {
       ? 1
       : -1,
   );
-}
-
-function parseDelay(text: string): number | null {
-  if (text === "") return null;
-  if (text === "on time") return 0;
-  if (text === "on time*") return 0;
-  if (text.startsWith("+")) {
-    return Number(text.replace(/^\+/, "").replace(/ min.+$/, ""));
-  }
-  if (text.startsWith("-")) {
-    return Number(text.replace(/^-/, "").replace(/ min.+$/, "")) * -1;
-  }
-  return null;
 }
 
 function parseName(html: string): string {

@@ -6,7 +6,7 @@ import type { Route } from "next";
 import { formatUrl } from "next/dist/shared/lib/router/utils/format-url";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { getRomaniaDate, getRomaniaTime } from "../_lib/timetable";
+import { getRomaniaDate } from "../../../_lib/time";
 
 type Props = {
   className?: string;
