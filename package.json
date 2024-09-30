@@ -6,8 +6,7 @@
   "type": "module",
   "workspaces": ["packages/*"],
   "scripts": {
-    "check": "biome check --write .",
-    "run:stations": "GOOGLE_APPLICATION_CREDENTIALS=./credential.json node ./scripts/stations.js"
+    "check": "biome check --write ."
   },
   "dependencies": {
     "firebase-admin": "^12.2.0"
