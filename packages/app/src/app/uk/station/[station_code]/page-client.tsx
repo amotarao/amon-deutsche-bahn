@@ -35,7 +35,10 @@ export function PageClient({ params }: PageContext) {
       ) : (
         <main>
           <div className="flex flex-col gap-2">
-            <p className="px-4 py-1 text-sm font-bold">{stationCode}</p>
+            <p className="px-4 py-1 text-sm font-bold">
+              {data.departure.departureStation.locationName} (
+              {data.departure.departureStation.crs})
+            </p>
             <TrainList data={data.departure} />
           </div>
         </main>
