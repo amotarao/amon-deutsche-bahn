@@ -60,6 +60,7 @@ export function TrainCard({ className, service }: Props) {
         </p>
         <p className="w-10 shrink-0">{service.platform}</p>
       </div>
+      <div>{service.status.status}</div>
     </div>
   );
 }
