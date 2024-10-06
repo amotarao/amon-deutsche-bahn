@@ -1,30 +1,20 @@
+type Station = {
+  locationName: string;
+  crs: string;
+  via: string | null;
+};
+
 export type TrainService = {
   rid: string;
   serviceType: {
     mode: string;
     category: string;
   };
-  origin: {
-    locationName: string;
-    crs: string;
-    via: string | null;
-  }[];
-  destination: {
-    locationName: string;
-    crs: string;
-    via: string | null;
-  }[];
+  origin: Station[];
+  destination: Station[];
   journeyDetails: {
-    from: {
-      locationName: string;
-      crs: string;
-      via: string | null;
-    };
-    to: {
-      locationName: string;
-      crs: string;
-      via: string | null;
-    };
+    from: Station;
+    to: Station;
     stops: number;
     departureInfo: {
       scheduled: string;
@@ -50,7 +40,7 @@ export type TrainService = {
     scheduled: string;
     estimated: string | null;
     actual: string | null;
-  };
+  } | null;
   arrivalInfo: {
     scheduled: string;
     estimated: string | null;
@@ -63,11 +53,7 @@ export type TrainService = {
 export type DepartureArrivalData = {
   generatedAt: string;
   nrccMessages: string | null;
-  departureStation: {
-    locationName: string;
-    crs: string;
-    via: string | null;
-  };
+  departureStation: Station;
   filterStation: string | null;
   services: TrainService[];
 };
@@ -75,4 +61,13 @@ export type DepartureArrivalData = {
 export type DepartureArrival = {
   departure: DepartureArrivalData;
   arrival: DepartureArrivalData;
+};
+
+export type ApiResponse = {
+  generatedAt: string;
+  nrccMessages: string | null;
+  station: Station;
+  filterStation: string | null;
+  nextDateUnix: number;
+  services: TrainService[];
 };

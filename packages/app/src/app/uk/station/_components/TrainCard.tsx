@@ -4,6 +4,7 @@ import classNames from "classnames";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import Link from "next/link";
 import type { TrainService } from "../_types";
 
 dayjs.extend(utc);
@@ -26,18 +27,36 @@ export function TrainCard({ className, service }: Props) {
         <TimeField type="arrival" info={service.arrivalInfo} />
         <TimeField type="departure" info={service.departureInfo} />
         <p className="shrink grow">
-          <span>{service.serviceType.category}</span>
+          <span>
+            {getShortenServiceName(service)} ({service.operator.name})
+          </span>
           <br />
-          {service.arrivalInfo && service.origin && (
-            <span>{service.origin.at(0)?.locationName}</span>
-          )}
+          {service.arrivalInfo &&
+            service.origin &&
+            service.origin.map((station) => (
+              <Link
+                key={station.crs}
+                className="underline"
+                href={`/uk/station/${station.crs}`}
+              >
+                {station.locationName}
+              </Link>
+            ))}
           {service.arrivalInfo &&
             service.origin &&
             service.departureInfo &&
             service.destination && <span> -&gt; </span>}
-          {service.departureInfo && service.destination && (
-            <span>{service.destination.at(0)?.locationName}</span>
-          )}
+          {service.departureInfo &&
+            service.destination &&
+            service.destination.map((station) => (
+              <Link
+                key={station.crs}
+                className="underline"
+                href={`/uk/station/${station.crs}`}
+              >
+                {station.locationName}
+              </Link>
+            ))}
         </p>
         <p className="w-10 shrink-0">{service.platform}</p>
       </div>
@@ -79,4 +98,16 @@ function TimeField({ info }: TimeFieldProps) {
 
 function getTime(date: string) {
   return dayjs(date).tz("Europe/London").format("HH:mm");
+}
+
+function getShortenServiceName(service: TrainService) {
+  const originalName = service.serviceType.category;
+  switch (originalName) {
+    case "PassengerTrain":
+      return "Local";
+    case "ExpressPassengerTrain":
+      return "Exp";
+    default:
+      return originalName;
+  }
 }

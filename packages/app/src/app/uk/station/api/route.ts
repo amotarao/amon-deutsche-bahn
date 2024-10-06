@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import type { DepartureArrival } from "../_types";
+import type { ApiResponse, DepartureArrivalData } from "../_types";
 
 dayjs.extend(customParseFormat);
 
@@ -24,7 +24,8 @@ export async function GET(request: Request) {
     fetchDepartureBoard({ stationCode, dateTime }),
     fetchArrivalBoard({ stationCode, dateTime }),
   ]);
-  return Response.json({ departure, arrival } as DepartureArrival);
+  const data = merge(departure, arrival);
+  return Response.json(data);
 }
 
 type FetchDepartureBoardParams = {
@@ -35,7 +36,7 @@ type FetchDepartureBoardParams = {
 async function fetchDepartureBoard({
   stationCode,
   dateTime,
-}: FetchDepartureBoardParams) {
+}: FetchDepartureBoardParams): Promise<DepartureArrivalData> {
   const res = await fetch("https://nreservices.nationalrail.co.uk/live-info", {
     headers: {
       accept: "*/*",
@@ -61,7 +62,7 @@ async function fetchDepartureBoard({
     credentials: "omit",
   });
   const json = await res.json();
-  return json.data.DepartureBoard;
+  return json.data.DepartureBoard as DepartureArrivalData;
 }
 
 type FetchArrivalBoardParams = {
@@ -72,7 +73,7 @@ type FetchArrivalBoardParams = {
 async function fetchArrivalBoard({
   stationCode,
   dateTime,
-}: FetchArrivalBoardParams) {
+}: FetchArrivalBoardParams): Promise<DepartureArrivalData> {
   const res = await fetch("https://nreservices.nationalrail.co.uk/live-info", {
     headers: {
       accept: "*/*",
@@ -96,5 +97,26 @@ async function fetchArrivalBoard({
     method: "POST",
   });
   const json = await res.json();
-  return json.data.ArrivalBoard;
+  return json.data.ArrivalBoard as DepartureArrivalData;
+}
+
+function merge(
+  arrival: DepartureArrivalData,
+  departure: DepartureArrivalData,
+): ApiResponse {
+  const services = [...arrival.services, ...departure.services];
+  const { departureStation, ...rest } = arrival;
+  const lastArrivalDateUnix = dayjs(
+    arrival.services.at(-1)?.arrivalInfo?.scheduled,
+  ).unix();
+  const lastDepartureDateUnix = dayjs(
+    departure.services.at(-1)?.departureInfo?.scheduled,
+  ).unix();
+
+  return {
+    ...rest,
+    station: departureStation,
+    nextDateUnix: Math.min(lastArrivalDateUnix, lastDepartureDateUnix) + 1,
+    services,
+  };
 }
