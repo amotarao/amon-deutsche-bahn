@@ -89,8 +89,9 @@ function TimeField({ info }: TimeFieldProps) {
       {info && (
         <div>
           <p>{getTime(info.scheduled)}</p>
-          {info.estimated && <p>{getTime(info.estimated)}</p>}
-          {info.actual && <p>{getTime(info.actual)}</p>}
+          {info.estimated && info.scheduled !== info.estimated && (
+            <p>{getTime(info.estimated)}</p>
+          )}
         </div>
       )}
     </div>
