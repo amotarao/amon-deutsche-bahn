@@ -60,7 +60,7 @@ export function TrainCard({ className, service }: Props) {
         </p>
         <p className="w-10 shrink-0">{service.platform}</p>
       </div>
-      <div>{service.status.status}</div>
+      <StatusField service={service} />
     </div>
   );
 }
@@ -95,6 +95,29 @@ function TimeField({ info }: TimeFieldProps) {
       )}
     </div>
   );
+}
+
+type StatusFieldProps = {
+  service: TrainService;
+};
+
+function StatusField({ service }: StatusFieldProps) {
+  switch (service.status.status) {
+    case "Late":
+      return (
+        <div>
+          {service.status.status}: {service.status.delayReason}
+        </div>
+      );
+    case "Canceled":
+      return (
+        <div>
+          {service.status.status}: {service.status.cancelReason}
+        </div>
+      );
+    default:
+      return null;
+  }
 }
 
 function getTime(date: string) {
