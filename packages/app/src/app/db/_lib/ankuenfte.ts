@@ -1,8 +1,8 @@
 import {
   getGermanyDate,
   getGermanyTime,
-} from "../../../../../modules/fetch-api/timetable";
-import type { Ankunft } from "../types";
+} from "../../../modules/fetch-api/timetable";
+import type { Ankunft } from "../_types";
 
 type Params = {
   date?: string | null;

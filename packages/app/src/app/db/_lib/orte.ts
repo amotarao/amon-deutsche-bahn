@@ -1,4 +1,4 @@
-import type { Ort } from "../types";
+import type { Ort } from "../_types";
 
 type Response = Ort[];
 

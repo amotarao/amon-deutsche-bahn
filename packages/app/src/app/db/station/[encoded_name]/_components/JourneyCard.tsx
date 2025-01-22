@@ -2,7 +2,7 @@ import classNames from "classnames";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { getGermanyTime } from "../../../../../modules/fetch-api/timetable";
-import type { Journey } from "../types";
+import type { Journey } from "../../../_types";
 
 type Props = {
   className?: string;
@@ -95,12 +95,12 @@ function PlatformField({ journey }: PlatformFieldProps) {
   const { gleis, ezGleis } = journey.ankunft || journey.abfahrt || {};
 
   return (
-    <div className="w-10 shrink-0">
+    <div className="w-10 shrink-0 text-right">
       <p
-        className="text-right data-[has-changed-platform=true]:font-bold data-[has-changed-platform=true]:text-red-500"
+        className="data-[has-changed-platform=true]:line-through data-[has-changed-platform=true]:font-bold data-[has-changed-platform=true]:text-red-500"
         data-has-changed-platform={!!ezGleis}
       >
-        {gleis}
+        {gleis ?? "?"}
       </p>
       {ezGleis && (
         <p className="text-right text-red-500 font-bold">{ezGleis}</p>

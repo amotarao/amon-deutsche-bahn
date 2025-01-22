@@ -19,6 +19,6 @@ export const generateMetadata = async ({
   const { encoded_name } = await params;
   const name = decodeURIComponent(encoded_name);
   return {
-    title: `Timetable at ${name}`,
+    title: `Timetable of ${name}`,
   };
 };

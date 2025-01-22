@@ -1,14 +1,19 @@
 "use server";
 
-import { getAbfahrten } from "./_lib/abfahrten";
-import { getAnkuenfte } from "./_lib/ankuenfte";
-import { searchOrte } from "./_lib/orte";
-import type { Abfahrt, Ankunft, Journey, Response } from "./types";
+import { getAbfahrten } from "../../_lib/abfahrten";
+import { getAnkuenfte } from "../../_lib/ankuenfte";
+import { searchOrte } from "../../_lib/orte";
+import type {
+  Abfahrt,
+  Ankunft,
+  Journey,
+  StationTimetableResponse,
+} from "../../_types";
 
-export async function fetchTimetable(
+export async function fetchStationTimetable(
   name: string,
   searchParamsString: string | undefined,
-): Promise<Response | null> {
+): Promise<StationTimetableResponse | null> {
   const orte = await searchOrte(name);
   const ort = orte[0];
   if (!ort) return null;

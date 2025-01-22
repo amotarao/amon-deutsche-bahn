@@ -1,11 +1,11 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import useSWR, { type SWRResponse } from "swr";
+import useSWR from "swr";
+import type { StationTimetableResponse } from "../../_types";
 import { JourneyList } from "./_components/JourneyList";
 import { TimetableFilter } from "./_components/TimetableFilter";
-import { fetchTimetable } from "./actions";
-import type { Response } from "./types";
+import { fetchStationTimetable } from "./actions";
 
 type Props = {
   name: string;
@@ -13,24 +13,27 @@ type Props = {
 
 export default function PageClient({ name }: Props) {
   const searchParams = useSearchParams();
-  const swr = useSWR([name, searchParams], ([name, searchParams]) =>
-    fetchTimetable(name, searchParams?.toString()),
+  const { data, isLoading } = useSWR(
+    [name, searchParams],
+    ([name, searchParams]) =>
+      fetchStationTimetable(name, searchParams?.toString()),
   );
 
   return (
     <div>
       <TimetableFilter className="sticky top-0 mb-4" defaultName={name} />
-      <Main swr={swr} />
+      <Main data={data} isLoading={isLoading} />
     </div>
   );
 }
 
 type MainProps = {
   className?: string;
-  swr: SWRResponse<Response | null>;
+  data: StationTimetableResponse | null | undefined;
+  isLoading: boolean;
 };
 
-function Main({ className, swr: { isLoading, data } }: MainProps) {
+function Main({ className, data, isLoading }: MainProps) {
   if (isLoading) {
     return <p className="px-4 py-2 text-sm">Fetching</p>;
   }
