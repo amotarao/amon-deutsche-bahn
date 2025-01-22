@@ -9,17 +9,14 @@ import { useEffect, useState } from "react";
 import {
   getGermanyDate,
   getGermanyTime,
-} from "../../../modules/fetch-api/timetable";
+} from "../../../../../modules/fetch-api/timetable";
 
-export type TimetableFilterProps = {
+type Props = {
   className?: string;
-  name: string;
+  defaultName: string;
 };
 
-export const TimetableFilter: React.FC<TimetableFilterProps> = ({
-  className,
-  name: defaultName,
-}) => {
+export function TimetableFilter({ className, defaultName }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -58,9 +55,7 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
 
     router.replace(
       formatUrl({
-        pathname: name
-          ? `/timetable/stations/${encodeURIComponent(name)}`
-          : pathname,
+        pathname: name ? `/db/station/${encodeURIComponent(name)}` : pathname,
         query: newQuery,
       }) as Route,
     );
@@ -255,4 +250,4 @@ export const TimetableFilter: React.FC<TimetableFilterProps> = ({
       </div>
     </form>
   );
-};
+}

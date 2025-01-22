@@ -89,7 +89,8 @@ const parseDetailHref = (href: string): string => {
   const time = url.searchParams.get("time") || "";
 
   const newUrl = new URL(
-    `https://example.com/timetable/stations/${encodeURIComponent(name ?? "")}`,
+    `/db/station/${encodeURIComponent(name ?? "")}`,
+    "https://example.com",
   );
   newUrl.searchParams.set("id", `${name}#${id}`);
   newUrl.searchParams.set("date", `20${y}-${m}-${d}`);

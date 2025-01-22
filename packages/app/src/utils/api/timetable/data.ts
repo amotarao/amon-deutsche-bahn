@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio";
-import type { TimetableData } from "./types";
+import type { TimetableData } from "../../../app/db/station/[encoded_name]/types";
 
 export const parseData = (
   html: string,

@@ -5,7 +5,7 @@ import type {
   JourneyMessage,
   JourneyStop,
   TrainType,
-} from "./types";
+} from "../../../app/db/station/[encoded_name]/types";
 
 const baseUrl = "https://reiseauskunft.bahn.de";
 
