@@ -32,7 +32,7 @@ export function TimetableFilter({ className, name: defaultName }: Props) {
       formatUrl({
         pathname: name ? `/cfr/station/${encodeURIComponent(name)}` : pathname,
         query: newQuery,
-      }) as Route,
+      }),
     );
   };
 
