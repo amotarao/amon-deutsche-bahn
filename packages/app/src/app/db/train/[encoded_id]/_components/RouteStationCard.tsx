@@ -1,11 +1,8 @@
 import classNames from "classnames";
 import Link from "next/link";
 import { useMemo } from "react";
-import {
-  getGermanyDate,
-  getGermanyTime,
-} from "../../../../../modules/fetch-api/timetable";
 import type { Halt } from "../../../_types";
+import { getGermanyDate, getGermanyTime } from "../../../utils/datetime";
 
 type Props = {
   className?: string;

@@ -6,10 +6,7 @@ import type { Route } from "next";
 import { formatUrl } from "next/dist/shared/lib/router/utils/format-url";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import {
-  getGermanyDate,
-  getGermanyTime,
-} from "../../../../../modules/fetch-api/timetable";
+import { getGermanyDate, getGermanyTime } from "../../../utils/datetime";
 
 type Props = {
   className?: string;

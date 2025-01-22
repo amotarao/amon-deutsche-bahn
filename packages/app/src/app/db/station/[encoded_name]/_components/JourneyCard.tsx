@@ -1,8 +1,8 @@
 import classNames from "classnames";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { getGermanyTime } from "../../../../../modules/fetch-api/timetable";
 import type { Journey } from "../../../_types";
+import { getGermanyTime } from "../../../utils/datetime";
 
 type Props = {
   className?: string;

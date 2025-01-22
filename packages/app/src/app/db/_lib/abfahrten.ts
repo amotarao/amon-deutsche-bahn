@@ -1,8 +1,5 @@
-import {
-  getGermanyDate,
-  getGermanyTime,
-} from "../../../modules/fetch-api/timetable";
 import type { Abfahrt } from "../_types";
+import { getGermanyDate, getGermanyTime } from "../utils/datetime";
 
 type Params = {
   date?: string | null;
