@@ -82,34 +82,34 @@ export type Fahrt = {
   reisetag: string;
   regulaereVerkehrstage: string;
   irregulaereVerkehrstage: string;
-  zugName: "S 3";
+  zugName: string;
   halte: Halt[];
   himMeldungen: {
-    ueberschrift: "Bauarbeiten.";
-    text: "Dienstag, 7. Januar 2025 bis Donnerstag, 30. Januar 2025 finden umfangreiche Bauarbeiten zwischen Stellingen und Holstenstraße / Altona statt. Wir fahren in dem Zeitraum nach wie folgt: Die S3 fährt Pinneberg - Stellingen und Altona - Neugraben. Die S5 fährt Sternschanze - Neugraben bzw. Stade. Zwischen Stellingen und Holstenstraße fahren Busse. In Holstenstraße besteht Anschluss an die S2 in Richtung Altona sowie in Richtung Hbf. S2 (7.1. bis 31.1.) : Ausfall 5-Minuten-Takt. Aktuell ist die Station Holstenstraße nicht barrierefrei ausgebaut. Nutzen Sie bitte die Buslinien 20 und 25 ab Holstenstraße nach Altona. Alternative Verbindungen Pinneberg und Altona / Hauptbahnhof: RB/RE.";
-    prioritaet: "NIEDRIG";
-    modDateTime: "2024-12-30T10:43:18";
+    ueberschrift: string;
+    text: string;
+    prioritaet: MeldungPrioritaet;
+    modDateTime: string;
   }[];
   risNotizen: [];
   zugattribute: {
-    kategorie: "FAHRRADMITNAHME";
-    key: "FB";
-    value: "Fahrradmitnahme begrenzt möglich";
-    teilstreckenHinweis: "(Hamburg-Altona(S) - Hamburg-Neugraben)";
+    kategorie: string;
+    key: string;
+    value: string;
+    teilstreckenHinweis: string;
   }[];
   priorisierteMeldungen: Meldung[];
-  abfahrtsZeitpunkt: "2025-01-22T12:23:00";
-  ankunftsZeitpunkt: "2025-01-22T13:04:00";
-  ezAbfahrtsZeitpunkt: "2025-01-22T12:26:00";
-  ezAnkunftsZeitpunkt: "2025-01-22T13:05:00";
-  cancelled: false;
+  abfahrtsZeitpunkt: string;
+  ankunftsZeitpunkt: string;
+  ezAbfahrtsZeitpunkt: string;
+  ezAnkunftsZeitpunkt: string;
+  cancelled: boolean;
   polylineGroup: {
     polylineDescriptions: {
       coordinates: {
-        lng: 9.934842;
-        lat: 53.551276;
+        lng: number;
+        lat: number;
       }[];
-      delta: false;
+      delta: boolean;
     }[];
   };
 };
