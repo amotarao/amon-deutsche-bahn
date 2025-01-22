@@ -57,7 +57,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
       formatUrl({
         pathname: name ? `/db/station/${encodeURIComponent(name)}` : pathname,
         query: newQuery,
-      }) as Route,
+      }),
     );
   };
 
