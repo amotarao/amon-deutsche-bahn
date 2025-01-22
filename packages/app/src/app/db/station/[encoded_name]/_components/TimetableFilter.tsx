@@ -2,11 +2,13 @@
 
 import classNames from "classnames";
 import dayjs from "dayjs";
-import type { Route } from "next";
 import { formatUrl } from "next/dist/shared/lib/router/utils/format-url";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getGermanyDate, getGermanyTime } from "../../../utils/datetime";
+import {
+  getCurrentGermanyDate,
+  getCurrentGermanyTime,
+} from "../../../utils/datetime";
 
 type Props = {
   className?: string;
@@ -60,7 +62,9 @@ export function TimetableFilter({ className, defaultName }: Props) {
 
   const prev1h = () => {
     const newDate = dayjs(
-      (date ?? getGermanyDate()) + " " + (time ?? getGermanyTime()),
+      (date ?? getCurrentGermanyDate()) +
+        " " +
+        (time ?? getCurrentGermanyTime()),
     ).add(-1, "hour");
     setDate(newDate.format("YYYY-MM-DD"));
     setTime(newDate.format("HH:mm"));
@@ -68,7 +72,9 @@ export function TimetableFilter({ className, defaultName }: Props) {
 
   const next1h = () => {
     const newDate = dayjs(
-      (date ?? getGermanyDate()) + " " + (time ?? getGermanyTime()),
+      (date ?? getCurrentGermanyDate()) +
+        " " +
+        (time ?? getCurrentGermanyTime()),
     ).add(1, "hour");
     setDate(newDate.format("YYYY-MM-DD"));
     setTime(newDate.format("HH:mm"));
@@ -76,7 +82,9 @@ export function TimetableFilter({ className, defaultName }: Props) {
 
   const prev1d = () => {
     const newDate = dayjs(
-      (date ?? getGermanyDate()) + " " + (time ?? getGermanyTime()),
+      (date ?? getCurrentGermanyDate()) +
+        " " +
+        (time ?? getCurrentGermanyTime()),
     ).add(-1, "day");
     setDate(newDate.format("YYYY-MM-DD"));
     setTime(newDate.format("HH:mm"));
@@ -84,7 +92,9 @@ export function TimetableFilter({ className, defaultName }: Props) {
 
   const next1d = () => {
     const newDate = dayjs(
-      (date ?? getGermanyDate()) + " " + (time ?? getGermanyTime()),
+      (date ?? getCurrentGermanyDate()) +
+        " " +
+        (time ?? getCurrentGermanyTime()),
     ).add(1, "day");
     setDate(newDate.format("YYYY-MM-DD"));
     setTime(newDate.format("HH:mm"));
@@ -124,7 +134,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
           className="w-full bg-transparent px-4 py-2 pr-2"
           type="date"
           name="date"
-          value={date ?? getGermanyDate()}
+          value={date ?? getCurrentGermanyDate()}
           onChange={(e) => {
             setDate(e.target.value);
           }}
@@ -133,7 +143,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
           className="w-full bg-transparent px-4 py-2 pr-2"
           type="time"
           name="time"
-          value={time ?? getGermanyTime()}
+          value={time ?? getCurrentGermanyTime()}
           onChange={(e) => {
             setTime(e.target.value);
           }}

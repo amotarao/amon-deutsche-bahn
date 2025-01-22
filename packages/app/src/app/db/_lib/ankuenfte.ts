@@ -1,5 +1,8 @@
 import type { Ankunft } from "../_types";
-import { getGermanyDate, getGermanyTime } from "../utils/datetime";
+import {
+  getCurrentGermanyDate,
+  getCurrentGermanyTime,
+} from "../utils/datetime";
 
 type Params = {
   date?: string | null;
@@ -14,8 +17,8 @@ type Response = {
 
 export async function getAnkuenfte({ date, time, ortId, ortExtId }: Params) {
   const url = new URL("https://www.bahn.de/web/api/reiseloesung/ankuenfte");
-  url.searchParams.append("datum", date || getGermanyDate());
-  url.searchParams.append("zeit", time ? `${time}:00` : getGermanyTime());
+  url.searchParams.append("datum", date || getCurrentGermanyDate());
+  url.searchParams.append("zeit", `${time || getCurrentGermanyTime()}:00`);
   url.searchParams.append("ortId", ortId);
   url.searchParams.append("ortExtId", ortExtId);
   url.searchParams.append("mitVias", "true");

@@ -2,7 +2,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useMemo } from "react";
 import type { Halt } from "../../../_types";
-import { getGermanyDate, getGermanyTime } from "../../../utils/datetime";
+import { formatGermanyDate, formatGermanyTime } from "../../../utils/datetime";
 
 type Props = {
   className?: string;
@@ -18,8 +18,8 @@ export function RouteStationCard({ className, halt }: Props) {
     );
     const date = halt.ezAnkunftsZeitpunkt || halt.ezAbfahrtsZeitpunkt;
     if (date) {
-      url.searchParams.append("date", getGermanyDate(date));
-      url.searchParams.append("time", getGermanyTime(date));
+      url.searchParams.append("date", formatGermanyDate(date));
+      url.searchParams.append("time", formatGermanyTime(date));
     }
     return url.href.replace(DUMMY_BASE_URL, "");
   }, [halt]);
@@ -51,7 +51,7 @@ export function RouteStationCard({ className, halt }: Props) {
                 // halt.information.noStop && "font-bold text-red-500 line-through",
               )}
             >
-              {getGermanyTime(halt.ankunftsZeitpunkt)}
+              {formatGermanyTime(halt.ankunftsZeitpunkt)}
             </p>
           )}
           {halt.ezAnkunftsZeitpunkt && (
@@ -61,7 +61,7 @@ export function RouteStationCard({ className, halt }: Props) {
               )}
             >
               {halt.ankunftsZeitpunkt !== halt.ezAnkunftsZeitpunkt ? (
-                <>&gt;{getGermanyTime(halt.ezAnkunftsZeitpunkt)}</>
+                <>&gt;{formatGermanyTime(halt.ezAnkunftsZeitpunkt)}</>
               ) : (
                 <>+0</>
               )}
@@ -75,7 +75,7 @@ export function RouteStationCard({ className, halt }: Props) {
                 // halt.information.noStop && "font-bold text-red-500 line-through",
               )}
             >
-              {getGermanyTime(halt.abfahrtsZeitpunkt)}
+              {formatGermanyTime(halt.abfahrtsZeitpunkt)}
             </p>
           )}
           {halt.ezAbfahrtsZeitpunkt && (
@@ -85,7 +85,7 @@ export function RouteStationCard({ className, halt }: Props) {
               )}
             >
               {halt.abfahrtsZeitpunkt !== halt.ezAbfahrtsZeitpunkt ? (
-                <>&gt;{getGermanyTime(halt.ezAbfahrtsZeitpunkt)}</>
+                <>&gt;{formatGermanyTime(halt.ezAbfahrtsZeitpunkt)}</>
               ) : (
                 <>+0</>
               )}

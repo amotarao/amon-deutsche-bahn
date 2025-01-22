@@ -2,7 +2,7 @@ import classNames from "classnames";
 import dayjs from "dayjs";
 import Link from "next/link";
 import type { Journey } from "../../../_types";
-import { getGermanyTime } from "../../../utils/datetime";
+import { formatGermanyTime } from "../../../utils/datetime";
 
 type Props = {
   className?: string;
@@ -56,11 +56,11 @@ function TimeField({ type, journey }: TimeFieldProps) {
           (meldung) => meldung.type === "HALT_AUSFALL",
         )}
       >
-        {getGermanyTime(zeit)}
+        {formatGermanyTime(zeit)}
       </p>
       {ezZeit && (
         <p className="data-[delay=true]:text-red-500" data-delay={diff >= 5}>
-          {zeit !== ezZeit ? <>&gt;{getGermanyTime(ezZeit)}</> : <>+0</>}
+          {zeit !== ezZeit ? <>&gt;{formatGermanyTime(ezZeit)}</> : <>+0</>}
         </p>
       )}
     </div>

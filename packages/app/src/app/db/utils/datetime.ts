@@ -5,18 +5,22 @@ import utc from "dayjs/plugin/utc";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export function getGermanyDate(date?: string): string {
-  if (date) {
-    return dayjs.tz(date, "Europe/Berlin").format("YYYY-MM-DD");
-  }
+const tz = "Europe/Berlin";
+const dateFormat = "YYYY-MM-DD";
+const timeFormat = "HH:mm";
 
-  return dayjs().tz("Europe/Berlin").format("YYYY-MM-DD");
+export function getCurrentGermanyDate(): string {
+  return dayjs().tz(tz).format(dateFormat);
 }
 
-export function getGermanyTime(date?: string): string {
-  if (date) {
-    return dayjs.tz(date, "Europe/Berlin").format("HH:mm");
-  }
+export function formatGermanyDate(date: string): string {
+  return dayjs.tz(date, tz).format(dateFormat);
+}
 
-  return dayjs().tz("Europe/Berlin").format("HH:mm");
+export function getCurrentGermanyTime(): string {
+  return dayjs().tz(tz).format(timeFormat);
+}
+
+export function formatGermanyTime(date: string): string {
+  return dayjs.tz(date, tz).format(timeFormat);
 }
