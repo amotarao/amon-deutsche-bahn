@@ -5,11 +5,12 @@ import useSWR from "swr";
 import { TimetableFilter } from "./_components/TimetableFilter";
 import { TrainList } from "./_components/TrainList";
 import { fetchApi } from "./_lib/api";
-import type { PageProps } from "./page";
 
-export function PageClient({ params }: PageProps) {
-  const name = decodeURIComponent(params.name);
+type Props = {
+  name: string;
+};
 
+export function PageClient({ name }: Props) {
   const searchParams = useSearchParams();
   const { data, isLoading } = useSWR(["cfr", "station", name], ([, , name]) =>
     fetchApi(name, searchParams),
