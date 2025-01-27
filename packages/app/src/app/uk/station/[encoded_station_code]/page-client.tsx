@@ -4,10 +4,12 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import { TrainList } from "../_components/TrainList";
 import { useApiSWRInfinite } from "../_lib/api";
-import type { PageContext } from "./page";
 
-export function PageClient({ params }: PageContext) {
-  const stationCode = decodeURIComponent(params.station_code);
+type Props = {
+  stationCode: string;
+};
+
+export function PageClient({ stationCode }: Props) {
   const [dateUnix, setDateUnix] = useState(dayjs().unix());
 
   const { data, services, isLoading, setSize } = useApiSWRInfinite({

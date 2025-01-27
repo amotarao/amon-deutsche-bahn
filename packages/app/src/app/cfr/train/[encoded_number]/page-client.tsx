@@ -4,11 +4,12 @@ import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
 import { RouteStationCard } from "./_components/RouteStationCard";
 import { fetchApi } from "./_lib/api";
-import type { PageProps } from "./page";
 
-export function PageClient({ params }: PageProps) {
-  const number = decodeURIComponent(params.number);
+type Props = {
+  number: string;
+};
 
+export function PageClient({ number }: Props) {
   const searchParams = useSearchParams();
   const { data, isLoading } = useSWR(["cfr", "train", number], ([, , number]) =>
     fetchApi(number, searchParams),
