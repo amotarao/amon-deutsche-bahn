@@ -1,6 +1,6 @@
 "use client";
 
-import type { DepartureArrivalData, TrainService } from "../_types";
+import type { TrainService } from "../_types";
 import { TrainCard } from "./TrainCard";
 
 type Props = {
