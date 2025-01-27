@@ -1,5 +1,6 @@
 import useSWRInfinite from "swr/infinite";
 import type { ApiResponse } from "../_types";
+import { fetchBoard } from "../actions";
 
 export type FetchApiParams = {
   stationCode: string;
@@ -25,14 +26,14 @@ export function useApiSWRInfinite({ stationCode, dateUnix }: FetchApiParams) {
     (_, previousPageData) => {
       if (previousPageData && !previousPageData.nextDateUnix) return null;
       return [
-        fetchApi,
+        fetchBoard,
         {
           stationCode,
           dateUnix: previousPageData?.nextDateUnix ?? dateUnix,
         },
       ];
     },
-    ([fetchApi, args]) => fetchApi(args),
+    ([fetchBoard, params]) => fetchBoard(params),
   );
   return {
     ...swr,

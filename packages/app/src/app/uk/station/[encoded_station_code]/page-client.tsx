@@ -2,8 +2,8 @@
 
 import dayjs from "dayjs";
 import { useState } from "react";
-import { TrainList } from "../_components/TrainList";
-import { useApiSWRInfinite } from "../_lib/api";
+import { TrainList } from "./_components/TrainList";
+import { useApiSWRInfinite } from "./_lib/api";
 
 type Props = {
   stationCode: string;
