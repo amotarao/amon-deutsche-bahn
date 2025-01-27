@@ -8,9 +8,7 @@
   "scripts": {
     "check": "biome check --write ."
   },
-  "dependencies": {
-    "firebase-admin": "^13.0.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@biomejs/biome": "^1.9.4"
   }
