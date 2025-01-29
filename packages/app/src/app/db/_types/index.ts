@@ -40,7 +40,7 @@ export type Ankunft = {
   journeyId: string;
   meldungen: Meldung[];
   verkehrmittel: Verkehrmittel;
-  terminus: string;
+  terminus?: string;
 };
 
 export type Meldung = {
