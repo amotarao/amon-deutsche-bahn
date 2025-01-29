@@ -24,9 +24,17 @@ export function JourneyCard({ className, type = "both", journey }: Props) {
         <p className="shrink grow">
           <TrainField journey={journey} />
           <br />
-          {journey.ankunft && <span>{journey.ankunft.terminus}</span>}
+          {journey.ankunft && (
+            <span>
+              {journey.ankunft.terminus || journey.ankunft.ueber.at(-1)}
+            </span>
+          )}
           {journey.ankunft && journey.abfahrt && <span> -&gt; </span>}
-          {journey.abfahrt && <span>{journey.abfahrt.terminus}</span>}
+          {journey.abfahrt && (
+            <span>
+              {journey.abfahrt.terminus || journey.abfahrt.ueber.at(-1)}
+            </span>
+          )}
         </p>
         <PlatformField journey={journey} />
       </div>
