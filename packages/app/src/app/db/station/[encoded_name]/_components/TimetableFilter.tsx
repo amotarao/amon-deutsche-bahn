@@ -103,7 +103,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
   return (
     <form
       className={classNames(
-        "flex flex-col bg-white text-sm [&>*]:border-b [&>*]:border-dashed [&>*]:border-gray-300",
+        "flex flex-col bg-white text-sm *:border-b *:border-dashed *:border-gray-300",
         className,
       )}
       onSubmit={(e) => {
