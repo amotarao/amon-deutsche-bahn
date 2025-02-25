@@ -16,12 +16,16 @@ export function RouteStationCard({ className, halt }: Props) {
       `/db/station/${halt.name.replace(/\//g, "")}`,
       DUMMY_BASE_URL,
     );
-    const date = halt.ezAnkunftsZeitpunkt || halt.ezAbfahrtsZeitpunkt;
+    const date =
+      halt.ezAnkunftsZeitpunkt ||
+      halt.ankunftsZeitpunkt ||
+      halt.ezAbfahrtsZeitpunkt ||
+      halt.abfahrtsZeitpunkt;
     if (date) {
       url.searchParams.append("date", formatGermanyDate(date));
       url.searchParams.append("time", formatGermanyTime(date));
     }
-    return url.href.replace(DUMMY_BASE_URL, "");
+    return url.href.replace(url.origin, "");
   }, [halt]);
 
   return (
