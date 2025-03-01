@@ -31,9 +31,6 @@ export function TimetableFilter({ className, defaultName }: Props) {
   const [ignoreNullablePlatform] = useState(
     searchParams?.get("ignoreNullablePlatform"),
   );
-  const [onlyAccurateStation, setOnlyAccurateStation] = useState(
-    searchParams?.get("onlyAccurateStation"),
-  );
 
   useEffect(() => {
     setId(searchParams?.get("id") ?? null);
@@ -48,7 +45,6 @@ export function TimetableFilter({ className, defaultName }: Props) {
         trainType,
         type,
         ignoreNullablePlatform,
-        onlyAccurateStation,
       }).filter(([, value]) => !!value),
     );
 
@@ -242,18 +238,6 @@ export function TimetableFilter({ className, defaultName }: Props) {
             {currentType.name}
           </label>
         ))}
-        <label className="flex grow items-center py-2 pl-4 pr-2">
-          <input
-            className="mr-2"
-            type="checkbox"
-            name="onlyAccurateStation"
-            checked={onlyAccurateStation === "true"}
-            onChange={(e) => {
-              setOnlyAccurateStation(e.target.checked ? "true" : "false");
-            }}
-          />
-          only acc sta
-        </label>
       </div>
     </form>
   );
