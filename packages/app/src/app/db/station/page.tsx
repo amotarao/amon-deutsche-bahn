@@ -5,7 +5,7 @@ export default function Page() {
   return <PageClient name={undefined} />;
 }
 
-export const generateMetadata = async (): Promise<Metadata> => {
+export const generateMetadata = (): Metadata => {
   return {
     title: "Timetable",
   };
