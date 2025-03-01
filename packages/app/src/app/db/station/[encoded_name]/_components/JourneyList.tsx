@@ -35,6 +35,15 @@ export function JourneyList({ className, journeys }: Props) {
       );
     })
     .filter((journey) => {
+      if (searchParams?.get("ignoreBus") === "true") {
+        const isBus =
+          journey.abfahrt?.verkehrmittel.name.startsWith("Bus ") ||
+          journey.ankunft?.verkehrmittel.name.startsWith("Bus ");
+        return !isBus;
+      }
+      return true;
+    })
+    .filter((journey) => {
       if (type === "arr") return journey.ankunft !== null;
       if (type === "dep") return journey.abfahrt !== null;
       return true;

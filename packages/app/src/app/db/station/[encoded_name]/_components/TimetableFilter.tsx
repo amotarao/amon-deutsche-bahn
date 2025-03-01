@@ -28,6 +28,9 @@ export function TimetableFilter({ className, defaultName }: Props) {
     searchParams?.getAll("trainType") ?? [],
   );
   const [type, setType] = useState(searchParams?.get("type") ?? null);
+  const [ignoreBus, setIgnoreBus] = useState(
+    (searchParams?.get("ignoreBus") ?? "") === "true",
+  );
 
   useEffect(() => {
     setId(searchParams?.get("id") ?? null);
@@ -41,6 +44,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
         time,
         trainType,
         type,
+        ignoreBus,
       }).filter(([, value]) => !!value),
     );
 
@@ -208,6 +212,22 @@ export function TimetableFilter({ className, defaultName }: Props) {
             {currentTrainType.name}
           </label>
         ))}
+        <label
+          className="flex grow items-center py-2 pl-4 pr-2"
+          key="ignoreBus"
+        >
+          <input
+            className="mr-2"
+            type="checkbox"
+            name="ignoreBus"
+            value="ignoreBus"
+            checked={ignoreBus}
+            onChange={(e) => {
+              setIgnoreBus(e.target.checked);
+            }}
+          />
+          Bus ignorieren
+        </label>
       </div>
       <div className="flex">
         {[
