@@ -1,19 +1,16 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { PageClient } from "./[encoded_name]/page-client";
 
-type Props = {
-  params: Promise<Record<string, never>>;
-};
-
-export default async function Page({ params }: Props) {
-  await params;
-  return <PageClient name={undefined} />;
+export default function Page() {
+  return (
+    <Suspense>
+      <PageClient name={undefined} />
+    </Suspense>
+  );
 }
 
-export const generateMetadata = async ({
-  params,
-}: Props): Promise<Metadata> => {
-  await params;
+export const generateMetadata = (): Metadata => {
   return {
     title: "Timetable",
   };

@@ -12,6 +12,20 @@ type Props = {
 };
 
 export function PageClient({ name }: Props) {
+  return (
+    <div>
+      <TimetableFilter className="sticky top-0 mb-4" defaultName={name} />
+      <Main name={name} />
+    </div>
+  );
+}
+
+type MainProps = {
+  className?: string;
+  name: string | undefined;
+};
+
+function Main({ className, name }: MainProps) {
   const searchParams = useSearchParams();
   const { data, isLoading } = useSWR(
     name ? [name, searchParams] : null,
@@ -19,21 +33,6 @@ export function PageClient({ name }: Props) {
       fetchStationTimetable(name, searchParams?.toString()),
   );
 
-  return (
-    <div>
-      <TimetableFilter className="sticky top-0 mb-4" defaultName={name} />
-      <Main data={data} isLoading={isLoading} />
-    </div>
-  );
-}
-
-type MainProps = {
-  className?: string;
-  data: StationTimetableResponse | null | undefined;
-  isLoading: boolean;
-};
-
-function Main({ className, data, isLoading }: MainProps) {
   if (isLoading) {
     return <p className="px-4 py-2 text-sm">Fetching</p>;
   }
