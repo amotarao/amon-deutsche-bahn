@@ -13,12 +13,10 @@ export default async function Page({ params }: Props) {
   return <PageClient stationCode={stationCode} />;
 }
 
-export const generateMetadata = async ({
-  params,
-}: Props): Promise<Metadata> => {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { encoded_station_code } = await params;
   const stationCode = decodeURIComponent(encoded_station_code);
   return {
     title: `Timetable at ${stationCode}`,
   };
-};
+}

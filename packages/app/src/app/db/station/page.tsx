@@ -10,8 +10,8 @@ export default function Page() {
   );
 }
 
-export const generateMetadata = (): Metadata => {
+export function generateMetadata(): Metadata {
   return {
     title: "Timetable",
   };
-};
+}

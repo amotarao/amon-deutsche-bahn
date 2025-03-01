@@ -14,9 +14,7 @@ export default async function Page({ params }: Props) {
   return <PageClient number={number} />;
 }
 
-export const generateMetadata = async ({
-  params,
-}: Props): Promise<Metadata> => {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { encoded_number } = await params;
   const number = decodeURIComponent(encoded_number);
   const response = await fetchApi(number);
@@ -24,4 +22,4 @@ export const generateMetadata = async ({
   return {
     title: `Train ${response.name}`,
   };
-};
+}

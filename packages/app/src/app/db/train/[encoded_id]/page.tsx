@@ -14,12 +14,10 @@ export default async function Page({ params }: Props) {
   return <PageClient id={id} />;
 }
 
-export const generateMetadata = async ({
-  params,
-}: Props): Promise<Metadata> => {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { encoded_id } = await params;
   const id = decodeURIComponent(encoded_id);
   return {
     title: `Train Info of ${id}`,
   };
-};
+}
