@@ -11,7 +11,7 @@ type Props = {
   name: string | undefined;
 };
 
-export default function PageClient({ name }: Props) {
+export function PageClient({ name }: Props) {
   const searchParams = useSearchParams();
   const { data, isLoading } = useSWR(
     name ? [name, searchParams] : null,
