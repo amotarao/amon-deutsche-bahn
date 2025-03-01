@@ -8,13 +8,13 @@ import { TimetableFilter } from "./_components/TimetableFilter";
 import { fetchStationTimetable } from "./actions";
 
 type Props = {
-  name: string;
+  name: string | undefined;
 };
 
 export default function PageClient({ name }: Props) {
   const searchParams = useSearchParams();
   const { data, isLoading } = useSWR(
-    [name, searchParams],
+    name ? [name, searchParams] : null,
     ([name, searchParams]) =>
       fetchStationTimetable(name, searchParams?.toString()),
   );

@@ -12,7 +12,7 @@ import {
 
 type Props = {
   className?: string;
-  defaultName: string;
+  defaultName?: string;
 };
 
 export function TimetableFilter({ className, defaultName }: Props) {
@@ -20,7 +20,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [name, setName] = useState(decodeURIComponent(defaultName));
+  const [name, setName] = useState(decodeURIComponent(defaultName ?? ""));
   const [id, setId] = useState(searchParams?.get("id") ?? null);
   const [date, setDate] = useState(searchParams?.get("date") ?? null);
   const [time, setTime] = useState(searchParams?.get("time") ?? null);
