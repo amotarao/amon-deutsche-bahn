@@ -28,9 +28,6 @@ export function TimetableFilter({ className, defaultName }: Props) {
     searchParams?.getAll("trainType") ?? [],
   );
   const [type, setType] = useState(searchParams?.get("type") ?? null);
-  const [ignoreNullablePlatform] = useState(
-    searchParams?.get("ignoreNullablePlatform"),
-  );
 
   useEffect(() => {
     setId(searchParams?.get("id") ?? null);
@@ -44,7 +41,6 @@ export function TimetableFilter({ className, defaultName }: Props) {
         time,
         trainType,
         type,
-        ignoreNullablePlatform,
       }).filter(([, value]) => !!value),
     );
 
