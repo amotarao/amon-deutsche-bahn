@@ -33,10 +33,13 @@ export async function fetchStationTimetable(
   };
 }
 
-function mergeJourney(abfahrten: Abfahrt[], ankuenfte: Ankunft[]) {
+function mergeJourney(
+  abfahrten: Abfahrt[] | undefined,
+  ankuenfte: Ankunft[] | undefined,
+) {
   const journeys: Journey[] = [];
 
-  abfahrten.forEach((abfahrt) => {
+  abfahrten?.forEach((abfahrt) => {
     journeys.push({
       journeyId: abfahrt.journeyId,
       abfahrt,
@@ -44,7 +47,7 @@ function mergeJourney(abfahrten: Abfahrt[], ankuenfte: Ankunft[]) {
     });
   });
 
-  ankuenfte.forEach((ankunft) => {
+  ankuenfte?.forEach((ankunft) => {
     const journey = journeys.find(
       (journey) => journey.journeyId === ankunft.journeyId,
     );

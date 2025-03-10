@@ -12,7 +12,7 @@ type Params = {
 };
 
 type Response = {
-  entries: Abfahrt[];
+  entries?: Abfahrt[];
 };
 
 export async function getAbfahrten({ date, time, ortId, ortExtId }: Params) {
