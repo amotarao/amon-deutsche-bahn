@@ -56,7 +56,7 @@ export function JourneyList({ className, journeys }: Props) {
           // <pre key={journey.journeyId}>{JSON.stringify(journey, null, 2)}</pre>
           <JourneyCard
             key={journey.journeyId}
-            className="border-b border-dashed border-gray-300"
+            className="border-b border-dashed border-gray-300 dark:border-slate-600"
             type={
               ["arr", "dep", "both"].some(
                 (type) => type === searchParams?.get("type"),

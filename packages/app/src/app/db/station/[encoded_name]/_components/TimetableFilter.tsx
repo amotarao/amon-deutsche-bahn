@@ -99,7 +99,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
   return (
     <form
       className={classNames(
-        "flex flex-col bg-white text-sm *:border-b *:border-dashed *:border-gray-300",
+        "flex flex-col bg-white dark:bg-slate-900 text-sm *:border-b *:border-dashed *:border-gray-300 dark:*:border-slate-600",
         className,
       )}
       onSubmit={(e) => {
@@ -121,13 +121,16 @@ export function TimetableFilter({ className, defaultName }: Props) {
             setName(e.target.value);
           }}
         />
-        <button className="bg-gray-200 px-4 py-2 text-center" type="submit">
+        <button
+          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
+          type="submit"
+        >
           Go
         </button>
       </div>
       <div className="grid grid-cols-[1fr_1fr] ">
         <input
-          className="w-full bg-transparent px-4 py-2 pr-2"
+          className="w-full bg-transparent px-4 py-2 pr-2 dark:[color-scheme:dark]"
           type="date"
           name="date"
           value={date ?? getCurrentGermanyDate()}
@@ -136,7 +139,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
           }}
         />
         <input
-          className="w-full bg-transparent px-4 py-2 pr-2"
+          className="w-full bg-transparent px-4 py-2 pr-2 dark:[color-scheme:dark]"
           type="time"
           name="time"
           value={time ?? getCurrentGermanyTime()}
@@ -147,21 +150,21 @@ export function TimetableFilter({ className, defaultName }: Props) {
       </div>
       <div className="grid grid-cols-[repeat(5,1fr)] ">
         <button
-          className="bg-gray-200 px-4 py-2 text-center"
+          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
           type="button"
           onClick={prev1d}
         >
           -1d
         </button>
         <button
-          className="bg-gray-200 px-4 py-2 text-center"
+          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
           type="button"
           onClick={prev1h}
         >
           -1h
         </button>
         <button
-          className="bg-gray-200 px-4 py-2 text-center"
+          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
           type="button"
           onClick={() => {
             setDate(null);
@@ -171,14 +174,14 @@ export function TimetableFilter({ className, defaultName }: Props) {
           Jetzt
         </button>
         <button
-          className="bg-gray-200 px-4 py-2 text-center"
+          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
           type="button"
           onClick={next1h}
         >
           +1h
         </button>
         <button
-          className="bg-gray-200 px-4 py-2 text-center"
+          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
           type="button"
           onClick={next1d}
         >

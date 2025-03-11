@@ -14,7 +14,7 @@ export function TrainList({ services }: Props) {
         {services.map((service) => (
           <TrainCard
             key={service.rid}
-            className="border-b border-dashed border-gray-300"
+            className="border-b border-dashed border-gray-300 dark:border-slate-600"
             service={service}
           />
         ))}

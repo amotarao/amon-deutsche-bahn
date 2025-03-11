@@ -30,7 +30,7 @@ export function PageClient({ number }: Props) {
             {data.stations.map((station) => (
               <RouteStationCard
                 key={station.name}
-                className="border-b border-dashed border-gray-300"
+                className="border-b border-dashed border-gray-300 dark:border-slate-600"
                 station={station}
               />
             ))}

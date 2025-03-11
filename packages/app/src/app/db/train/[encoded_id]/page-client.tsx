@@ -32,7 +32,7 @@ export default function PageClient({ id }: Props) {
           {data.fahrt.halte.map((halt) => (
             <RouteStationCard
               key={halt.id}
-              className="border-b border-dashed border-gray-300"
+              className="border-b border-dashed border-gray-300 dark:border-slate-600"
               halt={halt}
             />
           ))}
