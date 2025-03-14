@@ -30,6 +30,9 @@ importers:
       '@amon-deutsche-bahn/cd':
         specifier: workspace:*
         version: link:../cd
+      '@amon-deutsche-bahn/db':
+        specifier: workspace:*
+        version: link:../db
       cheerio:
         specifier: ^1.0.0
         version: 1.0.0
@@ -75,6 +78,8 @@ importers:
         version: 5.8.2
 
   packages/cd: {}
+
+  packages/db: {}
 
 packages:
 
