@@ -1,6 +1,6 @@
 {
   "name": "@amon-deutsche-bahn/app",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@amon-deutsche-bahn/cd": "workspace:*",
     "cheerio": "^1.0.0",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.13",

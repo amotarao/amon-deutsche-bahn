@@ -27,6 +27,9 @@ importers:
 
   packages/app:
     dependencies:
+      '@amon-deutsche-bahn/cd':
+        specifier: workspace:*
+        version: link:../cd
       cheerio:
         specifier: ^1.0.0
         version: 1.0.0
