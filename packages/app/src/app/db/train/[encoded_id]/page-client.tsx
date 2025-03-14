@@ -43,7 +43,7 @@ export default function PageClient({ id }: Props) {
               ({ prioritaet, text, type }) => (
                 <p
                   key={text}
-                  className="line-clamp-1 data-[priority=HOCH]:text-red-500"
+                  className="data-[priority=HOCH]:text-red-500"
                   data-priority={prioritaet}
                   data-type={type}
                 >
@@ -53,13 +53,6 @@ export default function PageClient({ id }: Props) {
               ),
             )}
           </div>
-          {/* {data.data.remark.map((r, i) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: 問題無し
-            <div key={i}>
-              <p className="text-xs font-bold">{r.title}</p>
-              <p className="text-xs">{r.text}</p>
-            </div>
-          ))} */}
         </div>
       </div>
     </div>
