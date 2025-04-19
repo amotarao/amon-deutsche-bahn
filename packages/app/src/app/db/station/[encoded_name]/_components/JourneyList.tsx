@@ -12,11 +12,8 @@ type Props = {
 export function JourneyList({ className, journeys }: Props) {
   const searchParams = useSearchParams();
 
-  const type = ["arr", "dep", "both"].some(
-    (type) => type === searchParams?.get("type"),
-  )
-    ? searchParams?.get("type")
-    : "both";
+  const typeParam = searchParams?.get("type");
+  const type = isType(typeParam) ? typeParam : "both";
 
   const journeyItems = journeys
     .filter((journey) => {
@@ -57,17 +54,17 @@ export function JourneyList({ className, journeys }: Props) {
           <JourneyCard
             key={journey.journeyId}
             className="border-b border-dashed border-gray-300 dark:border-slate-600"
-            type={
-              ["arr", "dep", "both"].some(
-                (type) => type === searchParams?.get("type"),
-              )
-                ? (searchParams?.get("type") as "arr" | "dep" | "both")
-                : "both"
-            }
+            type={type}
             journey={journey}
           />
         ))}
       </div>
     </section>
   );
+}
+
+function isType(
+  input: string | null | undefined,
+): input is "arr" | "dep" | "both" {
+  return ["arr", "dep", "both"].some((type) => type === input);
 }
