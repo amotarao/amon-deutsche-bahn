@@ -6,10 +6,10 @@ import type { TrainTimetableResponse } from "../../_types";
 export async function fetchTrainTimetable(
   journeyId: string,
 ): Promise<TrainTimetableResponse | null> {
-  const fahrt = await getRoute(journeyId);
-  if (!fahrt) return null;
+  const route = await getRoute(journeyId);
+  if (!route) return null;
 
   return {
-    fahrt,
+    route,
   };
 }

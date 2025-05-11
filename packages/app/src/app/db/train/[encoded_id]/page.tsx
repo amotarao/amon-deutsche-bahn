@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { PageClient } from "./page-client";
 
+type Params = {
+  encoded_id: string;
+};
+
 type Props = {
-  params: Promise<{
-    encoded_id: string;
-  }>;
+  params: Promise<Params>;
 };
 
 export default async function Page({ params }: Props) {

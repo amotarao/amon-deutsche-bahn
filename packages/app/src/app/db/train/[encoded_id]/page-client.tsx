@@ -23,13 +23,13 @@ export function PageClient({ id }: Props) {
     <div>
       <div className="flex flex-col gap-2">
         <div className="px-4 py-2">
-          <p className="text-sm font-bold">{data.fahrt.zugName}</p>
-          <p className="text-xs">{data.fahrt.reisetag}</p>
-          <p className="text-xs">{data.fahrt.regulaereVerkehrstage}</p>
-          <p className="text-xs">{data.fahrt.irregulaereVerkehrstage}</p>
+          <p className="text-sm font-bold">{data.route.zugName}</p>
+          <p className="text-xs">{data.route.reisetag}</p>
+          <p className="text-xs">{data.route.regulaereVerkehrstage}</p>
+          <p className="text-xs">{data.route.irregulaereVerkehrstage}</p>
         </div>
         <div className="flex flex-col">
-          {data.fahrt.halte.map((halt) => (
+          {data.route.halte.map((halt) => (
             <RouteStationCard
               key={halt.id}
               className="border-b border-dashed border-gray-300 dark:border-slate-600"
@@ -39,7 +39,7 @@ export function PageClient({ id }: Props) {
         </div>
         <div className="flex flex-col gap-2 px-4 py-2">
           <div className="text-xs">
-            {data.fahrt.priorisierteMeldungen.map(
+            {data.route.priorisierteMeldungen.map(
               ({ prioritaet, text, type }) => (
                 <p
                   key={text}

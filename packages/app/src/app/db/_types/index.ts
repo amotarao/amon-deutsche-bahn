@@ -4,7 +4,7 @@ export type StationTimetableResponse = {
 };
 
 export type TrainTimetableResponse = {
-  fahrt: Route;
+  route: Route;
 };
 
 export type Place = {
