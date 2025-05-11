@@ -2,7 +2,7 @@ import type { Abfahrt } from "../_types";
 import {
   getCurrentGermanyDate,
   getCurrentGermanyTime,
-} from "../utils/datetime";
+} from "../_utils/datetime";
 
 type Params = {
   date?: string | null;

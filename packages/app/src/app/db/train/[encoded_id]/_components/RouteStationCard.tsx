@@ -2,7 +2,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useMemo } from "react";
 import type { Halt } from "../../../_types";
-import { formatGermanyDate, formatGermanyTime } from "../../../utils/datetime";
+import { formatGermanyDate, formatGermanyTime } from "../../../_utils/datetime";
 
 type Props = {
   className?: string;

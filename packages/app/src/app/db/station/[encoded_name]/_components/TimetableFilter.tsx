@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import {
   getCurrentGermanyDate,
   getCurrentGermanyTime,
-} from "../../../utils/datetime";
+} from "../../../_utils/datetime";
 
 type Props = {
   className?: string;
