@@ -4,14 +4,19 @@
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev:app": "turbo run dev -F @amon-deutsche-bahn/app...",
     "build:app": "turbo run build -F @amon-deutsche-bahn/app...",
-    "check": "biome check --write ."
+    "check": "biome check --write .",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
+    "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
     "turbo": "^2.5.3",
     "typescript": "^5.8.3",
     "vite": "^6.3.5"

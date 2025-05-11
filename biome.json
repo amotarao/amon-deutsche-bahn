@@ -4,11 +4,10 @@
     "ignore": ["node_modules", ".next", "functions/lib", "dist"]
   },
   "formatter": {
-    "enabled": true,
-    "indentStyle": "space"
+    "enabled": false
   },
   "organizeImports": {
-    "enabled": true
+    "enabled": false
   },
   "linter": {
     "enabled": true,
