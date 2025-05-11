@@ -1,11 +1,11 @@
 "use server";
 
-import { getAbfahrten } from "../../_lib/abfahrten";
-import { getAnkuenfte } from "../../_lib/ankuenfte";
-import { searchOrte } from "../../_lib/orte";
+import { getArrivals } from "../../_lib/arrivals";
+import { getDepartures } from "../../_lib/departures";
+import { searchPlaces } from "../../_lib/places";
 import type {
-  Abfahrt,
-  Ankunft,
+  Arrival,
+  Departure,
   Journey,
   StationTimetableResponse,
 } from "../../_types";
@@ -14,66 +14,66 @@ export async function fetchStationTimetable(
   name: string,
   searchParamsString: string | undefined,
 ): Promise<StationTimetableResponse | null> {
-  const orte = await searchOrte(name);
-  const ort = orte[0];
-  if (!ort) return null;
+  const places = await searchPlaces(name);
+  const place = places[0];
+  if (!place) return null;
 
   const searchParams = new URLSearchParams(searchParamsString);
   const date = searchParams.get("date");
   const time = searchParams.get("time");
 
-  const [abfahrten, ankuenfte] = await Promise.all([
-    getAbfahrten({ date, time, ortId: ort.id, ortExtId: ort.extId }),
-    getAnkuenfte({ date, time, ortId: ort.id, ortExtId: ort.extId }),
+  const [departures, arrivals] = await Promise.all([
+    getDepartures({ date, time, ortId: place.id, ortExtId: place.extId }),
+    getArrivals({ date, time, ortId: place.id, ortExtId: place.extId }),
   ]);
 
   return {
-    ort,
-    journeys: mergeJourney(abfahrten.entries, ankuenfte.entries),
+    ort: place,
+    journeys: mergeJourney(departures.entries, arrivals.entries),
   };
 }
 
 function mergeJourney(
-  abfahrten: Abfahrt[] | undefined,
-  ankuenfte: Ankunft[] | undefined,
+  departures: Departure[] | undefined,
+  arrivals: Arrival[] | undefined,
 ) {
   const journeys: Journey[] = [];
 
-  abfahrten?.forEach((abfahrt) => {
+  departures?.forEach((departure) => {
     journeys.push({
-      journeyId: abfahrt.journeyId,
-      abfahrt,
-      ankunft: null,
+      journeyId: departure.journeyId,
+      departure,
+      arrival: null,
     });
   });
 
-  ankuenfte?.forEach((ankunft) => {
+  arrivals?.forEach((arrival) => {
     const journey = journeys.find(
-      (journey) => journey.journeyId === ankunft.journeyId,
+      (journey) => journey.journeyId === arrival.journeyId,
     );
     if (journey) {
-      journey.ankunft = ankunft;
+      journey.arrival = arrival;
       return;
     }
     journeys.push({
-      journeyId: ankunft.journeyId,
-      abfahrt: null,
-      ankunft,
+      journeyId: arrival.journeyId,
+      departure: null,
+      arrival,
     });
   });
 
   return journeys.toSorted((a, z) => {
     const aZeit =
-      a.ankunft?.ezZeit ||
-      a.ankunft?.zeit ||
-      a.abfahrt?.ezZeit ||
-      a.abfahrt?.zeit ||
+      a.arrival?.ezZeit ||
+      a.arrival?.zeit ||
+      a.departure?.ezZeit ||
+      a.departure?.zeit ||
       "";
     const zZeit =
-      z.ankunft?.ezZeit ||
-      z.ankunft?.zeit ||
-      z.abfahrt?.ezZeit ||
-      z.abfahrt?.zeit ||
+      z.arrival?.ezZeit ||
+      z.arrival?.zeit ||
+      z.departure?.ezZeit ||
+      z.departure?.zeit ||
       "";
 
     return aZeit.localeCompare(zZeit);

@@ -1,8 +1,8 @@
-import type { Fahrt } from "../_types";
+import type { Route } from "../_types";
 
-type Response = Fahrt;
+type Response = Route;
 
-export async function getFahrt(journeyId: string) {
+export async function getRoute(journeyId: string) {
   const url = new URL("https://www.bahn.de/web/api/reiseloesung/fahrt");
   url.searchParams.append("journeyId", journeyId);
   url.searchParams.append("poly", "true");

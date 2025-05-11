@@ -27,22 +27,22 @@ export function JourneyList({ className, journeys }: Props) {
       if (trainType.includes("s-bahn")) allowedTrainType.push("SBAHN");
       return allowedTrainType.some(
         (type) =>
-          type === journey.ankunft?.verkehrmittel.produktGattung ||
-          type === journey.abfahrt?.verkehrmittel.produktGattung,
+          type === journey.arrival?.verkehrmittel.produktGattung ||
+          type === journey.departure?.verkehrmittel.produktGattung,
       );
     })
     .filter((journey) => {
       if (searchParams?.get("ignoreBus") === "true") {
         const isBus =
-          journey.abfahrt?.verkehrmittel.name.startsWith("Bus ") ||
-          journey.ankunft?.verkehrmittel.name.startsWith("Bus ");
+          journey.departure?.verkehrmittel.name.startsWith("Bus ") ||
+          journey.arrival?.verkehrmittel.name.startsWith("Bus ");
         return !isBus;
       }
       return true;
     })
     .filter((journey) => {
-      if (type === "arr") return journey.ankunft !== null;
-      if (type === "dep") return journey.abfahrt !== null;
+      if (type === "arr") return journey.arrival !== null;
+      if (type === "dep") return journey.departure !== null;
       return true;
     });
 

@@ -1,13 +1,13 @@
 export type StationTimetableResponse = {
-  ort: Ort;
+  ort: Place;
   journeys: Journey[];
 };
 
 export type TrainTimetableResponse = {
-  fahrt: Fahrt;
+  fahrt: Route;
 };
 
-export type Ort = {
+export type Place = {
   extId: string;
   id: string;
   lat: number;
@@ -17,7 +17,7 @@ export type Ort = {
   type: string;
 };
 
-export type Abfahrt = {
+export type Departure = {
   bahnhofsId: string;
   zeit: string;
   ezZeit?: string;
@@ -30,7 +30,7 @@ export type Abfahrt = {
   terminus: string;
 };
 
-export type Ankunft = {
+export type Arrival = {
   bahnhofsId: string;
   zeit: string;
   ezZeit?: string;
@@ -74,11 +74,11 @@ export type ProduktGattung =
 
 export type Journey = {
   journeyId: string;
-  abfahrt: Abfahrt | null;
-  ankunft: Ankunft | null;
+  departure: Departure | null;
+  arrival: Arrival | null;
 };
 
-export type Fahrt = {
+export type Route = {
   reisetag: string;
   regulaereVerkehrstage: string;
   irregulaereVerkehrstage: string;

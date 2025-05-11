@@ -24,15 +24,15 @@ export function JourneyCard({ className, type = "both", journey }: Props) {
         <p className="shrink grow">
           <TrainField journey={journey} />
           <br />
-          {journey.ankunft && (
+          {journey.arrival && (
             <span>
-              {journey.ankunft.terminus || journey.ankunft.ueber.at(-1)}
+              {journey.arrival.terminus || journey.arrival.ueber.at(-1)}
             </span>
           )}
-          {journey.ankunft && journey.abfahrt && <span> -&gt; </span>}
-          {journey.abfahrt && (
+          {journey.arrival && journey.departure && <span> -&gt; </span>}
+          {journey.departure && (
             <span>
-              {journey.abfahrt.terminus || journey.abfahrt.ueber.at(-1)}
+              {journey.departure.terminus || journey.departure.ueber.at(-1)}
             </span>
           )}
         </p>
@@ -50,7 +50,7 @@ type TimeFieldProps = {
 
 function TimeField({ type, journey }: TimeFieldProps) {
   const { zeit, ezZeit, meldungen } =
-    (type === "dep" ? journey.abfahrt : journey.ankunft) || {};
+    (type === "dep" ? journey.departure : journey.arrival) || {};
 
   if (!zeit) return <div className="w-10 shrink-0" />;
 
@@ -81,7 +81,7 @@ type TrainFieldProps = {
 
 function TrainField({ journey }: TrainFieldProps) {
   const { mittelText, name } =
-    (journey.abfahrt || journey.ankunft)?.verkehrmittel || {};
+    (journey.departure || journey.arrival)?.verkehrmittel || {};
   const trainName = mittelText === name ? name : `${mittelText} (${name})`;
 
   return (
@@ -100,7 +100,7 @@ type PlatformFieldProps = {
 };
 
 function PlatformField({ journey }: PlatformFieldProps) {
-  const { gleis, ezGleis } = journey.ankunft || journey.abfahrt || {};
+  const { gleis, ezGleis } = journey.arrival || journey.departure || {};
 
   return (
     <div className="w-10 shrink-0 text-right">
@@ -124,8 +124,8 @@ type InformationFieldProps = {
 
 function InformationField({ className, journey }: InformationFieldProps) {
   const meldungen = [
-    ...(journey.ankunft?.meldungen ?? []),
-    ...(journey.abfahrt?.meldungen ?? []),
+    ...(journey.arrival?.meldungen ?? []),
+    ...(journey.departure?.meldungen ?? []),
   ].filter(
     (meldung, index, self) =>
       self.findIndex((m) => m.text === meldung.text) === index,
