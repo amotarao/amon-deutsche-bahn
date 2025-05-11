@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "dist",
+    "declaration": true,
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
+    "noUncheckedIndexedAccess": true,
+    "strict": true,
+    "inlineSourceMap": true
+  },
+  "include": ["src"]
+}

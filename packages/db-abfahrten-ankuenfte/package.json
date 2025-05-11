@@ -1,0 +1,13 @@
+{
+  "name": "@amon-deutsche-bahn/db-abfahrten-ankuenfte",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "vite build --watch --emptyOutDir=false & tsc --watch --emitDeclarationOnly",
+    "build": "vite build && tsc --emitDeclarationOnly"
+  }
+}
