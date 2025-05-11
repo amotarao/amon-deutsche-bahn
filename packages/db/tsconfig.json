@@ -3,11 +3,11 @@
     "baseUrl": ".",
     "outDir": "dist",
     "declaration": true,
+    "declarationMap": true,
     "module": "NodeNext",
     "moduleResolution": "nodenext",
     "noUncheckedIndexedAccess": true,
-    "strict": true,
-    "inlineSourceMap": true
+    "strict": true
   },
   "include": ["src"]
 }
