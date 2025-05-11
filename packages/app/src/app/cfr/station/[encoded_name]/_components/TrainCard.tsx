@@ -2,7 +2,6 @@
 
 import classNames from "classnames";
 import Link from "next/link";
-import { getRomaniaDate } from "../../../_lib/time";
 import type { Train } from "../_types";
 
 type Props = {

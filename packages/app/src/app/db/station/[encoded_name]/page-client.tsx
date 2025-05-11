@@ -2,7 +2,6 @@
 
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
-import type { StationTimetableResponse } from "../../_types";
 import { JourneyList } from "./_components/JourneyList";
 import { TimetableFilter } from "./_components/TimetableFilter";
 import { fetchStationTimetable } from "./actions";

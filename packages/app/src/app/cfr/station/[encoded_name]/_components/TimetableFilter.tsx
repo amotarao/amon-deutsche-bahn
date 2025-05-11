@@ -2,7 +2,6 @@
 
 import classNames from "classnames";
 import dayjs from "dayjs";
-import type { Route } from "next";
 import { formatUrl } from "next/dist/shared/lib/router/utils/format-url";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";

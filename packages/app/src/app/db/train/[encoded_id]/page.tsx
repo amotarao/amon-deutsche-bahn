@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { RouteStationCard } from "./_components/RouteStationCard";
 import PageClient from "./page-client";
 
 type Props = {

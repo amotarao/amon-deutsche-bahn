@@ -51,18 +51,20 @@ export function RouteStationCard({ className, halt }: Props) {
         <div className="w-12 shrink-0 text-right">
           {halt.ankunftsZeitpunkt && (
             <p
-              className={classNames(
+              className={
+                classNames()
                 // halt.information.noStop && "font-bold text-red-500 line-through",
-              )}
+              }
             >
               {formatGermanyTime(halt.ankunftsZeitpunkt)}
             </p>
           )}
           {halt.ezAnkunftsZeitpunkt && (
             <p
-              className={classNames(
+              className={
+                classNames()
                 // halt.arrivalDelayed && "text-red-500"
-              )}
+              }
             >
               {halt.ankunftsZeitpunkt !== halt.ezAnkunftsZeitpunkt ? (
                 <>&gt;{formatGermanyTime(halt.ezAnkunftsZeitpunkt)}</>
@@ -75,18 +77,20 @@ export function RouteStationCard({ className, halt }: Props) {
         <div className="w-12 shrink-0 text-right">
           {halt.abfahrtsZeitpunkt && (
             <p
-              className={classNames(
+              className={
+                classNames()
                 // halt.information.noStop && "font-bold text-red-500 line-through",
-              )}
+              }
             >
               {formatGermanyTime(halt.abfahrtsZeitpunkt)}
             </p>
           )}
           {halt.ezAbfahrtsZeitpunkt && (
             <span
-              className={classNames(
+              className={
+                classNames()
                 // halt.departureDelayed && "text-red-500",
-              )}
+              }
             >
               {halt.abfahrtsZeitpunkt !== halt.ezAbfahrtsZeitpunkt ? (
                 <>&gt;{formatGermanyTime(halt.ezAbfahrtsZeitpunkt)}</>
