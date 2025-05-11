@@ -1,0 +1,19 @@
+{
+  "name": "@amon-deutsche-bahn/db-api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "vite build --watch --emptyOutDir=false & tsc --watch --emitDeclarationOnly",
+    "build": "vite build && tsc --emitDeclarationOnly"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.17"
+  }
+}

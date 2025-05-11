@@ -10,6 +10,7 @@
   "dependencies": {
     "@amon-deutsche-bahn/cd": "workspace:*",
     "@amon-deutsche-bahn/db": "workspace:*",
+    "@amon-deutsche-bahn/db-api": "workspace:*",
     "cheerio": "^1.0.0",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.13",
