@@ -8,7 +8,7 @@ type Props = {
   id: string;
 };
 
-export default function PageClient({ id }: Props) {
+export function PageClient({ id }: Props) {
   const { data, isLoading } = useSWR([id], ([id]) => fetchTrainTimetable(id));
 
   if (isLoading) {
