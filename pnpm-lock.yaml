@@ -93,8 +93,8 @@ importers:
   packages/db-api:
     dependencies:
       fast-xml-parser:
-        specifier: ^5.2.3
-        version: 5.2.3
+        specifier: ^5.3.3
+        version: 5.3.3
     devDependencies:
       '@types/node':
         specifier: ^22.15.17
@@ -794,8 +794,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  fast-xml-parser@5.2.3:
-    resolution: {integrity: sha512-OdCYfRqfpuLUFonTNjvd30rCBZUneHpSQkCqfaeWQ9qrKcl6XlWeDBNVwGb+INAIxRshuN2jF+BE0L6gbBO2mw==}
+  fast-xml-parser@5.3.3:
+    resolution: {integrity: sha512-2O3dkPAAC6JavuMm8+4+pgTk+5hoAs+CjZ+sWcQLkX9+/tHRuTkQh/Oaifr8qDmZ8iEHb771Ea6G8CdwkrgvYA==}
     hasBin: true
 
   fdir@6.4.4:
@@ -999,8 +999,8 @@ packages:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
 
-  strnum@2.1.0:
-    resolution: {integrity: sha512-w0S//9BqZZGw0L0Y8uLSelFGnDJgTyyNQLmSlPnVz43zPAiqu3w4t8J8sDqqANOGeZIZ/9jWuPguYcEnsoHv4A==}
+  strnum@2.1.2:
+    resolution: {integrity: sha512-l63NF9y/cLROq/yqKXSLtcMeeyOfnSQlfMSlzFt/K73oIaD8DGaQWd7Z34X9GPiKqP5rbSh84Hl4bOlLcjiSrQ==}
 
   styled-jsx@5.1.6:
     resolution: {integrity: sha512-qSVyDTeMotdvQYoHWLNGwRFJHC+i+ZvdBRYosOFgC+Wg1vx4frN2/RG/NA7SYqqvKNLf39P2LSRA2pu6n0XYZA==}
@@ -1659,9 +1659,9 @@ snapshots:
       '@esbuild/win32-ia32': 0.25.4
       '@esbuild/win32-x64': 0.25.4
 
-  fast-xml-parser@5.2.3:
+  fast-xml-parser@5.3.3:
     dependencies:
-      strnum: 2.1.0
+      strnum: 2.1.2
 
   fdir@6.4.4(picomatch@4.0.2):
     optionalDependencies:
@@ -1878,7 +1878,7 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
-  strnum@2.1.0: {}
+  strnum@2.1.2: {}
 
   styled-jsx@5.1.6(react@19.2.3):
     dependencies:
