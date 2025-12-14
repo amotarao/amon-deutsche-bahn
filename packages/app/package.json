@@ -13,7 +13,7 @@
     "@amon-deutsche-bahn/db-api": "workspace:*",
     "cheerio": "^1.0.0",
     "classnames": "^2.5.1",
-    "dayjs": "^1.11.13",
+    "dayjs": "^1.11.19",
     "next": "^16.0.10",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
