@@ -14,7 +14,7 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.8",
+    "@biomejs/biome": "^2.3.10",
     "prettier": "^3.7.4",
     "prettier-plugin-organize-imports": "^4.3.0",
     "turbo": "^2.6.3",
