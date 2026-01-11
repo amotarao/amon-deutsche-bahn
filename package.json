@@ -12,7 +12,8 @@
     "build:app": "turbo run build -F @amon-deutsche-bahn/app...",
     "check": "biome check --write .",
     "format": "oxfmt",
-    "format:check": "oxfmt --check"
+    "format:check": "oxfmt --check",
+    "prepare": "husky"
   },
   "dependencies": {
     "zod": "^4.1.13"
