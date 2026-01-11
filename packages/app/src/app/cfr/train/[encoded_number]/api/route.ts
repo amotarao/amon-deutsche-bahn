@@ -1,9 +1,9 @@
 import * as cheerio from "cheerio";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import type { ApiResponse, Station } from "../_types";
 import { getRomaniaDate } from "../../../_lib/time";
 import { parseDelay, parsePlatform } from "../../../_lib/utils";
-import type { ApiResponse, Station } from "../_types";
 
 dayjs.extend(customParseFormat);
 

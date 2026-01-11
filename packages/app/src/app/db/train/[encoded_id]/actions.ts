@@ -1,8 +1,8 @@
 "use server";
 
+import type { TrainTimetableResponse } from "../../_types";
 import { getCookie } from "../../_lib/cookie";
 import { getRoute } from "../../_lib/route";
-import type { TrainTimetableResponse } from "../../_types";
 
 export async function fetchTrainTimetable(
   journeyId: string,
