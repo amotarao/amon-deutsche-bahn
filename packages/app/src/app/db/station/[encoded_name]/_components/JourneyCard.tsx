@@ -1,7 +1,9 @@
 import classNames from "classnames";
 import dayjs from "dayjs";
 import Link from "next/link";
+
 import type { Journey } from "../../../_types";
+
 import { formatGermanyTime } from "../../../_utils/datetime";
 
 type Props = {

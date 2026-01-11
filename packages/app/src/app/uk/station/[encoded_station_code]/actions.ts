@@ -2,9 +2,11 @@
 
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+
+import type { ApiResponse, DepartureArrivalData } from "./_types";
+
 import { getArrivalBoard } from "./_lib/arrivalBoard";
 import { getDepartureBoard } from "./_lib/departureBoard";
-import type { ApiResponse, DepartureArrivalData } from "./_types";
 
 dayjs.extend(customParseFormat);
 

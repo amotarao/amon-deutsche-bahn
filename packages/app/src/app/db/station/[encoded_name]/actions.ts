@@ -1,14 +1,15 @@
 "use server";
 
-import { getArrivals } from "../../_lib/arrivals";
-import { getDepartures } from "../../_lib/departures";
-import { searchPlaces } from "../../_lib/places";
 import type {
   Arrival,
   Departure,
   Journey,
   StationTimetableResponse,
 } from "../../_types";
+
+import { getArrivals } from "../../_lib/arrivals";
+import { getDepartures } from "../../_lib/departures";
+import { searchPlaces } from "../../_lib/places";
 
 export async function fetchStationTimetable(
   name: string,

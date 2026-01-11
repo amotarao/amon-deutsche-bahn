@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import { fetchApi } from "./_lib/api";
 import { PageClient } from "./page-client";
 

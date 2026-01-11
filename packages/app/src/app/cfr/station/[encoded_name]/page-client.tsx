@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
+
 import { TimetableFilter } from "./_components/TimetableFilter";
 import { TrainList } from "./_components/TrainList";
 import { fetchApi } from "./_lib/api";

@@ -1,7 +1,9 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+
 import type { Journey, ProduktGattung } from "../../../_types";
+
 import { JourneyCard } from "./JourneyCard";
 
 type Props = {

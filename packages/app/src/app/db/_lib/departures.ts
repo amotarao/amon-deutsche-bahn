@@ -1,4 +1,5 @@
 import type { Departure } from "../_types";
+
 import {
   getCurrentGermanyDate,
   getCurrentGermanyTime,
