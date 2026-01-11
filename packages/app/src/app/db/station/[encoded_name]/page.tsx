@@ -2,19 +2,17 @@ import type { Metadata } from "next";
 
 import { PageClient } from "./page-client";
 
-type Props = {
-  params: Promise<{
-    encoded_name: string;
-  }>;
-};
-
-export default async function Page({ params }: Props) {
+export default async function Page({
+  params,
+}: PageProps<"/db/station/[encoded_name]">) {
   const { encoded_name } = await params;
   const name = decodeURIComponent(encoded_name);
   return <PageClient name={name} />;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps<"/db/station/[encoded_name]">): Promise<Metadata> {
   const { encoded_name } = await params;
   const name = decodeURIComponent(encoded_name);
   return {
