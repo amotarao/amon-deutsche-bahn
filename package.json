@@ -11,7 +11,8 @@
     "dev:app": "turbo run dev -F @amon-deutsche-bahn/app...",
     "build:app": "turbo run build -F @amon-deutsche-bahn/app...",
     "check": "biome check --write .",
-    "format": "prettier --write ."
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.8",
