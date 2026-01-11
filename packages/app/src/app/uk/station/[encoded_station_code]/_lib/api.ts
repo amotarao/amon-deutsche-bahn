@@ -1,5 +1,7 @@
 import useSWRInfinite from "swr/infinite";
+
 import type { ApiResponse } from "../_types";
+
 import { fetchBoard } from "../actions";
 
 export type FetchApiParams = {

@@ -6,6 +6,7 @@ import type {
   Journey,
   StationTimetableResponse,
 } from "../../_types";
+
 import { getArrivals } from "../../_lib/arrivals";
 import { getDepartures } from "../../_lib/departures";
 import { searchPlaces } from "../../_lib/places";

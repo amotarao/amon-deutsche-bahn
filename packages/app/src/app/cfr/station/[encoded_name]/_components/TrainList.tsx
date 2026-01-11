@@ -1,6 +1,7 @@
 "use client";
 
 import type { Train } from "../_types";
+
 import { TrainCard } from "./TrainCard";
 
 type Props = {

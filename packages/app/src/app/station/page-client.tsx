@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
+
 import { SearchBox } from "./_components/SearchBox";
 import { fetchCdStationSearch, fetchDbStationSearch } from "./actions";
 

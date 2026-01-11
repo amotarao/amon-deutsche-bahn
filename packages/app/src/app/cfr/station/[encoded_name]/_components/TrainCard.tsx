@@ -2,6 +2,7 @@
 
 import classNames from "classnames";
 import Link from "next/link";
+
 import type { Train } from "../_types";
 
 type Props = {

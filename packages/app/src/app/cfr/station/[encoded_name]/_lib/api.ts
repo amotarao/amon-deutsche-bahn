@@ -1,4 +1,5 @@
 import type { ReadonlyURLSearchParams } from "next/navigation";
+
 import type { ApiResponse } from "../_types";
 
 export const fetchApi = async (
