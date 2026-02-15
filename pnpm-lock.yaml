@@ -64,8 +64,8 @@ importers:
         specifier: ^19.2.3
         version: 19.2.3(react@19.2.3)
       swr:
-        specifier: ^2.3.8
-        version: 2.3.8(react@19.2.3)
+        specifier: ^2.4.0
+        version: 2.4.0(react@19.2.3)
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.1.18
@@ -1297,8 +1297,8 @@ packages:
       babel-plugin-macros:
         optional: true
 
-  swr@2.3.8:
-    resolution: {integrity: sha512-gaCPRVoMq8WGDcWj9p4YWzCMPHzE0WNl6W8ADIx9c3JBEIdMkJGMzW+uzXvxHMltwcYACr9jP+32H8/hgwMR7w==}
+  swr@2.4.0:
+    resolution: {integrity: sha512-sUlC20T8EOt1pHmDiqueUWMmRRX03W7w5YxovWX7VR2KHEPCTMly85x05vpkP5i6Bu4h44ePSMD9Tc+G2MItFw==}
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -2405,7 +2405,7 @@ snapshots:
       client-only: 0.0.1
       react: 19.2.3
 
-  swr@2.3.8(react@19.2.3):
+  swr@2.4.0(react@19.2.3):
     dependencies:
       dequal: 2.0.3
       react: 19.2.3
