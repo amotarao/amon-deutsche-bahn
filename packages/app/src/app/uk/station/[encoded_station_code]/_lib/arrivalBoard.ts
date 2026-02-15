@@ -7,21 +7,16 @@ type Params = {
 
 type Response = DepartureArrivalData;
 
-export async function getArrivalBoard({
-  stationCode,
-  dateTime,
-}: Params): Promise<Response> {
+export async function getArrivalBoard({ stationCode, dateTime }: Params): Promise<Response> {
   const res = await fetch("https://nreservices.nationalrail.co.uk/live-info", {
     headers: {
       accept: "*/*",
-      "accept-language":
-        "de-DE,de;q=0.9,ja-JP;q=0.8,ja;q=0.7,en-US;q=0.6,en;q=0.5",
+      "accept-language": "de-DE,de;q=0.9,ja-JP;q=0.8,ja;q=0.7,en-US;q=0.6,en;q=0.5",
       "cache-control": "no-cache",
       "content-type": "application/json",
       pragma: "no-cache",
       priority: "u=1, i",
-      "sec-ch-ua":
-        '"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
+      "sec-ch-ua": '"Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129"',
       "sec-ch-ua-mobile": "?0",
       "sec-ch-ua-platform": '"macOS"',
       "sec-fetch-dest": "empty",

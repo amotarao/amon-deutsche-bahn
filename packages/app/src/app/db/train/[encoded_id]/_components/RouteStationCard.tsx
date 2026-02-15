@@ -14,10 +14,7 @@ type Props = {
 export function RouteStationCard({ className, halt }: Props) {
   const href = useMemo(() => {
     const DUMMY_BASE_URL = "https://example.com";
-    const url = new URL(
-      `/db/station/${halt.name.replace(/\//g, "")}`,
-      DUMMY_BASE_URL,
-    );
+    const url = new URL(`/db/station/${halt.name.replace(/\//g, "")}`, DUMMY_BASE_URL);
     const date =
       halt.ezAnkunftsZeitpunkt ||
       halt.ankunftsZeitpunkt ||
@@ -31,12 +28,7 @@ export function RouteStationCard({ className, halt }: Props) {
   }, [halt]);
 
   return (
-    <div
-      className={classNames(
-        "flex flex-wrap gap-2 px-4 py-2 text-xs",
-        className,
-      )}
-    >
+    <div className={classNames("flex flex-wrap gap-2 px-4 py-2 text-xs", className)}>
       <div className="flex w-full gap-2">
         <div className="shrink grow">
           <Link className="underline" href={href} prefetch={false}>
@@ -104,14 +96,12 @@ export function RouteStationCard({ className, halt }: Props) {
         </div>
         <div className="w-10 shrink-0 text-right">
           <p
-            className="data-[has-changed-platform=true]:line-through data-[has-changed-platform=true]:font-bold data-[has-changed-platform=true]:text-red-500"
+            className="data-[has-changed-platform=true]:font-bold data-[has-changed-platform=true]:text-red-500 data-[has-changed-platform=true]:line-through"
             data-has-changed-platform={!!halt.ezGleis}
           >
             {halt.gleis ?? "?"}
           </p>
-          {halt.ezGleis && (
-            <p className="text-right text-red-500 font-bold">{halt.ezGleis}</p>
-          )}
+          {halt.ezGleis && <p className="text-right font-bold text-red-500">{halt.ezGleis}</p>}
         </div>
       </div>
       {halt.priorisierteMeldungen.length > 0 && (

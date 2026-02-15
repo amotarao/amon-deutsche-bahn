@@ -15,8 +15,7 @@ export async function getRoute(journeyId: string, cookie: string) {
       cookie,
       priority: "u=1, i",
       referer: "https://www.bahn.de/buchung/abfahrten-ankuenfte",
-      "sec-ch-ua":
-        '"Chromium";v="136", "Google Chrome";v="136", "Not.A/Brand";v="99"',
+      "sec-ch-ua": '"Chromium";v="136", "Google Chrome";v="136", "Not.A/Brand";v="99"',
       "sec-ch-ua-mobile": "?0",
       "sec-ch-ua-platform": '"macOS"',
       "sec-fetch-dest": "empty",

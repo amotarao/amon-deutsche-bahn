@@ -12,18 +12,10 @@ type Props = {
 
 export function RouteStationCard({ className, station }: Props) {
   const searchParams = new URLSearchParams();
-  searchParams.set(
-    "date",
-    station.arrival?.date ?? station.departure?.date ?? getRomaniaDate(),
-  );
+  searchParams.set("date", station.arrival?.date ?? station.departure?.date ?? getRomaniaDate());
 
   return (
-    <div
-      className={classNames(
-        "flex flex-wrap gap-2 px-4 py-2 text-xs",
-        className,
-      )}
-    >
+    <div className={classNames("flex flex-wrap gap-2 px-4 py-2 text-xs", className)}>
       <div className="flex w-full gap-2">
         <div className="shrink grow">
           <Link
@@ -37,9 +29,7 @@ export function RouteStationCard({ className, station }: Props) {
         <TimeField type="arrival" info={station.arrival} />
         <TimeField type="departure" info={station.departure} />
         <p className="w-10 shrink-0 text-right">
-          <span>
-            {station.arrival?.platform ?? station.departure?.platform ?? ""}
-          </span>
+          <span>{station.arrival?.platform ?? station.departure?.platform ?? ""}</span>
         </p>
       </div>
     </div>
@@ -67,11 +57,7 @@ function TimeField({ info }: TimeFieldProps) {
           <br />
           {info.delay !== null && (
             <span className={classNames(delayed && "text-red-500")}>
-              {info.delay === 0
-                ? "+0"
-                : info.delay > 0
-                  ? `+${info.delay}`
-                  : info.delay}
+              {info.delay === 0 ? "+0" : info.delay > 0 ? `+${info.delay}` : info.delay}
             </span>
           )}
         </p>

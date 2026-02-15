@@ -49,7 +49,7 @@ function Cd() {
 
   return (
     <section className="grid grid-cols-1 gap-2">
-      <h2 className="font-bold px-4 text-xs">CD</h2>
+      <h2 className="px-4 text-xs font-bold">CD</h2>
       <ul className="grid grid-cols-1 gap-2">
         {data.map((station) => (
           <li key={station.value} className="px-4">
@@ -87,7 +87,7 @@ function Db() {
 
   return (
     <section className="grid grid-cols-1 gap-2">
-      <h2 className="font-bold px-4 text-xs">DB</h2>
+      <h2 className="px-4 text-xs font-bold">DB</h2>
       <ul className="grid grid-cols-1 gap-2">
         {data.map((station) => (
           <li key={station.extId} className="px-4">

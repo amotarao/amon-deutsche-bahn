@@ -1,9 +1,6 @@
 import type { Response } from "../types";
 
-export async function getTimetable(
-  type: "departures" | "arrivals",
-  evaNumbers: string[],
-) {
+export async function getTimetable(type: "departures" | "arrivals", evaNumbers: string[]) {
   const url = new URL(`https://www.bahnhof.de/api/boards/${type}`);
   evaNumbers.forEach((evaNumber) => {
     url.searchParams.append("evaNumbers", evaNumber);

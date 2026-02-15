@@ -1,11 +1,6 @@
 "use server";
 
-import type {
-  Arrival,
-  Departure,
-  Journey,
-  StationTimetableResponse,
-} from "../../_types";
+import type { Arrival, Departure, Journey, StationTimetableResponse } from "../../_types";
 
 import { getArrivals } from "../../_lib/arrivals";
 import { getDepartures } from "../../_lib/departures";
@@ -34,10 +29,7 @@ export async function fetchStationTimetable(
   };
 }
 
-function mergeJourney(
-  departures: Departure[] | undefined,
-  arrivals: Arrival[] | undefined,
-) {
+function mergeJourney(departures: Departure[] | undefined, arrivals: Arrival[] | undefined) {
   const journeys: Journey[] = [];
 
   departures?.forEach((departure) => {
@@ -49,9 +41,7 @@ function mergeJourney(
   });
 
   arrivals?.forEach((arrival) => {
-    const journey = journeys.find(
-      (journey) => journey.journeyId === arrival.journeyId,
-    );
+    const journey = journeys.find((journey) => journey.journeyId === arrival.journeyId);
     if (journey) {
       journey.arrival = arrival;
       return;
@@ -65,17 +55,9 @@ function mergeJourney(
 
   return journeys.toSorted((a, z) => {
     const aZeit =
-      a.arrival?.ezZeit ||
-      a.arrival?.zeit ||
-      a.departure?.ezZeit ||
-      a.departure?.zeit ||
-      "";
+      a.arrival?.ezZeit || a.arrival?.zeit || a.departure?.ezZeit || a.departure?.zeit || "";
     const zZeit =
-      z.arrival?.ezZeit ||
-      z.arrival?.zeit ||
-      z.departure?.ezZeit ||
-      z.departure?.zeit ||
-      "";
+      z.arrival?.ezZeit || z.arrival?.zeit || z.departure?.ezZeit || z.departure?.zeit || "";
 
     return aZeit.localeCompare(zZeit);
   });

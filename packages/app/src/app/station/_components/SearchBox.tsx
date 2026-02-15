@@ -44,10 +44,7 @@ export function SearchBox({ className }: Props) {
             setQuery(e.target.value);
           }}
         />
-        <button
-          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
-          type="submit"
-        >
+        <button className="bg-gray-200 px-4 py-2 text-center dark:bg-slate-700" type="submit">
           Go
         </button>
       </div>

@@ -18,12 +18,7 @@ type Props = {
 
 export function TrainCard({ className, service }: Props) {
   return (
-    <div
-      className={classNames(
-        "flex flex-wrap gap-2 px-4 py-2 text-xs",
-        className,
-      )}
-    >
+    <div className={classNames("flex flex-wrap gap-2 px-4 py-2 text-xs", className)}>
       <div className="flex w-full gap-2">
         <TimeField type="arrival" info={service.arrivalInfo} />
         <TimeField type="departure" info={service.departureInfo} />
@@ -35,11 +30,7 @@ export function TrainCard({ className, service }: Props) {
           {service.arrivalInfo &&
             service.origin &&
             service.origin.map((station) => (
-              <Link
-                key={station.crs}
-                className="underline"
-                href={`/uk/station/${station.crs}`}
-              >
+              <Link key={station.crs} className="underline" href={`/uk/station/${station.crs}`}>
                 {station.locationName}
               </Link>
             ))}
@@ -50,11 +41,7 @@ export function TrainCard({ className, service }: Props) {
           {service.departureInfo &&
             service.destination &&
             service.destination.map((station) => (
-              <Link
-                key={station.crs}
-                className="underline"
-                href={`/uk/station/${station.crs}`}
-              >
+              <Link key={station.crs} className="underline" href={`/uk/station/${station.crs}`}>
                 {station.locationName}
               </Link>
             ))}
@@ -90,9 +77,7 @@ function TimeField({ info }: TimeFieldProps) {
       {info && (
         <div>
           <p>{getTime(info.scheduled)}</p>
-          {info.estimated && info.scheduled !== info.estimated && (
-            <p>{getTime(info.estimated)}</p>
-          )}
+          {info.estimated && info.scheduled !== info.estimated && <p>{getTime(info.estimated)}</p>}
         </div>
       )}
     </div>

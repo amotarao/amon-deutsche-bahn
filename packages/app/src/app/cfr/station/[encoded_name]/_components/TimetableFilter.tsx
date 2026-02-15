@@ -70,14 +70,11 @@ export function TimetableFilter({ className, name: defaultName }: Props) {
             setName(e.target.value);
           }}
         />
-        <button
-          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
-          type="submit"
-        >
+        <button className="bg-gray-200 px-4 py-2 text-center dark:bg-slate-700" type="submit">
           Go
         </button>
       </div>
-      <div className="grid grid-cols-[repeat(4,1fr)] ">
+      <div className="grid grid-cols-[repeat(4,1fr)]">
         <input
           className="w-full bg-transparent px-4 py-2 pr-2 dark:[color-scheme:dark]"
           type="date"
@@ -88,14 +85,14 @@ export function TimetableFilter({ className, name: defaultName }: Props) {
           }}
         />
         <button
-          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
+          className="bg-gray-200 px-4 py-2 text-center dark:bg-slate-700"
           type="button"
           onClick={prev1d}
         >
           -1d
         </button>
         <button
-          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
+          className="bg-gray-200 px-4 py-2 text-center dark:bg-slate-700"
           type="button"
           onClick={() => {
             setDate(null);
@@ -104,7 +101,7 @@ export function TimetableFilter({ className, name: defaultName }: Props) {
           Now
         </button>
         <button
-          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
+          className="bg-gray-200 px-4 py-2 text-center dark:bg-slate-700"
           type="button"
           onClick={next1d}
         >
