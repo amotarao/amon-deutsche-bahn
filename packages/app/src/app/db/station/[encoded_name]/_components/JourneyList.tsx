@@ -23,8 +23,7 @@ export function JourneyList({ className, journeys }: Props) {
       if (!trainType || trainType.length === 0) return true;
 
       const allowedTrainType: ProduktGattung[] = [];
-      if (trainType.includes("express"))
-        allowedTrainType.push("ICE", "EC_IC", "IR");
+      if (trainType.includes("express")) allowedTrainType.push("ICE", "EC_IC", "IR");
       if (trainType.includes("train")) allowedTrainType.push("REGIONAL");
       if (trainType.includes("s-bahn")) allowedTrainType.push("SBAHN");
       return allowedTrainType.some(
@@ -65,8 +64,6 @@ export function JourneyList({ className, journeys }: Props) {
   );
 }
 
-function isType(
-  input: string | null | undefined,
-): input is "arr" | "dep" | "both" {
+function isType(input: string | null | undefined): input is "arr" | "dep" | "both" {
   return ["arr", "dep", "both"].some((type) => type === input);
 }

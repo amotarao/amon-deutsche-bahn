@@ -15,13 +15,8 @@ type Params = {
   dateUnix: string;
 };
 
-export async function fetchBoard({
-  stationCode,
-  dateUnix,
-}: Params): Promise<ApiResponse | null> {
-  const dateTime = dateUnix
-    ? dayjs.unix(Number(dateUnix)).toISOString()
-    : dayjs().toISOString();
+export async function fetchBoard({ stationCode, dateUnix }: Params): Promise<ApiResponse | null> {
+  const dateTime = dateUnix ? dayjs.unix(Number(dateUnix)).toISOString() : dayjs().toISOString();
 
   if (!stationCode) {
     return null;
@@ -35,18 +30,11 @@ export async function fetchBoard({
   return data;
 }
 
-function merge(
-  arrival: DepartureArrivalData,
-  departure: DepartureArrivalData,
-): ApiResponse {
+function merge(arrival: DepartureArrivalData, departure: DepartureArrivalData): ApiResponse {
   const services = [...arrival.services, ...departure.services];
   const { departureStation, ...rest } = arrival;
-  const lastArrivalDateUnix = dayjs(
-    arrival.services.at(-1)?.arrivalInfo?.scheduled,
-  ).unix();
-  const lastDepartureDateUnix = dayjs(
-    departure.services.at(-1)?.departureInfo?.scheduled,
-  ).unix();
+  const lastArrivalDateUnix = dayjs(arrival.services.at(-1)?.arrivalInfo?.scheduled).unix();
+  const lastDepartureDateUnix = dayjs(departure.services.at(-1)?.departureInfo?.scheduled).unix();
 
   return {
     ...rest,

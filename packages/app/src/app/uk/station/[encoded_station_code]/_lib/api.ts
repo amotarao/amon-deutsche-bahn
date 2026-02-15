@@ -9,10 +9,7 @@ export type FetchApiParams = {
   dateUnix: number;
 };
 
-export const fetchApi = async ({
-  stationCode,
-  dateUnix,
-}: FetchApiParams): Promise<ApiResponse> => {
+export const fetchApi = async ({ stationCode, dateUnix }: FetchApiParams): Promise<ApiResponse> => {
   const url = new URL("/uk/station/api", process.env.NEXT_PUBLIC_BASE_URL);
 
   url.searchParams.set("station-code", stationCode);
@@ -41,15 +38,10 @@ export function useApiSWRInfinite({ stationCode, dateUnix }: FetchApiParams) {
     ...swr,
     data: swr.data?.at(0) ?? null,
     services: (swr.data?.flatMap((page) => page.services) ?? [])
-      .filter(
-        (service, i, self) =>
-          self.findIndex((s) => s.rid === service.rid) === i,
-      )
+      .filter((service, i, self) => self.findIndex((s) => s.rid === service.rid) === i)
       .toSorted((a, z) => {
-        const aDate =
-          a.arrivalInfo?.scheduled ?? a.departureInfo?.scheduled ?? "0";
-        const zDate =
-          z.arrivalInfo?.scheduled ?? z.departureInfo?.scheduled ?? "0";
+        const aDate = a.arrivalInfo?.scheduled ?? a.departureInfo?.scheduled ?? "0";
+        const zDate = z.arrivalInfo?.scheduled ?? z.departureInfo?.scheduled ?? "0";
         return new Date(aDate).getTime() - new Date(zDate).getTime();
       }),
   };

@@ -21,7 +21,7 @@ export function PageClient({ stationCode }: Props) {
   return (
     <div className="grid grid-cols-1 gap-2">
       <button
-        className="px-4 py-2 text-sm bg-green-200 w-full text-center"
+        className="w-full bg-green-200 px-4 py-2 text-center text-sm"
         type="button"
         onClick={() => {
           setDateUnix(dayjs().unix());
@@ -45,7 +45,7 @@ export function PageClient({ stationCode }: Props) {
             </div>
           </main>
           <button
-            className="px-4 py-2 text-sm bg-green-200 w-full text-center"
+            className="w-full bg-green-200 px-4 py-2 text-center text-sm"
             type="button"
             onClick={() => {
               setSize((size) => size + 1);

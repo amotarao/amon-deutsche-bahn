@@ -40,19 +40,17 @@ export function PageClient({ id }: Props) {
         </div>
         <div className="flex flex-col gap-2 px-4 py-2">
           <div className="text-xs">
-            {data.route.priorisierteMeldungen.map(
-              ({ prioritaet, text, type }) => (
-                <p
-                  key={text}
-                  className="data-[priority=HOCH]:text-red-500"
-                  data-priority={prioritaet}
-                  data-type={type}
-                >
-                  {type && <>[{type}] </>}
-                  {text}
-                </p>
-              ),
-            )}
+            {data.route.priorisierteMeldungen.map(({ prioritaet, text, type }) => (
+              <p
+                key={text}
+                className="data-[priority=HOCH]:text-red-500"
+                data-priority={prioritaet}
+                data-type={type}
+              >
+                {type && <>[{type}] </>}
+                {text}
+              </p>
+            ))}
           </div>
         </div>
       </div>

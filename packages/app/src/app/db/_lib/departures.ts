@@ -1,9 +1,6 @@
 import type { Departure } from "../_types";
 
-import {
-  getCurrentGermanyDate,
-  getCurrentGermanyTime,
-} from "../_utils/datetime";
+import { getCurrentGermanyDate, getCurrentGermanyTime } from "../_utils/datetime";
 
 type Params = {
   date?: string | null;

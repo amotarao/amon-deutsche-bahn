@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 
 import { PageClient } from "./page-client";
 
-export default async function Page({
-  params,
-}: PageProps<"/db/station/[encoded_name]">) {
+export default async function Page({ params }: PageProps<"/db/station/[encoded_name]">) {
   const { encoded_name } = await params;
   const name = decodeURIComponent(encoded_name);
   return <PageClient name={name} />;

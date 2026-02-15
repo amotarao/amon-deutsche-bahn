@@ -6,10 +6,7 @@ import { formatUrl } from "next/dist/shared/lib/router/utils/format-url";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import {
-  getCurrentGermanyDate,
-  getCurrentGermanyTime,
-} from "../../../_utils/datetime";
+import { getCurrentGermanyDate, getCurrentGermanyTime } from "../../../_utils/datetime";
 
 type Props = {
   className?: string;
@@ -25,13 +22,9 @@ export function TimetableFilter({ className, defaultName }: Props) {
   const [id, setId] = useState(searchParams?.get("id") ?? null);
   const [date, setDate] = useState(searchParams?.get("date") ?? null);
   const [time, setTime] = useState(searchParams?.get("time") ?? null);
-  const [trainType, setTrainType] = useState(
-    searchParams?.getAll("trainType") ?? [],
-  );
+  const [trainType, setTrainType] = useState(searchParams?.getAll("trainType") ?? []);
   const [type, setType] = useState(searchParams?.get("type") ?? null);
-  const [ignoreBus, setIgnoreBus] = useState(
-    (searchParams?.get("ignoreBus") ?? "") === "true",
-  );
+  const [ignoreBus, setIgnoreBus] = useState((searchParams?.get("ignoreBus") ?? "") === "true");
 
   useEffect(() => {
     setId(searchParams?.get("id") ?? null);
@@ -59,9 +52,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
 
   const prev1h = () => {
     const newDate = dayjs(
-      (date ?? getCurrentGermanyDate()) +
-        " " +
-        (time ?? getCurrentGermanyTime()),
+      (date ?? getCurrentGermanyDate()) + " " + (time ?? getCurrentGermanyTime()),
     ).add(-1, "hour");
     setDate(newDate.format("YYYY-MM-DD"));
     setTime(newDate.format("HH:mm"));
@@ -69,9 +60,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
 
   const next1h = () => {
     const newDate = dayjs(
-      (date ?? getCurrentGermanyDate()) +
-        " " +
-        (time ?? getCurrentGermanyTime()),
+      (date ?? getCurrentGermanyDate()) + " " + (time ?? getCurrentGermanyTime()),
     ).add(1, "hour");
     setDate(newDate.format("YYYY-MM-DD"));
     setTime(newDate.format("HH:mm"));
@@ -79,9 +68,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
 
   const prev1d = () => {
     const newDate = dayjs(
-      (date ?? getCurrentGermanyDate()) +
-        " " +
-        (time ?? getCurrentGermanyTime()),
+      (date ?? getCurrentGermanyDate()) + " " + (time ?? getCurrentGermanyTime()),
     ).add(-1, "day");
     setDate(newDate.format("YYYY-MM-DD"));
     setTime(newDate.format("HH:mm"));
@@ -89,9 +76,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
 
   const next1d = () => {
     const newDate = dayjs(
-      (date ?? getCurrentGermanyDate()) +
-        " " +
-        (time ?? getCurrentGermanyTime()),
+      (date ?? getCurrentGermanyDate()) + " " + (time ?? getCurrentGermanyTime()),
     ).add(1, "day");
     setDate(newDate.format("YYYY-MM-DD"));
     setTime(newDate.format("HH:mm"));
@@ -122,14 +107,11 @@ export function TimetableFilter({ className, defaultName }: Props) {
             setName(e.target.value);
           }}
         />
-        <button
-          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
-          type="submit"
-        >
+        <button className="bg-gray-200 px-4 py-2 text-center dark:bg-slate-700" type="submit">
           Go
         </button>
       </div>
-      <div className="grid grid-cols-[1fr_1fr] ">
+      <div className="grid grid-cols-[1fr_1fr]">
         <input
           className="w-full bg-transparent px-4 py-2 pr-2 dark:[color-scheme:dark]"
           type="date"
@@ -149,23 +131,23 @@ export function TimetableFilter({ className, defaultName }: Props) {
           }}
         />
       </div>
-      <div className="grid grid-cols-[repeat(5,1fr)] ">
+      <div className="grid grid-cols-[repeat(5,1fr)]">
         <button
-          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
+          className="bg-gray-200 px-4 py-2 text-center dark:bg-slate-700"
           type="button"
           onClick={prev1d}
         >
           -1d
         </button>
         <button
-          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
+          className="bg-gray-200 px-4 py-2 text-center dark:bg-slate-700"
           type="button"
           onClick={prev1h}
         >
           -1h
         </button>
         <button
-          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
+          className="bg-gray-200 px-4 py-2 text-center dark:bg-slate-700"
           type="button"
           onClick={() => {
             setDate(null);
@@ -175,14 +157,14 @@ export function TimetableFilter({ className, defaultName }: Props) {
           Jetzt
         </button>
         <button
-          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
+          className="bg-gray-200 px-4 py-2 text-center dark:bg-slate-700"
           type="button"
           onClick={next1h}
         >
           +1h
         </button>
         <button
-          className="bg-gray-200 dark:bg-slate-700 px-4 py-2 text-center"
+          className="bg-gray-200 px-4 py-2 text-center dark:bg-slate-700"
           type="button"
           onClick={next1d}
         >
@@ -195,10 +177,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
           { id: "train", name: "Regio" },
           { id: "s-bahn", name: "S-Bahn" },
         ].map((currentTrainType) => (
-          <label
-            className="flex grow items-center py-2 pl-4 pr-2"
-            key={currentTrainType.id}
-          >
+          <label className="flex grow items-center py-2 pr-2 pl-4" key={currentTrainType.id}>
             <input
               className="mr-2"
               type="checkbox"
@@ -216,10 +195,7 @@ export function TimetableFilter({ className, defaultName }: Props) {
             {currentTrainType.name}
           </label>
         ))}
-        <label
-          className="flex grow items-center py-2 pl-4 pr-2"
-          key="ignoreBus"
-        >
+        <label className="flex grow items-center py-2 pr-2 pl-4" key="ignoreBus">
           <input
             className="mr-2"
             type="checkbox"
@@ -239,18 +215,13 @@ export function TimetableFilter({ className, defaultName }: Props) {
           { id: "dep", name: "Ab" },
           { id: "arr", name: "An" },
         ].map((currentType) => (
-          <label
-            className="flex grow items-center py-2 pl-4 pr-2"
-            key={currentType.id}
-          >
+          <label className="flex grow items-center py-2 pr-2 pl-4" key={currentType.id}>
             <input
               className="mr-2"
               type="radio"
               name="type"
               value={currentType.id}
-              checked={
-                type ? type === currentType.id : "both" === currentType.id
-              }
+              checked={type ? type === currentType.id : "both" === currentType.id}
               onChange={(e) => {
                 setType(e.target.value);
               }}

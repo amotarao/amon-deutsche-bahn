@@ -15,12 +15,7 @@ export function TrainCard({ className, train }: Props) {
   searchParams.set("date", train.arrival?.date ?? train.departure?.date ?? "");
 
   return (
-    <div
-      className={classNames(
-        "flex flex-wrap gap-2 px-4 py-2 text-xs",
-        className,
-      )}
-    >
+    <div className={classNames("flex flex-wrap gap-2 px-4 py-2 text-xs", className)}>
       <div className="flex w-full gap-2">
         <TimeField type="arrival" info={train.arrival} />
         <TimeField type="departure" info={train.departure} />
@@ -65,11 +60,7 @@ function TimeField({ info }: TimeFieldProps) {
           <br />
           {info.delay !== null && (
             <span className={classNames(delayed && "text-red-500")}>
-              {info.delay === 0
-                ? "+0"
-                : info.delay > 0
-                  ? `+${info.delay}`
-                  : info.delay}
+              {info.delay === 0 ? "+0" : info.delay > 0 ? `+${info.delay}` : info.delay}
             </span>
           )}
         </p>

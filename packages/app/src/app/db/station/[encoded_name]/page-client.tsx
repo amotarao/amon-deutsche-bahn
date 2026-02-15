@@ -27,10 +27,8 @@ type MainProps = {
 
 function Main({ className, name }: MainProps) {
   const searchParams = useSearchParams();
-  const { data, isLoading } = useSWR(
-    name ? [name, searchParams] : null,
-    ([name, searchParams]) =>
-      fetchStationTimetable(name, searchParams?.toString()),
+  const { data, isLoading } = useSWR(name ? [name, searchParams] : null, ([name, searchParams]) =>
+    fetchStationTimetable(name, searchParams?.toString()),
   );
 
   if (isLoading) {

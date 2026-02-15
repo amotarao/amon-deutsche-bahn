@@ -3,9 +3,7 @@ import type { Metadata } from "next";
 import { fetchApi } from "./_lib/api";
 import { PageClient } from "./page-client";
 
-export default async function Page({
-  params,
-}: PageProps<"/cfr/train/[encoded_number]">) {
+export default async function Page({ params }: PageProps<"/cfr/train/[encoded_number]">) {
   const { encoded_number } = await params;
   const number = decodeURIComponent(encoded_number);
   return <PageClient number={number} />;
