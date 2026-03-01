@@ -21,7 +21,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
+    "lint-staged": "^16.3.1",
     "oxfmt": "^0.32.0",
     "turbo": "^2.8.9",
     "typescript": "^5.9.3",
