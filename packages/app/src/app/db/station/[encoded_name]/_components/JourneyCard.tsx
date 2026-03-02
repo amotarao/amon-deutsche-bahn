@@ -1,18 +1,26 @@
 import classNames from "classnames";
 import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import Link from "next/link";
 
 import type { Journey } from "../../../_types";
 
 import { formatGermanyTime } from "../../../_utils/datetime";
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+const tz = "Europe/Berlin";
+
 type Props = {
   className?: string;
   type: "arr" | "dep" | "both";
   journey: Journey;
+  stationName: string;
 };
 
-export function JourneyCard({ className, type = "both", journey }: Props) {
+export function JourneyCard({ className, type = "both", journey, stationName }: Props) {
   return (
     <div className={classNames("flex flex-wrap gap-2 px-4 py-2 text-xs", className)}>
       <div className="flex w-full gap-2">
@@ -30,6 +38,7 @@ export function JourneyCard({ className, type = "both", journey }: Props) {
           )}
         </p>
         <PlatformField journey={journey} />
+        <CalendarField journey={journey} stationName={stationName} />
       </div>
       <InformationField className="w-full" journey={journey} />
     </div>
@@ -101,6 +110,61 @@ function PlatformField({ journey }: PlatformFieldProps) {
       </p>
       {ezGleis && <p className="text-right font-bold text-red-500">{ezGleis}</p>}
     </div>
+  );
+}
+
+type CalendarFieldProps = {
+  journey: Journey;
+  stationName: string;
+};
+
+function CalendarField({ journey, stationName }: CalendarFieldProps) {
+  const { mittelText, name } = (journey.departure || journey.arrival)?.verkehrmittel || {};
+  const trainName = mittelText === name ? name : `${mittelText} (${name})`;
+
+  const arrZeit = journey.arrival?.zeit;
+  const depZeit = journey.departure?.zeit;
+
+  const arrTime = arrZeit ? dayjs.tz(arrZeit, tz) : null;
+  const depTime = depZeit ? dayjs.tz(depZeit, tz) : null;
+  const refStart = arrTime ?? depTime;
+  const refEnd = depTime ?? arrTime;
+
+  if (!refStart || !refEnd) return null;
+
+  const eventStart = refStart.subtract(10, "minute");
+  const eventEnd = refEnd.add(5, "minute");
+
+  const timeStr = [arrTime?.format("HH:mm"), depTime?.format("HH:mm")].filter(Boolean).join(" - ");
+
+  const from = journey.arrival?.terminus || journey.arrival?.ueber.at(-1);
+  const to = journey.departure?.terminus || journey.departure?.ueber.at(-1);
+  const vonNach = [from && `von ${from}`, to && `nach ${to}`].filter(Boolean).join(" ");
+
+  const title = `🎤 ${timeStr}: ${trainName} ${vonNach}`.trim();
+
+  const startStr = `${eventStart.utc().format("YYYYMMDDTHHmmss")}Z`;
+  const endStr = `${eventEnd.utc().format("YYYYMMDDTHHmmss")}Z`;
+
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: title,
+    dates: `${startStr}/${endStr}`,
+    location: stationName,
+  });
+
+  const url = `https://www.google.com/calendar/render?${params.toString()}`;
+
+  return (
+    <a
+      className="shrink-0 text-blue-500 hover:text-blue-700"
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      title="Add to Google Calendar"
+    >
+      📅
+    </a>
   );
 }
 

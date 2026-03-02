@@ -9,9 +9,10 @@ import { JourneyCard } from "./JourneyCard";
 type Props = {
   className?: string;
   journeys: Journey[];
+  stationName: string;
 };
 
-export function JourneyList({ className, journeys }: Props) {
+export function JourneyList({ className, journeys, stationName }: Props) {
   const searchParams = useSearchParams();
 
   const typeParam = searchParams?.get("type");
@@ -57,6 +58,7 @@ export function JourneyList({ className, journeys }: Props) {
             className="border-b border-dashed border-gray-300 dark:border-slate-600"
             type={type}
             journey={journey}
+            stationName={stationName}
           />
         ))}
       </div>
