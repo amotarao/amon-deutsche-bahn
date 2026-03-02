@@ -43,7 +43,7 @@ function Main({ className, name }: MainProps) {
     <main className={className}>
       <div className="flex flex-col gap-2">
         <p className="px-4 py-1 text-sm font-bold">{data.ort.name}</p>
-        <JourneyList journeys={data.journeys} />
+        <JourneyList journeys={data.journeys} stationName={data.ort.name} />
       </div>
     </main>
   );
