@@ -122,8 +122,8 @@ function CalendarField({ journey, stationName }: CalendarFieldProps) {
   const { mittelText, name } = (journey.departure || journey.arrival)?.verkehrmittel || {};
   const trainName = mittelText === name ? name : `${mittelText} (${name})`;
 
-  const arrZeit = journey.arrival?.ezZeit || journey.arrival?.zeit;
-  const depZeit = journey.departure?.ezZeit || journey.departure?.zeit;
+  const arrZeit = journey.arrival?.zeit;
+  const depZeit = journey.departure?.zeit;
 
   const arrTime = arrZeit ? dayjs.tz(arrZeit, tz) : null;
   const depTime = depZeit ? dayjs.tz(depZeit, tz) : null;
